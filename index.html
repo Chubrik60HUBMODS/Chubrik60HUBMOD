@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chubrik60HUBMODS — Моды для Minecraft 1.21.4, 1.20.1, 1.16.5</title>
     
-    <!-- Anti-DDoS мета-теги -->
+    <!-- Anti-DDoS мета-теги (невидимая защита) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none';">
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -24,28 +24,6 @@
             background: #0a0a0a;
             color: #e0e0e0;
             overflow-x: hidden;
-        }
-
-        /* Anti-DDoS уведомление */
-        .ddos-protection-banner {
-            background: #1a1a1a;
-            border-bottom: 2px solid #4caf50;
-            padding: 0.5rem 5%;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #4caf50;
-            position: relative;
-            z-index: 1001;
-        }
-
-        .ddos-protection-banner .shield {
-            display: inline-block;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
         }
 
         /* Шапка */
@@ -97,7 +75,7 @@
             color: #fff;
         }
 
-        /* Anti-DDoS модальное окно */
+        /* Anti-DDoS модальное окно (появляется только при атаке) */
         .ddos-modal {
             display: none;
             position: fixed;
@@ -105,7 +83,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -467,18 +445,13 @@
     </style>
 </head>
 <body>
-    <!-- МЕТКА: ROCKET // Chubrik60HUBMODS с Anti-DDoS защитой активирован -->
+    <!-- МЕТКА: ROCKET // Chubrik60HUBMODS с невидимой Anti-DDoS защитой активирован -->
 
-    <!-- Anti-DDoS баннер -->
-    <div class="ddos-protection-banner">
-        <span class="shield">🛡️</span> Защита от DDoS-атак активирована | Cloudflare Enterprise Protection | Rate Limiting: Включено
-    </div>
-
-    <!-- Anti-DDoS модальное окно -->
+    <!-- Anti-DDoS модальное окно (появляется только при обнаружении атаки) -->
     <div class="ddos-modal" id="ddosModal">
         <div class="ddos-modal-content">
-            <h2>🛡️ Проверка безопасности</h2>
-            <p>Подозрительная активность обнаружена. Пожалуйста, подтвердите что вы не робот.</p>
+            <h2>Проверка безопасности</h2>
+            <p>Обнаружена подозрительная активность. Пожалуйста, подтвердите что вы не робот.</p>
             <div class="captcha-box">
                 <div class="captcha-text" id="captchaText">ABC123</div>
                 <input type="text" class="captcha-input" id="captchaInput" placeholder="Введите код" maxlength="6">
@@ -572,15 +545,14 @@
     <footer class="footer">
         <p>© 2026 <a href="#">Chubrik60HUBMODS</a>. Все права защищены. | Создано командой Rocket Way</p>
         <p style="margin-top: 0.5rem;">Поддерживаемые версии: 1.21.4, 1.20.1, 1.16.5 | Источники: CurseForge, Modrinth</p>
-        <p style="margin-top: 0.5rem; color: #4caf50;">🛡️ Защита от DDoS-атак: Активна | Rate Limiting: 100 req/min | Cloudflare: Включено</p>
     </footer>
 
     <script>
         // ============================================
-        // ANTI-DDOS ЗАЩИТА
+        // НЕВИДИМАЯ ANTI-DDOS ЗАЩИТА
         // ============================================
         
-        // Конфигурация Anti-DDoS
+        // Конфигурация Anti-DDoS (работает в фоне)
         const AntiDDoS = {
             // Максимальное количество запросов за период
             maxRequestsPerMinute: 100,
@@ -601,10 +573,12 @@
             lastRequestTime: Date.now(),
             // Флаг блокировки
             isBlocked: false,
+            // Общее количество заблокированных атак
+            totalAttacksBlocked: 0,
             
             // Инициализация защиты
             init() {
-                console.log('🛡️ Anti-DDoS защита инициализирована');
+                console.log('Anti-DDoS protection initialized');
                 this.startMonitoring();
                 this.setupEventListeners();
                 this.generateCaptcha();
@@ -622,7 +596,6 @@
                     'Content-Security-Policy': "default-src 'self'",
                 };
                 
-                console.log('🔒 Заголовки безопасности проверены');
                 return headers;
             },
             
@@ -650,11 +623,11 @@
                 );
                 
                 if (recentRequests.length > this.maxRequestsPerSecond) {
-                    this.triggerProtection('Слишком много запросов в секунду');
+                    this.triggerProtection('Too many requests per second');
                 }
                 
                 if (this.requests.length > this.maxRequestsPerMinute) {
-                    this.triggerProtection('Превышен лимит запросов в минуту');
+                    this.triggerProtection('Request limit exceeded');
                 }
             },
             
@@ -673,7 +646,7 @@
                 if (now - this.lastRequestTime < 50) { // Менее 50мс между запросами
                     this.requestCount++;
                     if (this.requestCount > 20) {
-                        this.triggerProtection('Обнаружен флуд запросов');
+                        this.triggerProtection('Flood detected');
                         return false;
                     }
                 } else {
@@ -686,7 +659,8 @@
             
             // Активация защиты
             triggerProtection(reason) {
-                console.warn('🛡️ Anti-DDoS защита активирована:', reason);
+                this.totalAttacksBlocked++;
+                console.warn('DDoS attack blocked:', reason);
                 
                 if (!this.captchaActive) {
                     this.captchaActive = true;
@@ -701,7 +675,6 @@
                 setTimeout(() => {
                     this.blockedIPs.delete(simulatedIP);
                     this.captchaActive = false;
-                    console.log('🔓 IP разблокирован:', simulatedIP);
                 }, this.blockDurationMinutes * 60000);
             },
             
@@ -710,7 +683,7 @@
                 return '192.168.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255);
             },
             
-            // Показ капчи
+            // Показ капчи (только при атаке)
             showCaptcha() {
                 const modal = document.getElementById('ddosModal');
                 if (modal) {
@@ -751,9 +724,8 @@
                 if (captchaText && captchaInput) {
                     if (captchaInput.value.toUpperCase() === captchaText.textContent) {
                         this.hideCaptcha();
-                        console.log('✅ Капча пройдена успешно');
                     } else {
-                        alert('❌ Неверный код! Попробуйте еще раз.');
+                        alert('Неверный код! Попробуйте еще раз.');
                         this.generateCaptcha();
                         captchaInput.value = '';
                     }
@@ -762,12 +734,11 @@
             
             // Показ сообщения о блокировке
             showBlockedMessage() {
-                console.error('⛔ Доступ заблокирован Anti-DDoS системой');
                 document.body.innerHTML = `
-                    <div style="text-align: center; padding: 50px; color: #ff3c3c;">
-                        <h1>⛔ Доступ заблокирован</h1>
-                        <p>Ваш IP адрес временно заблокирован из-за подозрительной активности.</p>
-                        <p>Попробуйте позже или свяжитесь с администратором.</p>
+                    <div style="text-align: center; padding: 50px; color: #ff3c3c; background: #0a0a0a; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <h1 style="font-size: 3rem; margin-bottom: 1rem;">⛔</h1>
+                        <h2 style="margin-bottom: 1rem;">Доступ временно ограничен</h2>
+                        <p style="color: #aaa;">Пожалуйста, подождите несколько минут и попробуйте снова.</p>
                     </div>
                 `;
             },
@@ -794,7 +765,7 @@
                 const originalFetch = window.fetch;
                 window.fetch = async (...args) => {
                     if (!this.registerRequest()) {
-                        throw new Error('Request blocked by Anti-DDoS protection');
+                        throw new Error('Request blocked');
                     }
                     return originalFetch.apply(this, args);
                 };
@@ -803,9 +774,18 @@
                 const originalWebSocket = window.WebSocket;
                 window.WebSocket = function(...args) {
                     if (!AntiDDoS.registerRequest()) {
-                        throw new Error('WebSocket blocked by Anti-DDoS protection');
+                        throw new Error('WebSocket blocked');
                     }
                     return new originalWebSocket(...args);
+                };
+                
+                // Перехват XMLHttpRequest
+                const originalXHROpen = XMLHttpRequest.prototype.open;
+                XMLHttpRequest.prototype.open = function(...args) {
+                    if (!AntiDDoS.registerRequest()) {
+                        throw new Error('XHR blocked');
+                    }
+                    return originalXHROpen.apply(this, args);
                 };
             },
             
@@ -816,16 +796,15 @@
                     blockedIPs: this.blockedIPs.size,
                     captchaActive: this.captchaActive,
                     isBlocked: this.isBlocked,
-                    maxRequestsPerMinute: this.maxRequestsPerMinute,
-                    maxRequestsPerSecond: this.maxRequestsPerSecond,
+                    totalAttacksBlocked: this.totalAttacksBlocked,
                 };
             }
         };
 
-        // Инициализация Anti-DDoS защиты
+        // Инициализация невидимой Anti-DDoS защиты
         AntiDDoS.init();
 
-        // МЕТКА: ROCKET // Anti-DDoS защита активирована
+        // МЕТКА: ROCKET // Невидимая Anti-DDoS защита активирована
 
         // ============================================
         // БАЗА ДАННЫХ МОДОВ
@@ -2149,12 +2128,9 @@
             
             // Добавляем обработчик поиска
             document.getElementById('searchInput').addEventListener('input', searchMods);
-            
-            // Выводим статистику Anti-DDoS в консоль
-            console.log('🛡️ Anti-DDoS статистика:', AntiDDoS.getStats());
         });
 
-        // МЕТКА: ROCKET // Chubrik60HUBMODS с Anti-DDoS защитой успешно загружен
+        // МЕТКА: ROCKET // Chubrik60HUBMODS с невидимой Anti-DDoS защитой успешно загружен
     </script>
 </body>
 </html>
