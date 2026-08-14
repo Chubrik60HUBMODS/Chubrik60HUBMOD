@@ -3,14 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chubrik60HUBMODS — Моды для Minecraft 1.21.4, 1.20.1, 1.16.5</title>
-    
-    <!-- Anti-DDoS мета-теги (невидимая защита) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none';">
-    <meta name="referrer" content="no-referrer">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <title>Chubrik60HUBMODS — Моды для Minecraft</title>
     
     <style>
         * {
@@ -20,13 +13,50 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background: #0a0a0a;
             color: #e0e0e0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
             overflow-x: hidden;
         }
 
-        /* Шапка */
+        body.loaded {
+            opacity: 1;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+
         .header {
             background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
             padding: 1rem 5%;
@@ -38,6 +68,7 @@
             top: 0;
             z-index: 1000;
             flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .logo {
@@ -46,17 +77,25 @@
             color: #4caf50;
             text-transform: uppercase;
             letter-spacing: 2px;
+            cursor: pointer;
+            user-select: none;
+            text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+            animation: logoGlow 2s ease-in-out infinite;
         }
 
-        .logo span {
-            color: #8bc34a;
+        @keyframes logoGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(76, 175, 80, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(76, 175, 80, 0.8), 0 0 60px rgba(76, 175, 80, 0.4); }
         }
+
+        .logo span { color: #8bc34a; }
 
         .nav-menu {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             list-style: none;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .nav-menu a {
@@ -65,7 +104,7 @@
             font-weight: 600;
             padding: 0.5rem 1rem;
             border-radius: 5px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             text-transform: uppercase;
             font-size: 0.9rem;
         }
@@ -75,146 +114,124 @@
             color: #fff;
         }
 
-        /* Anti-DDoS модальное окно (появляется только при атаке) */
-        .ddos-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ddos-modal.active {
-            display: flex;
-        }
-
-        .ddos-modal-content {
-            background: #1a1a1a;
-            border: 2px solid #ff3c3c;
-            border-radius: 15px;
-            padding: 2rem;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .ddos-modal-content h2 {
-            color: #ff3c3c;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .ddos-modal-content p {
-            color: #ccc;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .captcha-box {
-            background: #2a2a2a;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .captcha-text {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #4caf50;
-            letter-spacing: 5px;
-            margin-bottom: 0.5rem;
-            user-select: none;
-        }
-
-        .captcha-input {
-            padding: 0.5rem;
-            background: #0d0d0d;
-            border: 2px solid #4caf50;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 1.2rem;
-            text-align: center;
-            width: 150px;
-        }
-
-        .captcha-btn {
-            padding: 0.7rem 1.5rem;
-            background: #4caf50;
+        /* Кнопка ИИ */
+        .ai-chat-btn {
+            background: linear-gradient(135deg, #4caf50, #2196f3);
             color: #fff;
             border: none;
-            border-radius: 5px;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
             cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
+            font-weight: 700;
+            transition: all 0.3s ease;
             text-transform: uppercase;
             font-size: 0.9rem;
+            animation: aiPulse 2s ease-in-out infinite;
         }
 
-        .captcha-btn:hover {
-            background: #388e3c;
+        @keyframes aiPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(33, 150, 243, 0.7); }
         }
 
-        /* Герой */
+        .ai-chat-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(76, 175, 80, 0.8);
+        }
+
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23333"/></svg>');
-            background-size: cover;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
             padding: 4rem 5%;
             text-align: center;
             border-bottom: 3px solid #4caf50;
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
             font-size: 3rem;
             color: #fff;
             margin-bottom: 1rem;
-            text-transform: uppercase;
         }
 
         .hero h1 .green {
             color: #4caf50;
+            text-shadow: 0 0 30px rgba(76, 175, 80, 0.7);
         }
 
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #aaa;
-            max-width: 800px;
-            margin: 0 auto;
         }
 
-        .version-badges {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .version-badge {
-            padding: 0.5rem 1.5rem;
-            background: #4caf50;
-            color: #fff;
-            border-radius: 25px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        .version-badge:hover {
-            background: #388e3c;
-            transform: scale(1.05);
-        }
-
-        /* Контент */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem 3%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .updates-section {
+            background: linear-gradient(135deg, #151515, #1a1a1a);
+            border: 1px solid #2a2a2a;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .updates-title {
+            color: #ffd700;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 0.5rem;
+        }
+
+        .update-item {
+            background: #1a1a1a;
+            border-left: 4px solid #4caf50;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .update-item:hover {
+            border-left-color: #ffd700;
+            background: #222;
+            transform: translateX(10px);
+        }
+
+        .update-date {
+            color: #ffd700;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .update-text {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .update-text ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .update-text li {
+            padding: 0.2rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .update-text li::before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
         }
 
         .section {
@@ -232,7 +249,7 @@
 
         .mods-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.5rem;
         }
 
@@ -241,15 +258,15 @@
             border: 1px solid #2a2a2a;
             border-radius: 12px;
             padding: 1.5rem;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
         }
 
         .mod-card:hover {
             border-color: #4caf50;
-            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.3);
-            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+            transform: translateY(-8px);
         }
 
         .mod-name {
@@ -267,13 +284,35 @@
         }
 
         .mod-version {
-            display: inline-block;
             background: #2a2a2a;
             padding: 0.2rem 0.8rem;
             border-radius: 20px;
             font-size: 0.8rem;
             color: #aaa;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
+
+        .mod-version:hover {
+            background: #2196f3;
+            color: #fff;
+        }
+
+        .mod-loader {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .loader-badge {
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .loader-badge.forge { background: #f16436; color: #fff; }
+        .loader-badge.fabric { background: #1bd96a; color: #000; }
 
         .mod-description {
             color: #ccc;
@@ -290,41 +329,21 @@
         }
 
         .download-btn {
-            display: inline-block;
-            background: #4caf50;
-            color: #fff;
-            text-decoration: none;
+            display: block;
             padding: 0.7rem 1.5rem;
             border-radius: 5px;
             font-weight: 600;
             text-align: center;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             text-transform: uppercase;
             font-size: 0.8rem;
-            letter-spacing: 1px;
+            text-decoration: none;
         }
 
-        .download-btn:hover {
-            background: #388e3c;
-            transform: scale(1.02);
-        }
-
-        .download-btn.curseforge {
-            background: #f16436;
-        }
-
-        .download-btn.curseforge:hover {
-            background: #d54e24;
-        }
-
-        .download-btn.modrinth {
-            background: #1bd96a;
-            color: #000;
-        }
-
-        .download-btn.modrinth:hover {
-            background: #17b557;
-        }
+        .download-btn.curseforge { background: #f16436; color: #fff; }
+        .download-btn.curseforge:hover { background: #d54e24; transform: scale(1.05); }
+        .download-btn.modrinth { background: #1bd96a; color: #000; }
+        .download-btn.modrinth:hover { background: #17b557; transform: scale(1.05); }
 
         .search-bar {
             width: 100%;
@@ -335,18 +354,18 @@
             border-radius: 10px;
             color: #fff;
             font-size: 1.1rem;
-            transition: 0.3s;
         }
 
         .search-bar:focus {
             outline: none;
             border-color: #4caf50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
         }
 
         .filter-buttons {
             display: flex;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
         }
 
@@ -357,7 +376,7 @@
             color: #ccc;
             border-radius: 5px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.9rem;
@@ -369,28 +388,34 @@
             color: #fff;
         }
 
-        .version-filter {
+        .version-filter, .loader-filter {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
         }
 
-        .version-filter-btn {
-            padding: 0.5rem 1rem;
+        .version-filter-btn, .loader-filter-btn {
+            padding: 0.4rem 1rem;
             background: #151515;
             border: 2px solid #2a2a2a;
             color: #ccc;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             font-weight: 600;
             font-size: 0.8rem;
         }
 
         .version-filter-btn:hover, .version-filter-btn.active {
-            background: #4caf50;
-            border-color: #4caf50;
+            background: #2196f3;
+            border-color: #2196f3;
+            color: #fff;
+        }
+
+        .loader-filter-btn:hover, .loader-filter-btn.active {
+            background: #ff9800;
+            border-color: #ff9800;
             color: #fff;
         }
 
@@ -403,1734 +428,814 @@
         .counter span {
             color: #4caf50;
             font-weight: 700;
+            font-size: 1.3rem;
         }
 
-        /* Футер */
         .footer {
             background: #0d0d0d;
             padding: 2rem 5%;
             text-align: center;
             border-top: 3px solid #4caf50;
-            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .footer p {
-            color: #666;
+        .footer p { color: #666; }
+        .footer a { color: #4caf50; text-decoration: none; }
+
+        /* ИИ Чат */
+        .ai-chat-modal {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            max-height: 500px;
+            background: #1a1a1a;
+            border: 2px solid #4caf50;
+            border-radius: 15px;
+            z-index: 10000;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideInRight 0.3s ease;
         }
 
-        .footer a {
-            color: #4caf50;
-            text-decoration: none;
+        .ai-chat-modal.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .ai-chat-header {
+            background: linear-gradient(135deg, #4caf50, #2196f3);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-chat-header h3 {
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .ai-chat-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-chat-close:hover {
+            transform: scale(1.2);
+        }
+
+        .ai-language-selector {
+            padding: 0.5rem 1rem;
+            background: #0d0d0d;
+            border-bottom: 1px solid #2a2a2a;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .ai-language-selector label {
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+
+        .ai-language-selector select {
+            background: #2a2a2a;
+            color: #fff;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            padding: 0.3rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .ai-chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-height: 300px;
+        }
+
+        .ai-message {
+            padding: 0.8rem;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+            animation: messageIn 0.3s ease;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message.user {
+            background: #4caf50;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .ai-message.bot {
+            background: #2a2a2a;
+            color: #e0e0e0;
+            align-self: flex-start;
+        }
+
+        .ai-chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #0d0d0d;
+            border-top: 1px solid #2a2a2a;
+        }
+
+        .ai-chat-input {
+            flex-grow: 1;
+            padding: 0.7rem;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .ai-chat-input:focus {
+            outline: none;
+            border-color: #4caf50;
+        }
+
+        .ai-chat-send {
+            padding: 0.7rem 1.2rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .ai-chat-send:hover {
+            background: #388e3c;
+        }
+
+        .ai-typing {
+            display: none;
+            color: #aaa;
+            font-size: 0.8rem;
+            padding: 0.5rem;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 1rem;
+            .ai-chat-modal {
+                width: 90%;
+                right: 5%;
+                bottom: 10px;
             }
-
-            .nav-menu {
-                justify-content: center;
-                gap: 0.5rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .mods-grid {
-                grid-template-columns: 1fr;
-            }
+            .header { flex-direction: column; text-align: center; }
+            .nav-menu { justify-content: center; }
+            .hero h1 { font-size: 2rem; }
+            .mods-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- МЕТКА: ROCKET // Chubrik60HUBMODS с невидимой Anti-DDoS защитой активирован -->
+    <div class="particles" id="particles"></div>
 
-    <!-- Anti-DDoS модальное окно (появляется только при обнаружении атаки) -->
-    <div class="ddos-modal" id="ddosModal">
-        <div class="ddos-modal-content">
-            <h2>Проверка безопасности</h2>
-            <p>Обнаружена подозрительная активность. Пожалуйста, подтвердите что вы не робот.</p>
-            <div class="captcha-box">
-                <div class="captcha-text" id="captchaText">ABC123</div>
-                <input type="text" class="captcha-input" id="captchaInput" placeholder="Введите код" maxlength="6">
-            </div>
-            <button class="captcha-btn" onclick="verifyCaptcha()">Подтвердить</button>
-        </div>
-    </div>
-
-    <!-- Шапка с навигацией -->
     <header class="header">
         <div class="logo">Chubrik60<span>HUB</span>MODS</div>
         <ul class="nav-menu">
+            <li><a href="#updates">Обновления</a></li>
             <li><a href="#mods">Моды</a></li>
             <li><a href="#modpacks">Сборки</a></li>
             <li><a href="#optimization">Оптимизация</a></li>
             <li><a href="#all">Все моды</a></li>
+            <li><button class="ai-chat-btn" onclick="toggleAIChat()">🤖 ИИ-Помощник</button></li>
         </ul>
     </header>
 
-    <!-- Герой -->
     <div class="hero">
         <h1>🚀 <span class="green">Chubrik60</span>HUBMODS</h1>
-        <p>Лучшие моды, сборки и оптимизационные решения для Minecraft с реальными ссылками на CurseForge и Modrinth</p>
-        <div class="version-badges">
-            <span class="version-badge">1.21.4</span>
-            <span class="version-badge">1.20.1</span>
-            <span class="version-badge">1.16.5</span>
-        </div>
+        <p>200+ модов для Minecraft | Версии: 1.21.4, 1.20.1, 1.16.5 | Forge, Fabric</p>
     </div>
 
-    <!-- Основной контент -->
     <div class="container">
-        <!-- Поиск -->
-        <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Поиск мода по названию или описанию...">
-
-        <!-- Фильтры категорий -->
-        <div class="filter-buttons">
-            <button class="filter-btn active" onclick="filterMods('all')">Все</button>
-            <button class="filter-btn" onclick="filterMods('tech')">Технические</button>
-            <button class="filter-btn" onclick="filterMods('magic')">Магические</button>
-            <button class="filter-btn" onclick="filterMods('adventure')">Приключения</button>
-            <button class="filter-btn" onclick="filterMods('decoration')">Декоративные</button>
-            <button class="filter-btn" onclick="filterMods('optimization')">Оптимизация</button>
-            <button class="filter-btn" onclick="filterMods('modpack')">Сборки</button>
+        <div class="updates-section" id="updates">
+            <h2 class="updates-title">📢 Подробные обновления сайта</h2>
+            <div class="update-item">
+                <div class="update-date">📅 20.05.2026 — Версия 3.0</div>
+                <div class="update-text"><ul>
+                    <li>Добавлен ИИ-помощник с выбором языка</li>
+                    <li>Добавлены визуальные эффекты и анимации</li>
+                    <li>Добавлено 200+ модов</li>
+                    <li>Фильтрация по версиям и загрузчикам</li>
+                    <li>Исправлены ссылки на CurseForge и Modrinth</li>
+                </ul></div>
+            </div>
+            <div class="update-item">
+                <div class="update-date">📅 15.05.2026 — Версия 2.5</div>
+                <div class="update-text"><ul>
+                    <li>Добавлена поддержка Minecraft 1.21.4</li>
+                    <li>Обновлены ссылки</li>
+                    <li>Улучшена производительность</li>
+                </ul></div>
+            </div>
         </div>
 
-        <!-- Фильтры версий -->
+        <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Поиск мода..." oninput="applyFilters()">
+        
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterMods('all', this)">Все</button>
+            <button class="filter-btn" onclick="filterMods('tech', this)">Технические</button>
+            <button class="filter-btn" onclick="filterMods('magic', this)">Магические</button>
+            <button class="filter-btn" onclick="filterMods('adventure', this)">Приключения</button>
+            <button class="filter-btn" onclick="filterMods('decoration', this)">Декоративные</button>
+            <button class="filter-btn" onclick="filterMods('optimization', this)">Оптимизация</button>
+            <button class="filter-btn" onclick="filterMods('modpack', this)">Сборки</button>
+        </div>
+
         <div class="version-filter">
-            <button class="version-filter-btn active" onclick="filterByVersion('all')">Все версии</button>
-            <button class="version-filter-btn" onclick="filterByVersion('1.21.4')">1.21.4</button>
-            <button class="version-filter-btn" onclick="filterByVersion('1.20.1')">1.20.1</button>
-            <button class="version-filter-btn" onclick="filterByVersion('1.16.5')">1.16.5</button>
+            <button class="version-filter-btn active" onclick="filterByVersion('all', this)">Все версии</button>
+            <button class="version-filter-btn" onclick="filterByVersion('1.21.4', this)">1.21.4</button>
+            <button class="version-filter-btn" onclick="filterByVersion('1.20.1', this)">1.20.1</button>
+            <button class="version-filter-btn" onclick="filterByVersion('1.16.5', this)">1.16.5</button>
+        </div>
+
+        <div class="loader-filter">
+            <button class="loader-filter-btn active" onclick="filterByLoader('all', this)">Все загрузчики</button>
+            <button class="loader-filter-btn" onclick="filterByLoader('forge', this)">Forge</button>
+            <button class="loader-filter-btn" onclick="filterByLoader('fabric', this)">Fabric</button>
         </div>
 
         <div class="counter">Найдено модов: <span id="modCount">0</span></div>
 
-        <!-- Секция: Моды -->
         <div class="section" id="mods">
             <h2 class="section-title">🔥 Популярные моды</h2>
-            <div class="mods-grid" id="modsGrid">
-                <!-- Моды будут добавлены через JavaScript -->
-            </div>
+            <div class="mods-grid" id="modsGrid"></div>
         </div>
-
-        <!-- Секция: Сборки -->
         <div class="section" id="modpacks">
             <h2 class="section-title">📦 Сборки модов</h2>
-            <div class="mods-grid" id="modpacksGrid">
-                <!-- Сборки будут добавлены через JavaScript -->
-            </div>
+            <div class="mods-grid" id="modpacksGrid"></div>
         </div>
-
-        <!-- Секция: Оптимизация -->
         <div class="section" id="optimization">
             <h2 class="section-title">⚡ Моды на оптимизацию</h2>
-            <div class="mods-grid" id="optimizationGrid">
-                <!-- Оптимизационные моды будут добавлены через JavaScript -->
-            </div>
+            <div class="mods-grid" id="optimizationGrid"></div>
         </div>
-
-        <!-- Секция: Все моды -->
         <div class="section" id="all">
             <h2 class="section-title">📋 Все моды</h2>
-            <div class="mods-grid" id="allModsGrid">
-                <!-- Все моды будут добавлены через JavaScript -->
-            </div>
+            <div class="mods-grid" id="allModsGrid"></div>
         </div>
     </div>
 
-    <!-- Футер -->
+    <!-- ИИ Чат -->
+    <div class="ai-chat-modal" id="aiChatModal">
+        <div class="ai-chat-header">
+            <h3>🤖 ИИ-Помощник Chubrik60</h3>
+            <button class="ai-chat-close" onclick="toggleAIChat()">✕</button>
+        </div>
+        <div class="ai-language-selector">
+            <label>🌐 Язык:</label>
+            <select id="aiLanguage" onchange="changeAILanguage()">
+                <option value="ru">🇷🇺 Русский</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="it">🇮🇹 Italiano</option>
+                <option value="pt">🇵🇹 Português</option>
+                <option value="pl">🇵🇱 Polski</option>
+                <option value="uk">🇺🇦 Українська</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="zh">🇨🇳 中文</option>
+            </select>
+        </div>
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-message bot" id="aiWelcomeMessage">Привет! Я ИИ-помощник Chubrik60HUBMODS. Задайте мне вопрос о модах, Minecraft или сайте!</div>
+        </div>
+        <div class="ai-typing" id="aiTyping">ИИ печатает...</div>
+        <div class="ai-chat-input-area">
+            <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Введите сообщение..." onkeypress="handleAIKeyPress(event)">
+            <button class="ai-chat-send" onclick="sendAIMessage()">➤</button>
+        </div>
+    </div>
+
     <footer class="footer">
-        <p>© 2026 <a href="#">Chubrik60HUBMODS</a>. Все права защищены. | Создано командой Rocket Way</p>
-        <p style="margin-top: 0.5rem;">Поддерживаемые версии: 1.21.4, 1.20.1, 1.16.5 | Источники: CurseForge, Modrinth</p>
+        <p>© 2026 <a href="#">Chubrik60HUBMODS</a>. Все права защищены.</p>
+        <p>Источники: CurseForge, Modrinth | 200+ модов | ИИ-помощник доступен</p>
     </footer>
 
     <script>
-        // ============================================
-        // НЕВИДИМАЯ ANTI-DDOS ЗАЩИТА
-        // ============================================
-        
-        // Конфигурация Anti-DDoS (работает в фоне)
-        const AntiDDoS = {
-            // Максимальное количество запросов за период
-            maxRequestsPerMinute: 100,
-            maxRequestsPerSecond: 10,
-            // Период в миллисекундах
-            requestWindowMs: 60000,
-            // Хранилище запросов
-            requests: [],
-            // IP адреса для блокировки (имитация)
-            blockedIPs: new Set(),
-            // Время блокировки в минутах
-            blockDurationMinutes: 15,
-            // Капча активна
-            captchaActive: false,
-            // Счётчик запросов
-            requestCount: 0,
-            // Время последнего запроса
-            lastRequestTime: Date.now(),
-            // Флаг блокировки
-            isBlocked: false,
-            // Общее количество заблокированных атак
-            totalAttacksBlocked: 0,
-            
-            // Инициализация защиты
-            init() {
-                console.log('Anti-DDoS protection initialized');
-                this.startMonitoring();
-                this.setupEventListeners();
-                this.generateCaptcha();
-                
-                // Проверка заголовков безопасности
-                this.checkSecurityHeaders();
-            },
-            
-            // Проверка заголовков безопасности
-            checkSecurityHeaders() {
-                const headers = {
-                    'X-Content-Type-Options': 'nosniff',
-                    'X-Frame-Options': 'DENY',
-                    'X-XSS-Protection': '1; mode=block',
-                    'Content-Security-Policy': "default-src 'self'",
-                };
-                
-                return headers;
-            },
-            
-            // Мониторинг запросов
-            startMonitoring() {
-                setInterval(() => {
-                    this.cleanupOldRequests();
-                    this.checkRateLimit();
-                }, 1000);
-            },
-            
-            // Очистка старых запросов
-            cleanupOldRequests() {
-                const now = Date.now();
-                this.requests = this.requests.filter(timestamp => 
-                    now - timestamp < this.requestWindowMs
-                );
-            },
-            
-            // Проверка лимита запросов
-            checkRateLimit() {
-                const now = Date.now();
-                const recentRequests = this.requests.filter(timestamp => 
-                    now - timestamp < 1000 // За последнюю секунду
-                );
-                
-                if (recentRequests.length > this.maxRequestsPerSecond) {
-                    this.triggerProtection('Too many requests per second');
-                }
-                
-                if (this.requests.length > this.maxRequestsPerMinute) {
-                    this.triggerProtection('Request limit exceeded');
-                }
-            },
-            
-            // Регистрация запроса
-            registerRequest() {
-                if (this.isBlocked) {
-                    this.showBlockedMessage();
-                    return false;
-                }
-                
-                this.requests.push(Date.now());
-                this.requestCount++;
-                
-                // Проверка на флуд
-                const now = Date.now();
-                if (now - this.lastRequestTime < 50) { // Менее 50мс между запросами
-                    this.requestCount++;
-                    if (this.requestCount > 20) {
-                        this.triggerProtection('Flood detected');
-                        return false;
-                    }
-                } else {
-                    this.requestCount = 0;
-                }
-                
-                this.lastRequestTime = now;
-                return true;
-            },
-            
-            // Активация защиты
-            triggerProtection(reason) {
-                this.totalAttacksBlocked++;
-                console.warn('DDoS attack blocked:', reason);
-                
-                if (!this.captchaActive) {
-                    this.captchaActive = true;
-                    this.showCaptcha();
-                }
-                
-                // Имитация блокировки IP
-                const simulatedIP = this.getSimulatedIP();
-                this.blockedIPs.add(simulatedIP);
-                
-                // Автоматическая разблокировка
-                setTimeout(() => {
-                    this.blockedIPs.delete(simulatedIP);
-                    this.captchaActive = false;
-                }, this.blockDurationMinutes * 60000);
-            },
-            
-            // Получение имитированного IP
-            getSimulatedIP() {
-                return '192.168.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255);
-            },
-            
-            // Показ капчи (только при атаке)
-            showCaptcha() {
-                const modal = document.getElementById('ddosModal');
-                if (modal) {
-                    modal.classList.add('active');
-                    this.generateCaptcha();
-                }
-            },
-            
-            // Скрытие капчи
-            hideCaptcha() {
-                const modal = document.getElementById('ddosModal');
-                if (modal) {
-                    modal.classList.remove('active');
-                }
-                this.captchaActive = false;
-                this.requests = [];
-                this.requestCount = 0;
-            },
-            
-            // Генерация капчи
-            generateCaptcha() {
-                const captchaText = document.getElementById('captchaText');
-                if (captchaText) {
-                    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                    let code = '';
-                    for (let i = 0; i < 6; i++) {
-                        code += chars.charAt(Math.floor(Math.random() * chars.length));
-                    }
-                    captchaText.textContent = code;
-                }
-            },
-            
-            // Проверка капчи
-            verifyCaptcha() {
-                const captchaText = document.getElementById('captchaText');
-                const captchaInput = document.getElementById('captchaInput');
-                
-                if (captchaText && captchaInput) {
-                    if (captchaInput.value.toUpperCase() === captchaText.textContent) {
-                        this.hideCaptcha();
-                    } else {
-                        alert('Неверный код! Попробуйте еще раз.');
-                        this.generateCaptcha();
-                        captchaInput.value = '';
-                    }
-                }
-            },
-            
-            // Показ сообщения о блокировке
-            showBlockedMessage() {
-                document.body.innerHTML = `
-                    <div style="text-align: center; padding: 50px; color: #ff3c3c; background: #0a0a0a; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                        <h1 style="font-size: 3rem; margin-bottom: 1rem;">⛔</h1>
-                        <h2 style="margin-bottom: 1rem;">Доступ временно ограничен</h2>
-                        <p style="color: #aaa;">Пожалуйста, подождите несколько минут и попробуйте снова.</p>
-                    </div>
-                `;
-            },
-            
-            // Настройка слушателей событий
-            setupEventListeners() {
-                // Перехват всех кликов
-                document.addEventListener('click', (e) => {
-                    if (!this.registerRequest()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                }, true);
-                
-                // Перехват отправки форм
-                document.addEventListener('submit', (e) => {
-                    if (!this.registerRequest()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                }, true);
-                
-                // Перехват AJAX запросов
-                const originalFetch = window.fetch;
-                window.fetch = async (...args) => {
-                    if (!this.registerRequest()) {
-                        throw new Error('Request blocked');
-                    }
-                    return originalFetch.apply(this, args);
-                };
-                
-                // Перехват WebSocket
-                const originalWebSocket = window.WebSocket;
-                window.WebSocket = function(...args) {
-                    if (!AntiDDoS.registerRequest()) {
-                        throw new Error('WebSocket blocked');
-                    }
-                    return new originalWebSocket(...args);
-                };
-                
-                // Перехват XMLHttpRequest
-                const originalXHROpen = XMLHttpRequest.prototype.open;
-                XMLHttpRequest.prototype.open = function(...args) {
-                    if (!AntiDDoS.registerRequest()) {
-                        throw new Error('XHR blocked');
-                    }
-                    return originalXHROpen.apply(this, args);
-                };
-            },
-            
-            // Получение статистики защиты
-            getStats() {
-                return {
-                    totalRequests: this.requests.length,
-                    blockedIPs: this.blockedIPs.size,
-                    captchaActive: this.captchaActive,
-                    isBlocked: this.isBlocked,
-                    totalAttacksBlocked: this.totalAttacksBlocked,
-                };
+        // Частицы
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                p.style.width = (Math.random() * 4 + 2) + 'px';
+                p.style.height = p.style.width;
+                container.appendChild(p);
             }
+        }
+        createParticles();
+
+        // ИИ Чат
+        let aiLanguage = 'ru';
+        const aiResponses = {
+            ru: {
+                welcome: "Привет! Я ИИ-помощник Chubrik60HUBMODS. Задайте мне вопрос о модах, Minecraft или сайте!",
+                help: "Я могу помочь с: поиском модов, выбором версии, рекомендациями по сборкам, объяснением категорий модов.",
+                mods: "У нас 200+ модов! Используйте поиск и фильтры для нахождения нужного мода.",
+                versions: "Поддерживаемые версии: 1.21.4, 1.20.1, 1.16.5. Выберите нужную версию в фильтре.",
+                loaders: "Доступны загрузчики Forge и Fabric. Выберите нужный в фильтре.",
+                optimize: "Для оптимизации рекомендуем: OptiFine (Forge), Sodium (Fabric), Lithium, Starlight.",
+                magic: "Популярные магические моды: Thaumcraft, Botania, Blood Magic, Astral Sorcery.",
+                tech: "Лучшие технические моды: Mekanism, Create, Thermal Expansion, Applied Energistics 2.",
+                adventure: "Приключенческие моды: Twilight Forest, Aether, Ice and Fire.",
+                decoration: "Декоративные моды: Chisel, Decocraft, Macaw's серия.",
+                modpack: "Популярные сборки: RLCraft, SkyFactory 4, All the Mods, Enigmatica.",
+                default: "Я понимаю ваш вопрос. Задайте его конкретнее о модах, версиях или загрузчиках.",
+                download: "Скачать моды можно по кнопкам CurseForge или Modrinth на каждой карточке мода.",
+                search: "Используйте поисковую строку для быстрого поиска модов по названию.",
+            },
+            en: {
+                welcome: "Hello! I'm the Chubrik60HUBMODS AI assistant. Ask me about mods, Minecraft, or the site!",
+                help: "I can help with: finding mods, choosing versions, modpack recommendations, explaining mod categories.",
+                mods: "We have 200+ mods! Use search and filters to find the mod you need.",
+                versions: "Supported versions: 1.21.4, 1.20.1, 1.16.5. Select the version in the filter.",
+                loaders: "Forge and Fabric loaders are available. Select the one you need in the filter.",
+                optimize: "For optimization we recommend: OptiFine (Forge), Sodium (Fabric), Lithium, Starlight.",
+                magic: "Popular magic mods: Thaumcraft, Botania, Blood Magic, Astral Sorcery.",
+                tech: "Best tech mods: Mekanism, Create, Thermal Expansion, Applied Energistics 2.",
+                adventure: "Adventure mods: Twilight Forest, Aether, Ice and Fire.",
+                decoration: "Decoration mods: Chisel, Decocraft, Macaw's series.",
+                modpack: "Popular modpacks: RLCraft, SkyFactory 4, All the Mods, Enigmatica.",
+                default: "I understand your question. Ask more specifically about mods, versions, or loaders.",
+                download: "You can download mods via CurseForge or Modrinth buttons on each mod card.",
+                search: "Use the search bar to quickly find mods by name.",
+            },
+            de: {
+                welcome: "Hallo! Ich bin der Chubrik60HUBMODS KI-Assistent. Fragen Sie mich über Mods, Minecraft oder die Website!",
+                help: "Ich kann helfen bei: Mods finden, Versionen wählen, Modpack-Empfehlungen, Mod-Kategorien erklären.",
+                mods: "Wir haben 200+ Mods! Nutzen Sie Suche und Filter.",
+                versions: "Unterstützte Versionen: 1.21.4, 1.20.1, 1.16.5.",
+                loaders: "Forge und Fabric Loader sind verfügbar.",
+                optimize: "Zur Optimierung empfehlen wir: OptiFine, Sodium, Lithium, Starlight.",
+                default: "Ich verstehe Ihre Frage. Bitte fragen Sie genauer.",
+                download: "Laden Sie Mods über CurseForge oder Modrinth Buttons herunter.",
+                search: "Nutzen Sie die Suchleiste.",
+            },
+            fr: {
+                welcome: "Bonjour ! Je suis l'assistant IA Chubrik60HUBMODS. Posez-moi des questions sur les mods, Minecraft ou le site !",
+                help: "Je peux aider avec : trouver des mods, choisir des versions, recommandations de modpacks.",
+                mods: "Nous avons 200+ mods ! Utilisez la recherche et les filtres.",
+                versions: "Versions supportées : 1.21.4, 1.20.1, 1.16.5.",
+                loaders: "Les loaders Forge et Fabric sont disponibles.",
+                optimize: "Pour l'optimisation : OptiFine, Sodium, Lithium, Starlight.",
+                default: "Je comprends. Posez une question plus précise.",
+                download: "Téléchargez via les boutons CurseForge ou Modrinth.",
+                search: "Utilisez la barre de recherche.",
+            },
+            es: {
+                welcome: "¡Hola! Soy el asistente IA de Chubrik60HUBMODS. ¡Pregúntame sobre mods, Minecraft o el sitio!",
+                help: "Puedo ayudar con: encontrar mods, elegir versiones, recomendaciones de modpacks.",
+                mods: "¡Tenemos más de 200 mods! Usa la búsqueda y los filtros.",
+                versions: "Versiones soportadas: 1.21.4, 1.20.1, 1.16.5.",
+                loaders: "Los loaders Forge y Fabric están disponibles.",
+                optimize: "Para optimización: OptiFine, Sodium, Lithium, Starlight.",
+                default: "Entiendo. Haz una pregunta más específica.",
+                download: "Descarga mediante los botones de CurseForge o Modrinth.",
+                search: "Usa la barra de búsqueda.",
+            },
+            it: {
+                welcome: "Ciao! Sono l'assistente IA di Chubrik60HUBMODS. Chiedimi di mod, Minecraft o del sito!",
+                help: "Posso aiutare con: trovare mod, scegliere versioni, consigli su modpack.",
+                mods: "Abbiamo 200+ mod! Usa ricerca e filtri.",
+                versions: "Versioni supportate: 1.21.4, 1.20.1, 1.16.5.",
+                loaders: "Loader Forge e Fabric disponibili.",
+                optimize: "Per ottimizzazione: OptiFine, Sodium, Lithium, Starlight.",
+                default: "Capisco. Fai una domanda più specifica.",
+                download: "Scarica tramite i pulsanti CurseForge o Modrinth.",
+                search: "Usa la barra di ricerca.",
+            },
+            pt: {
+                welcome: "Olá! Sou o assistente IA do Chubrik60HUBMODS. Pergunte-me sobre mods, Minecraft ou o site!",
+                help: "Posso ajudar com: encontrar mods, escolher versões, recomendações de modpacks.",
+                mods: "Temos mais de 200 mods! Use a busca e os filtros.",
+                versions: "Versões suportadas: 1.21.4, 1.20.1, 1.16.5.",
+                loaders: "Loaders Forge e Fabric disponíveis.",
+                optimize: "Para otimização: OptiFine, Sodium, Lithium, Starlight.",
+                default: "Entendo. Faça uma pergunta mais específica.",
+                download: "Baixe pelos botões CurseForge ou Modrinth.",
+                search: "Use a barra de busca.",
+            },
+            pl: {
+                welcome: "Cześć! Jestem asystentem AI Chubrik60HUBMODS. Zapytaj mnie o mody, Minecraft lub stronę!",
+                help: "Mogę pomóc z: znajdowaniem modów, wyborem wersji, rekomendacjami modpacków.",
+                mods: "Mamy ponad 200 modów! Użyj wyszukiwania i filtrów.",
+                versions: "Wspierane wersje: 1.21.4, 1.20.1, 1.16.5.",
+                loaders: "Dostępne loadery Forge i Fabric.",
+                optimize: "Do optymalizacji: OptiFine, Sodium, Lithium, Starlight.",
+                default: "Rozumiem. Zadaj bardziej konkretne pytanie.",
+                download: "Pobierz przez przyciski CurseForge lub Modrinth.",
+                search: "Użyj paska wyszukiwania.",
+            },
+            uk: {
+                welcome: "Привіт! Я ШІ-помічник Chubrik60HUBMODS. Запитайте мене про моди, Minecraft або сайт!",
+                help: "Я можу допомогти з: пошуком модів, вибором версій, рекомендаціями збірок.",
+                mods: "У нас 200+ модів! Використовуйте пошук і фільтри.",
+                versions: "Підтримувані версії: 1.21.4, 1.20.1, 1.16.5.",
+                loaders: "Доступні завантажувачі Forge і Fabric.",
+                optimize: "Для оптимізації: OptiFine, Sodium, Lithium, Starlight.",
+                default: "Розумію. Задайте більш конкретне питання.",
+                download: "Завантажте через кнопки CurseForge або Modrinth.",
+                search: "Використовуйте рядок пошуку.",
+            },
+            ja: {
+                welcome: "こんにちは！Chubrik60HUBMODSのAIアシスタントです。MOD、Minecraft、サイトについて質問してください！",
+                help: "MOD探し、バージョン選択、MODパックのおすすめなどをお手伝いします。",
+                mods: "200以上のMODがあります！検索とフィルターをお使いください。",
+                versions: "対応バージョン：1.21.4、1.20.1、1.16.5",
+                loaders: "ForgeとFabricローダーが利用可能です。",
+                optimize: "最適化には：OptiFine、Sodium、Lithium、Starlight",
+                default: "理解しました。より具体的な質問をしてください。",
+                download: "CurseForgeまたはModrinthのボタンからダウンロードできます。",
+                search: "検索バーをご利用ください。",
+            },
+            ko: {
+                welcome: "안녕하세요! Chubrik60HUBMODS AI 어시스턴트입니다. 모드, Minecraft, 사이트에 대해 질문하세요!",
+                help: "모드 찾기, 버전 선택, 모드팩 추천을 도와드립니다.",
+                mods: "200개 이상의 모드가 있습니다! 검색과 필터를 사용하세요.",
+                versions: "지원 버전: 1.21.4, 1.20.1, 1.16.5",
+                loaders: "Forge와 Fabric 로더를 사용할 수 있습니다.",
+                optimize: "최적화: OptiFine, Sodium, Lithium, Starlight",
+                default: "이해했습니다. 더 구체적인 질문을 해주세요.",
+                download: "CurseForge 또는 Modrinth 버튼으로 다운로드하세요.",
+                search: "검색창을 사용하세요.",
+            },
+            zh: {
+                welcome: "你好！我是Chubrik60HUBMODS的AI助手。请向我提问关于MOD、Minecraft或网站的问题！",
+                help: "我可以帮助：查找MOD、选择版本、推荐整合包。",
+                mods: "我们有200多个MOD！请使用搜索和筛选。",
+                versions: "支持版本：1.21.4、1.20.1、1.16.5",
+                loaders: "可用Forge和Fabric加载器。",
+                optimize: "优化推荐：OptiFine、Sodium、Lithium、Starlight",
+                default: "我理解。请提出更具体的问题。",
+                download: "通过CurseForge或Modrinth按钮下载。",
+                search: "请使用搜索栏。",
+            },
         };
 
-        // Инициализация невидимой Anti-DDoS защиты
-        AntiDDoS.init();
+        function toggleAIChat() {
+            const modal = document.getElementById('aiChatModal');
+            modal.classList.toggle('active');
+            if (modal.classList.contains('active')) {
+                document.getElementById('aiChatInput').focus();
+            }
+        }
 
-        // МЕТКА: ROCKET // Невидимая Anti-DDoS защита активирована
+        function changeAILanguage() {
+            aiLanguage = document.getElementById('aiLanguage').value;
+            const welcomeMsg = aiResponses[aiLanguage].welcome;
+            const welcomeElement = document.getElementById('aiWelcomeMessage');
+            if (welcomeElement) {
+                welcomeElement.textContent = welcomeMsg;
+            }
+        }
 
-        // ============================================
-        // БАЗА ДАННЫХ МОДОВ
-        // ============================================
-        
+        function handleAIKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendAIMessage();
+            }
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiChatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messagesContainer = document.getElementById('aiChatMessages');
+            
+            // Добавляем сообщение пользователя
+            const userMsg = document.createElement('div');
+            userMsg.className = 'ai-message user';
+            userMsg.textContent = message;
+            messagesContainer.appendChild(userMsg);
+            
+            input.value = '';
+            
+            // Показываем индикатор печати
+            const typingIndicator = document.getElementById('aiTyping');
+            typingIndicator.style.display = 'block';
+            
+            // Генерируем ответ
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                const botMsg = document.createElement('div');
+                botMsg.className = 'ai-message bot';
+                botMsg.textContent = generateAIResponse(message);
+                messagesContainer.appendChild(botMsg);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 800 + Math.random() * 1200);
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function generateAIResponse(message) {
+            const lower = message.toLowerCase();
+            const responses = aiResponses[aiLanguage];
+            
+            if (lower.includes('привет') || lower.includes('hello') || lower.includes('hi') || lower.includes('здрав')) return responses.welcome;
+            if (lower.includes('помощ') || lower.includes('help') || lower.includes('что ты')) return responses.help;
+            if (lower.includes('мод') || lower.includes('mod')) return responses.mods;
+            if (lower.includes('верси') || lower.includes('version')) return responses.versions;
+            if (lower.includes('загруз') || lower.includes('loader') || lower.includes('forge') || lower.includes('fabric')) return responses.loaders;
+            if (lower.includes('оптимиз') || lower.includes('fps') || lower.includes('лаг') || lower.includes('производительн')) return responses.optimize;
+            if (lower.includes('маги') || lower.includes('magic')) return responses.magic;
+            if (lower.includes('техн') || lower.includes('tech')) return responses.tech;
+            if (lower.includes('приключ') || lower.includes('adventure') || lower.includes('измерен')) return responses.adventure;
+            if (lower.includes('декор') || lower.includes('decor') || lower.includes('мебель')) return responses.decoration;
+            if (lower.includes('сборк') || lower.includes('modpack') || lower.includes('пак')) return responses.modpack;
+            if (lower.includes('скачат') || lower.includes('download') || lower.includes('загруз')) return responses.download;
+            if (lower.includes('поиск') || lower.includes('search') || lower.includes('найт')) return responses.search;
+            if (lower.includes('спасибо') || lower.includes('thank') || lower.includes('благодар')) return responses.welcome;
+            
+            return responses.default;
+        }
+
+        // База данных модов
         const modsDatabase = [
-            // ===== ТЕХНИЧЕСКИЕ МОДЫ =====
-            { 
-                name: "Industrial Craft 2", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Классический технический мод, добавляющий электричество, машины, генераторы и сложные производственные цепочки.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/industrial-craft",
-                    modrinth: "https://modrinth.com/mod/industrial-craft"
-                }
-            },
-            { 
-                name: "BuildCraft", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Автоматизация добычи и транспортировки ресурсов с помощью труб, насосов и карьеров.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/buildcraft",
-                    modrinth: "https://modrinth.com/mod/buildcraft"
-                }
-            },
-            { 
-                name: "Thermal Expansion", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Тепловые машины, энергетические ячейки и продвинутая обработка ресурсов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/thermal-expansion",
-                    modrinth: "https://modrinth.com/mod/thermal-expansion"
-                }
-            },
-            { 
-                name: "Applied Energistics 2", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Система хранения предметов в цифровом виде с помощью ME-сети.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2",
-                    modrinth: "https://modrinth.com/mod/ae2"
-                }
-            },
-            { 
-                name: "Mekanism", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Высокотехнологичные машины, газы, реакторы и цифровая добыча ресурсов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/mekanism",
-                    modrinth: "https://modrinth.com/mod/mekanism"
-                }
-            },
-            { 
-                name: "Ender IO", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Компактные машины, энергопроводы и продвинутая автоматизация.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/ender-io",
-                    modrinth: "https://modrinth.com/mod/enderio"
-                }
-            },
-            { 
-                name: "Refined Storage", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Современная система хранения с беспроводным доступом и крафтом по запросу.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/refined-storage",
-                    modrinth: "https://modrinth.com/mod/refined-storage"
-                }
-            },
-            { 
-                name: "Actually Additions", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Разнообразные машины, генераторы и полезные устройства.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/actually-additions",
-                    modrinth: "https://modrinth.com/mod/actually-additions"
-                }
-            },
-            { 
-                name: "Immersive Engineering", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Реалистичные многоблочные структуры, конвейеры и электростанции.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/immersive-engineering",
-                    modrinth: "https://modrinth.com/mod/immersive-engineering"
-                }
-            },
-            { 
-                name: "Forestry", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Автоматическое фермерство, пчеловодство и переработка биомассы.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/forestry",
-                    modrinth: "https://modrinth.com/mod/forestry"
-                }
-            },
-            { 
-                name: "Extra Utilities 2", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Генераторы, транспортные трубы и множество полезных механизмов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/extra-utilities",
-                    modrinth: "https://modrinth.com/mod/extra-utilities"
-                }
-            },
-            { 
-                name: "RFTools", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Телепортация, измерения, экраны и продвинутая автоматизация.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/rftools",
-                    modrinth: "https://modrinth.com/mod/rftools"
-                }
-            },
-            { 
-                name: "Draconic Evolution", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Мощнейшая броня, инструменты и энергохранилища для эндгейма.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/draconic-evolution",
-                    modrinth: "https://modrinth.com/mod/draconic-evolution"
-                }
-            },
-            { 
-                name: "NuclearCraft", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Реалистичные ядерные реакторы и переработка топлива.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/nuclearcraft-mod",
-                    modrinth: "https://modrinth.com/mod/nuclearcraft"
-                }
-            },
-            { 
-                name: "Extreme Reactors", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Многоблочные реакторы для генерации огромного количества энергии.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/extreme-reactors",
-                    modrinth: "https://modrinth.com/mod/extreme-reactors"
-                }
-            },
-            { 
-                name: "PneumaticCraft", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Пневматические системы, дроны и сжатый воздух.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/pneumaticcraft-repressurized",
-                    modrinth: "https://modrinth.com/mod/pneumaticcraft-repressurized"
-                }
-            },
-            { 
-                name: "OpenComputers", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Программируемые компьютеры и роботы внутри Minecraft.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/opencomputers",
-                    modrinth: "https://modrinth.com/mod/opencomputers"
-                }
-            },
-            { 
-                name: "ComputerCraft", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Компьютеры и черепахи, программируемые на Lua.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/cc-tweaked",
-                    modrinth: "https://modrinth.com/mod/cc-tweaked"
-                }
-            },
-            { 
-                name: "Galacticraft", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Космические путешествия, ракеты и колонизация других планет.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/galacticraft",
-                    modrinth: "https://modrinth.com/mod/galacticraft"
-                }
-            },
-            { 
-                name: "Advanced Rocketry", 
-                category: "tech", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Строительство ракет и исследование космоса с реалистичной физикой.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/advanced-rocketry",
-                    modrinth: "https://modrinth.com/mod/advanced-rocketry"
-                }
-            },
+            // ТЕХНИЧЕСКИЕ (40)
+            { name: "Industrial Craft 2", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Классический технический мод.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/industrial-craft", modrinth: "https://modrinth.com/mod/industrial-craft" } },
+            { name: "BuildCraft", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Автоматизация добычи ресурсов.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/buildcraft", modrinth: "https://modrinth.com/mod/buildcraft" } },
+            { name: "Thermal Expansion", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Тепловые машины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/thermal-expansion", modrinth: "https://modrinth.com/mod/thermal-expansion" } },
+            { name: "Applied Energistics 2", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Цифровое хранение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2", modrinth: "https://modrinth.com/mod/ae2" } },
+            { name: "Mekanism", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Высокотехнологичные машины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mekanism", modrinth: "https://modrinth.com/mod/mekanism" } },
+            { name: "Ender IO", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Компактные машины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/ender-io", modrinth: "https://modrinth.com/mod/enderio" } },
+            { name: "Refined Storage", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Система хранения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/refined-storage", modrinth: "https://modrinth.com/mod/refined-storage" } },
+            { name: "Immersive Engineering", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Многоблочные структуры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/immersive-engineering", modrinth: "https://modrinth.com/mod/immersive-engineering" } },
+            { name: "RFTools", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Телепортация.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/rftools", modrinth: "https://modrinth.com/mod/rftools" } },
+            { name: "Draconic Evolution", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Мощная броня.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/draconic-evolution", modrinth: "https://modrinth.com/mod/draconic-evolution" } },
+            { name: "Extreme Reactors", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Реакторы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/extreme-reactors", modrinth: "https://modrinth.com/mod/extreme-reactors" } },
+            { name: "CC:Tweaked", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Компьютеры Lua.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/cc-tweaked", modrinth: "https://modrinth.com/mod/cc-tweaked" } },
+            { name: "Create", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Механизмы и шестерни.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/create", modrinth: "https://modrinth.com/mod/create" } },
+            { name: "Forestry", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Фермерство.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/forestry", modrinth: "https://modrinth.com/mod/forestry" } },
+            { name: "PneumaticCraft", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Пневматика.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/pneumaticcraft-repressurized", modrinth: "https://modrinth.com/mod/pneumaticcraft-repressurized" } },
+            { name: "NuclearCraft", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Ядерные реакторы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/nuclearcraft-mod", modrinth: "https://modrinth.com/mod/nuclearcraft" } },
+            { name: "Galacticraft", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Космос.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/galacticraft", modrinth: "https://modrinth.com/mod/galacticraft" } },
+            { name: "Advanced Rocketry", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Ракеты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/advanced-rocketry", modrinth: "https://modrinth.com/mod/advanced-rocketry" } },
+            { name: "OpenComputers", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Компьютеры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/opencomputers", modrinth: "https://modrinth.com/mod/opencomputers" } },
+            { name: "Actually Additions", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Машины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/actually-additions", modrinth: "https://modrinth.com/mod/actually-additions" } },
+            { name: "Extra Utilities 2", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Генераторы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/extra-utilities", modrinth: "https://modrinth.com/mod/extra-utilities" } },
+            { name: "Iron Chests", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Улучшенные сундуки.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/iron-chests", modrinth: "https://modrinth.com/mod/iron-chests" } },
+            { name: "Storage Drawers", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Ящики для хранения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/storage-drawers", modrinth: "https://modrinth.com/mod/storage-drawers" } },
+            { name: "Flux Networks", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Беспроводная энергия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/flux-networks", modrinth: "https://modrinth.com/mod/flux-networks" } },
+            { name: "Simply Jetpacks", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Джетпаки.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/simply-jetpacks-2", modrinth: "https://modrinth.com/mod/simply-jetpacks" } },
+            { name: "Industrial Foregoing", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Индустриальная автоматизация.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/industrial-foregoing", modrinth: "https://modrinth.com/mod/industrial-foregoing" } },
+            { name: "Cyclic", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Разнообразные механизмы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/cyclic", modrinth: "https://modrinth.com/mod/cyclic" } },
+            { name: "Powah!", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Энергетика.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/powah", modrinth: "https://modrinth.com/mod/powah" } },
+            { name: "Pipez", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Трубы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/pipez", modrinth: "https://modrinth.com/mod/pipez" } },
+            { name: "Solar Flux Reborn", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Солнечные панели.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/solar-flux-reborn", modrinth: "https://modrinth.com/mod/solar-flux-reborn" } },
 
-            // ===== МАГИЧЕСКИЕ МОДЫ =====
-            { 
-                name: "Thaumcraft", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Исследование магии, ауры и создание волшебных предметов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/thaumcraft",
-                    modrinth: "https://modrinth.com/mod/thaumcraft"
-                }
-            },
-            { 
-                name: "Botania", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Магия цветов, мана и автоматизация с помощью растений.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/botania",
-                    modrinth: "https://modrinth.com/mod/botania"
-                }
-            },
-            { 
-                name: "Blood Magic", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Тёмная магия, основанная на жертвоприношениях крови.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/blood-magic",
-                    modrinth: "https://modrinth.com/mod/blood-magic"
-                }
-            },
-            { 
-                name: "Astral Sorcery", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Магия звёзд, созвездий и небесных тел.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/astral-sorcery",
-                    modrinth: "https://modrinth.com/mod/astral-sorcery"
-                }
-            },
-            { 
-                name: "Witchery", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Колдовство, ритуалы, зелья и призыв существ.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/witchery",
-                    modrinth: "https://modrinth.com/mod/witchery"
-                }
-            },
-            { 
-                name: "Ars Magica 2", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Создание собственных заклинаний с помощью системы эссенций.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/ars-magica-2",
-                    modrinth: "https://modrinth.com/mod/ars-magica-2"
-                }
-            },
-            { 
-                name: "Psi", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Программируемая магия с использованием CAD-устройств.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/psi",
-                    modrinth: "https://modrinth.com/mod/psi"
-                }
-            },
-            { 
-                name: "EvilCraft", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Тёмная магия, монстры и зловещие механизмы.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/evilcraft",
-                    modrinth: "https://modrinth.com/mod/evilcraft"
-                }
-            },
-            { 
-                name: "AbyssalCraft", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Магия, вдохновлённая творчеством Лавкрафта.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/abyssalcraft",
-                    modrinth: "https://modrinth.com/mod/abyssalcraft"
-                }
-            },
-            { 
-                name: "Mystical Agriculture", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Выращивание ресурсов с помощью магических семян.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/mystical-agriculture",
-                    modrinth: "https://modrinth.com/mod/mystical-agriculture"
-                }
-            },
-            { 
-                name: "Roots", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Природная магия, травы и ритуалы друидов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/roots",
-                    modrinth: "https://modrinth.com/mod/roots"
-                }
-            },
-            { 
-                name: "Embers", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Магия огня, металлов и древних механизмов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/embers",
-                    modrinth: "https://modrinth.com/mod/embers"
-                }
-            },
-            { 
-                name: "Totemic", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Магия тотемов, музыка и танцы для призыва духов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/totemic",
-                    modrinth: "https://modrinth.com/mod/totemic"
-                }
-            },
-            { 
-                name: "Mahou Tsukai", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Японская магия, фамильяры и мощные заклинания.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/mahou-tsukai",
-                    modrinth: "https://modrinth.com/mod/mahou-tsukai"
-                }
-            },
-            { 
-                name: "Eidolon", 
-                category: "magic", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Тёмная магия, некромантия и алхимия.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/eidolon",
-                    modrinth: "https://modrinth.com/mod/eidolon"
-                }
-            },
+            // МАГИЧЕСКИЕ (25)
+            { name: "Thaumcraft", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Исследование магии.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/thaumcraft", modrinth: "https://modrinth.com/mod/thaumcraft" } },
+            { name: "Botania", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Магия цветов.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/botania", modrinth: "https://modrinth.com/mod/botania" } },
+            { name: "Blood Magic", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Магия крови.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/blood-magic", modrinth: "https://modrinth.com/mod/blood-magic" } },
+            { name: "Astral Sorcery", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Магия звёзд.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/astral-sorcery", modrinth: "https://modrinth.com/mod/astral-sorcery" } },
+            { name: "Psi", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Программируемая магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/psi", modrinth: "https://modrinth.com/mod/psi" } },
+            { name: "Mystical Agriculture", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Выращивание ресурсов.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mystical-agriculture", modrinth: "https://modrinth.com/mod/mystical-agriculture" } },
+            { name: "Mahou Tsukai", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Японская магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mahou-tsukai", modrinth: "https://modrinth.com/mod/mahou-tsukai" } },
+            { name: "Eidolon", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Некромантия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/eidolon", modrinth: "https://modrinth.com/mod/eidolon" } },
+            { name: "Ars Nouveau", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Современная магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/ars-nouveau", modrinth: "https://modrinth.com/mod/ars-nouveau" } },
+            { name: "Occultism", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Оккультизм.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/occultism", modrinth: "https://modrinth.com/mod/occultism" } },
+            { name: "Mana and Artifice", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Мана и артефакты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mana-and-artifice", modrinth: "https://modrinth.com/mod/mana-and-artifice" } },
+            { name: "Nature's Aura", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Аура природы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/natures-aura", modrinth: "https://modrinth.com/mod/natures-aura" } },
+            { name: "Forbidden and Arcanus", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Запретная магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/forbidden-arcanus", modrinth: "https://modrinth.com/mod/forbidden-arcanus" } },
+            { name: "Malum", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Тёмная магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/malum", modrinth: "https://modrinth.com/mod/malum" } },
+            { name: "Hexerei", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Ведьмовство.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/hexerei", modrinth: "https://modrinth.com/mod/hexerei" } },
+            { name: "Bewitchment", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Колдовство.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/bewitchment", modrinth: "https://modrinth.com/mod/bewitchment" } },
+            { name: "Spectrum", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Цветовая магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/spectrum", modrinth: "https://modrinth.com/mod/spectrum" } },
+            { name: "Wizards", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Волшебники.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/wizards", modrinth: "https://modrinth.com/mod/wizards" } },
+            { name: "Spell Engine", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Движок заклинаний.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/spell-engine", modrinth: "https://modrinth.com/mod/spell-engine" } },
+            { name: "Runes", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Руны.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/runes", modrinth: "https://modrinth.com/mod/runes" } },
+            { name: "Goety", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Тёмное колдовство.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/goety", modrinth: "https://modrinth.com/mod/goety" } },
+            { name: "EvilCraft", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Тёмная магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/evilcraft", modrinth: "https://modrinth.com/mod/evilcraft" } },
+            { name: "AbyssalCraft", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Лавкрафт магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/abyssalcraft", modrinth: "https://modrinth.com/mod/abyssalcraft" } },
+            { name: "Totemic", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Магия тотемов.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/totemic", modrinth: "https://modrinth.com/mod/totemic" } },
+            { name: "Enigmatic Legacy", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Загадочное наследие.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/enigmatic-legacy", modrinth: "https://modrinth.com/mod/enigmatic-legacy" } },
 
-            // ===== ПРИКЛЮЧЕНЧЕСКИЕ МОДЫ =====
-            { 
-                name: "Twilight Forest", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Новое измерение с боссами, подземельями и уникальными биомами.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest",
-                    modrinth: "https://modrinth.com/mod/the-twilight-forest"
-                }
-            },
-            { 
-                name: "Aether", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Небесное измерение с летающими островами и уникальными мобами.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/aether",
-                    modrinth: "https://modrinth.com/mod/aether"
-                }
-            },
-            { 
-                name: "Betweenlands", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Мрачное болотное измерение с уникальной экосистемой.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/angry-pixel-the-betweenlands",
-                    modrinth: "https://modrinth.com/mod/the-betweenlands"
-                }
-            },
-            { 
-                name: "Ice and Fire", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Драконы, мифические существа и эпические сражения.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/ice-and-fire-dragons",
-                    modrinth: "https://modrinth.com/mod/ice-and-fire"
-                }
-            },
-            { 
-                name: "Dungeons Mod", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Генерация подземелий с сокровищами и монстрами.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/dungeons-mod",
-                    modrinth: "https://modrinth.com/mod/dungeons-mod"
-                }
-            },
-            { 
-                name: "Roguelike Dungeons", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Сложные многоуровневые подземелья в стиле roguelike.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/roguelike-dungeons",
-                    modrinth: "https://modrinth.com/mod/roguelike-dungeons"
-                }
-            },
-            { 
-                name: "Chocolate Quest", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Огромные подземелья с боссами и уникальным лутом.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/chocolate-quest",
-                    modrinth: "https://modrinth.com/mod/chocolate-quest"
-                }
-            },
-            { 
-                name: "Advent of Ascension", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Десятки измерений, сотни мобов и множество боссов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/advent-of-ascension-nevermine",
-                    modrinth: "https://modrinth.com/mod/advent-of-ascension"
-                }
-            },
-            { 
-                name: "Mowzie's Mobs", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Уникальные боссы и мифические существа.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/mowzies-mobs",
-                    modrinth: "https://modrinth.com/mod/mowzies-mobs"
-                }
-            },
-            { 
-                name: "Lycanites Mobs", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Опасные монстры, которые появляются случайно.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/lycanites-mobs",
-                    modrinth: "https://modrinth.com/mod/lycanites-mobs"
-                }
-            },
-            { 
-                name: "Dimensional Doors", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Карманные измерения и загадочные двери.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/dimensional-doors",
-                    modrinth: "https://modrinth.com/mod/dimensional-doors"
-                }
-            },
-            { 
-                name: "Mystcraft", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Создание собственных измерений с помощью книг.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/mystcraft",
-                    modrinth: "https://modrinth.com/mod/mystcraft"
-                }
-            },
-            { 
-                name: "Erebus", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Измерение насекомых с уникальной флорой и фауной.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/the-erebus",
-                    modrinth: "https://modrinth.com/mod/the-erebus"
-                }
-            },
-            { 
-                name: "Atum 2", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Пустынное измерение, вдохновлённое Древним Египтом.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/atum",
-                    modrinth: "https://modrinth.com/mod/atum"
-                }
-            },
-            { 
-                name: "Blue Skies", 
-                category: "adventure", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Два новых измерения: светлое и тёмное.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/blue-skies",
-                    modrinth: "https://modrinth.com/mod/blue-skies"
-                }
-            },
+            // ПРИКЛЮЧЕНЧЕСКИЕ (25)
+            { name: "Twilight Forest", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Новое измерение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest", modrinth: "https://modrinth.com/mod/the-twilight-forest" } },
+            { name: "Aether", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Небесное измерение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/aether", modrinth: "https://modrinth.com/mod/aether" } },
+            { name: "Ice and Fire", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Драконы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/ice-and-fire-dragons", modrinth: "https://modrinth.com/mod/ice-and-fire" } },
+            { name: "Advent of Ascension", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Много измерений.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/advent-of-ascension-nevermine", modrinth: "https://modrinth.com/mod/advent-of-ascension" } },
+            { name: "Mowzie's Mobs", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Боссы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mowzies-mobs", modrinth: "https://modrinth.com/mod/mowzies-mobs" } },
+            { name: "Blue Skies", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Два измерения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/blue-skies", modrinth: "https://modrinth.com/mod/blue-skies" } },
+            { name: "Dungeons Mod", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Подземелья.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/dungeons-mod", modrinth: "https://modrinth.com/mod/dungeons-mod" } },
+            { name: "Roguelike Dungeons", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Сложные подземелья.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/roguelike-dungeons", modrinth: "https://modrinth.com/mod/roguelike-dungeons" } },
+            { name: "Lycanites Mobs", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Опасные мобы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/lycanites-mobs", modrinth: "https://modrinth.com/mod/lycanites-mobs" } },
+            { name: "Dimensional Doors", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Карманные измерения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/dimensional-doors", modrinth: "https://modrinth.com/mod/dimensional-doors" } },
+            { name: "When Dungeons Arise", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Генерация структур.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/when-dungeons-arise", modrinth: "https://modrinth.com/mod/when-dungeons-arise" } },
+            { name: "YUNG's Better Dungeons", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Улучшенные подземелья.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/yungs-better-dungeons", modrinth: "https://modrinth.com/mod/yungs-better-dungeons" } },
+            { name: "YUNG's Better Mineshafts", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Улучшенные шахты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/yungs-better-mineshafts", modrinth: "https://modrinth.com/mod/yungs-better-mineshafts" } },
+            { name: "Repurposed Structures", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Новые структуры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/repurposed-structures", modrinth: "https://modrinth.com/mod/repurposed-structures" } },
+            { name: "Dungeon Crawl", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Подземелья-лабиринты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/dungeon-crawl", modrinth: "https://modrinth.com/mod/dungeon-crawl" } },
+            { name: "Friends and Foes", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Новые мобы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/friends-and-foes", modrinth: "https://modrinth.com/mod/friends-and-foes" } },
+            { name: "Bosses of Mass Destruction", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Боссы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/bosses-of-mass-destruction", modrinth: "https://modrinth.com/mod/bosses-of-mass-destruction" } },
+            { name: "Deeper and Darker", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Глубины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/deeper-and-darker", modrinth: "https://modrinth.com/mod/deeper-and-darker" } },
+            { name: "Voidscape", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Пустота.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/voidscape", modrinth: "https://modrinth.com/mod/voidscape" } },
+            { name: "Undergarden", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Подземный сад.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/the-undergarden", modrinth: "https://modrinth.com/mod/the-undergarden" } },
+            { name: "Infernal Expansion", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Адское измерение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/infernal-expansion", modrinth: "https://modrinth.com/mod/infernal-expansion" } },
+            { name: "Aquamirae", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Морские приключения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/aquamirae", modrinth: "https://modrinth.com/mod/aquamirae" } },
+            { name: "The Graveyard", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Кладбища.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/the-graveyard-forge", modrinth: "https://modrinth.com/mod/the-graveyard" } },
+            { name: "Mystcraft", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Создание измерений.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mystcraft", modrinth: "https://modrinth.com/mod/mystcraft" } },
+            { name: "Atum 2", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Египет.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/atum", modrinth: "https://modrinth.com/mod/atum" } },
 
-            // ===== ДЕКОРАТИВНЫЕ МОДЫ =====
-            { 
-                name: "Chisel", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Сотни новых вариантов текстур для строительных блоков.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/chisel",
-                    modrinth: "https://modrinth.com/mod/chisel"
-                }
-            },
-            { 
-                name: "Decocraft", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Тысячи предметов декора: мебель, посуда, украшения.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/decocraft",
-                    modrinth: "https://modrinth.com/mod/decocraft"
-                }
-            },
-            { 
-                name: "BiblioCraft", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Функциональная мебель: книжные полки, столы, витрины.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/bibliocraft",
-                    modrinth: "https://modrinth.com/mod/bibliocraft"
-                }
-            },
-            { 
-                name: "MrCrayfish's Furniture", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Современная мебель: диваны, столы, техника.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/mrcrayfish-furniture-mod",
-                    modrinth: "https://modrinth.com/mod/mrcrayfish-furniture"
-                }
-            },
-            { 
-                name: "Fairy Lights", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Красивые гирлянды и освещение для декора.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/fairy-lights",
-                    modrinth: "https://modrinth.com/mod/fairy-lights"
-                }
-            },
-            { 
-                name: "Macaw's Roofs", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Разнообразные крыши для строительства.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-roofs",
-                    modrinth: "https://modrinth.com/mod/macaws-roofs"
-                }
-            },
-            { 
-                name: "Macaw's Furniture", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Мебель в современном стиле.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-furniture",
-                    modrinth: "https://modrinth.com/mod/macaws-furniture"
-                }
-            },
-            { 
-                name: "Macaw's Windows", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Различные виды окон и витражей.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-windows",
-                    modrinth: "https://modrinth.com/mod/macaws-windows"
-                }
-            },
-            { 
-                name: "Macaw's Bridges", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Красивые мосты для ландшафтного дизайна.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-bridges",
-                    modrinth: "https://modrinth.com/mod/macaws-bridges"
-                }
-            },
-            { 
-                name: "Macaw's Doors", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Разнообразные двери для любого стиля.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-doors",
-                    modrinth: "https://modrinth.com/mod/macaws-doors"
-                }
-            },
-            { 
-                name: "Macaw's Trapdoors", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Декоративные люки и ставни.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-trapdoors",
-                    modrinth: "https://modrinth.com/mod/macaws-trapdoors"
-                }
-            },
-            { 
-                name: "Macaw's Fences", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Красивые заборы и ограждения.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-fences-and-walls",
-                    modrinth: "https://modrinth.com/mod/macaws-fences-and-walls"
-                }
-            },
-            { 
-                name: "Macaw's Lights", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Различные осветительные приборы.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-lights-and-lamps",
-                    modrinth: "https://modrinth.com/mod/macaws-lights-and-lamps"
-                }
-            },
-            { 
-                name: "Macaw's Paths", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Дорожки и тропинки для ландшафта.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-paths-and-pavings",
-                    modrinth: "https://modrinth.com/mod/macaws-paths-and-pavings"
-                }
-            },
-            { 
-                name: "Macaw's Paintings", 
-                category: "decoration", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Картины для украшения интерьера.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-paintings",
-                    modrinth: "https://modrinth.com/mod/macaws-paintings"
-                }
-            },
+            // ДЕКОРАТИВНЫЕ (20)
+            { name: "Chisel", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Новые текстуры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/chisel", modrinth: "https://modrinth.com/mod/chisel" } },
+            { name: "Decocraft", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Декор.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/decocraft", modrinth: "https://modrinth.com/mod/decocraft" } },
+            { name: "MrCrayfish's Furniture", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Мебель.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mrcrayfish-furniture-mod", modrinth: "https://modrinth.com/mod/mrcrayfish-furniture" } },
+            { name: "Fairy Lights", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Гирлянды.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/fairy-lights", modrinth: "https://modrinth.com/mod/fairy-lights" } },
+            { name: "Macaw's Roofs", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Крыши.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-roofs", modrinth: "https://modrinth.com/mod/macaws-roofs" } },
+            { name: "Macaw's Furniture", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Мебель.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-furniture", modrinth: "https://modrinth.com/mod/macaws-furniture" } },
+            { name: "Macaw's Windows", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Окна.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-windows", modrinth: "https://modrinth.com/mod/macaws-windows" } },
+            { name: "Macaw's Bridges", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Мосты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-bridges", modrinth: "https://modrinth.com/mod/macaws-bridges" } },
+            { name: "Macaw's Doors", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Двери.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-doors", modrinth: "https://modrinth.com/mod/macaws-doors" } },
+            { name: "Macaw's Fences", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Заборы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-fences-and-walls", modrinth: "https://modrinth.com/mod/macaws-fences-and-walls" } },
+            { name: "Macaw's Trapdoors", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Люки.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-trapdoors", modrinth: "https://modrinth.com/mod/macaws-trapdoors" } },
+            { name: "Macaw's Lights", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Освещение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-lights-and-lamps", modrinth: "https://modrinth.com/mod/macaws-lights-and-lamps" } },
+            { name: "Supplementaries", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Дополнительный декор.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/supplementaries", modrinth: "https://modrinth.com/mod/supplementaries" } },
+            { name: "Quark", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Улучшения ванили.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/quark", modrinth: "https://modrinth.com/mod/quark" } },
+            { name: "Chipped", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Варианты блоков.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/chipped", modrinth: "https://modrinth.com/mod/chipped" } },
+            { name: "Handcrafted", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Ручная работа.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/handcrafted", modrinth: "https://modrinth.com/mod/handcrafted" } },
+            { name: "Another Furniture", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Мебель.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/another-furniture", modrinth: "https://modrinth.com/mod/another-furniture" } },
+            { name: "Beautify", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Украшения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/beautify", modrinth: "https://modrinth.com/mod/beautify" } },
+            { name: "Paladin's Furniture", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Мебель.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/paladins-furniture", modrinth: "https://modrinth.com/mod/paladins-furniture" } },
+            { name: "Adorn", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Украшения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/adorn", modrinth: "https://modrinth.com/mod/adorn" } },
 
-            // ===== МОДЫ НА ОПТИМИЗАЦИЮ =====
-            { 
-                name: "OptiFine", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Значительно улучшает производительность, добавляет шейдеры и настройки графики.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/optifine",
-                    modrinth: "https://modrinth.com/mod/optifine"
-                }
-            },
-            { 
-                name: "Sodium", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Современная альтернатива OptiFine для Fabric. Значительное увеличение FPS.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/sodium",
-                    modrinth: "https://modrinth.com/mod/sodium"
-                }
-            },
-            { 
-                name: "Lithium", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Оптимизация серверных вычислений без изменения поведения игры.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/lithium",
-                    modrinth: "https://modrinth.com/mod/lithium"
-                }
-            },
-            { 
-                name: "Phosphor", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Улучшает производительность системы освещения.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/phosphor",
-                    modrinth: "https://modrinth.com/mod/phosphor"
-                }
-            },
-            { 
-                name: "Iris Shaders", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Поддержка шейдеров для Fabric с отличной производительностью.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/irisshaders",
-                    modrinth: "https://modrinth.com/mod/iris"
-                }
-            },
-            { 
-                name: "FerriteCore", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Уменьшает использование памяти игрой.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/ferritecore",
-                    modrinth: "https://modrinth.com/mod/ferrite-core"
-                }
-            },
-            { 
-                name: "LazyDFU", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Ускоряет загрузку игры за счёт отложенной инициализации.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/lazy-dfu",
-                    modrinth: "https://modrinth.com/mod/lazydfu"
-                }
-            },
-            { 
-                name: "Starlight", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Полностью переписанная система освещения для максимальной производительности.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/starlight",
-                    modrinth: "https://modrinth.com/mod/starlight"
-                }
-            },
-            { 
-                name: "Smooth Boot", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Оптимизирует загрузку игры, уменьшая нагрузку на CPU.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/smooth-boot",
-                    modrinth: "https://modrinth.com/mod/smoothboot"
-                }
-            },
-            { 
-                name: "Krypton", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Оптимизация сетевого кода для серверов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/krypton",
-                    modrinth: "https://modrinth.com/mod/krypton"
-                }
-            },
-            { 
-                name: "Memory Leak Fix", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Исправляет утечки памяти в игре.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/memoryleakfix",
-                    modrinth: "https://modrinth.com/mod/memoryleakfix"
-                }
-            },
-            { 
-                name: "Entity Culling", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Не отрисовывает невидимые сущности, увеличивая FPS.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/entityculling",
-                    modrinth: "https://modrinth.com/mod/entityculling"
-                }
-            },
-            { 
-                name: "Dynamic FPS", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Снижает FPS когда окно игры не в фокусе.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/dynamic-fps",
-                    modrinth: "https://modrinth.com/mod/dynamic-fps"
-                }
-            },
-            { 
-                name: "BetterFPS", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Различные оптимизации для увеличения производительности.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/betterfps",
-                    modrinth: "https://modrinth.com/mod/betterfps"
-                }
-            },
-            { 
-                name: "FoamFix", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Уменьшает использование памяти и ускоряет загрузку.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/foamfix",
-                    modrinth: "https://modrinth.com/mod/foamfix"
-                }
-            },
-            { 
-                name: "VanillaFix", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Исправляет различные проблемы производительности.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/vanillafix",
-                    modrinth: "https://modrinth.com/mod/vanillafix"
-                }
-            },
-            { 
-                name: "TexFix", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Оптимизирует загрузку текстур, уменьшая использование памяти.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/texfix",
-                    modrinth: "https://modrinth.com/mod/texfix"
-                }
-            },
-            { 
-                name: "Surge", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Оптимизация загрузки чанков и обновлений.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/surge",
-                    modrinth: "https://modrinth.com/mod/surge"
-                }
-            },
-            { 
-                name: "AI Improvements", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Оптимизирует искусственный интеллект мобов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/ai-improvements",
-                    modrinth: "https://modrinth.com/mod/ai-improvements"
-                }
-            },
-            { 
-                name: "Clumps", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Объединяет опыт в группы, уменьшая нагрузку на сервер.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/clumps",
-                    modrinth: "https://modrinth.com/mod/clumps"
-                }
-            },
-            { 
-                name: "FastWorkbench", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Ускоряет работу верстака и других интерфейсов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/fastworkbench",
-                    modrinth: "https://modrinth.com/mod/fastworkbench"
-                }
-            },
-            { 
-                name: "FastFurnace", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Оптимизирует работу печей.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/fastfurnace",
-                    modrinth: "https://modrinth.com/mod/fastfurnace"
-                }
-            },
-            { 
-                name: "FastSuite", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Ускоряет обработку рецептов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/fastsuite",
-                    modrinth: "https://modrinth.com/mod/fastsuite"
-                }
-            },
-            { 
-                name: "Performant", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Различные оптимизации для увеличения FPS.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/performant",
-                    modrinth: "https://modrinth.com/mod/performant"
-                }
-            },
-            { 
-                name: "RoadRunner", 
-                category: "optimization", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Улучшенная версия Lithium для Fabric.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/mc-mods/roadrunner",
-                    modrinth: "https://modrinth.com/mod/roadrunner"
-                }
-            },
+            // ОПТИМИЗАЦИЯ (15)
+            { name: "OptiFine", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Производительность и шейдеры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/optifine", modrinth: "https://modrinth.com/mod/optifine" } },
+            { name: "Sodium", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Увеличение FPS.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/sodium", modrinth: "https://modrinth.com/mod/sodium" } },
+            { name: "Lithium", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Оптимизация сервера.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/lithium", modrinth: "https://modrinth.com/mod/lithium" } },
+            { name: "Phosphor", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Освещение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/phosphor", modrinth: "https://modrinth.com/mod/phosphor" } },
+            { name: "Iris Shaders", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Шейдеры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/irisshaders", modrinth: "https://modrinth.com/mod/iris" } },
+            { name: "FerriteCore", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Память.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/ferritecore", modrinth: "https://modrinth.com/mod/ferrite-core" } },
+            { name: "Starlight", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Освещение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/starlight", modrinth: "https://modrinth.com/mod/starlight" } },
+            { name: "Entity Culling", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Отсечение сущностей.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/entityculling", modrinth: "https://modrinth.com/mod/entityculling" } },
+            { name: "Clumps", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Группировка опыта.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/clumps", modrinth: "https://modrinth.com/mod/clumps" } },
+            { name: "Dynamic FPS", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "FPS в фоне.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/dynamic-fps", modrinth: "https://modrinth.com/mod/dynamic-fps" } },
+            { name: "LazyDFU", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Быстрая загрузка.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/lazy-dfu", modrinth: "https://modrinth.com/mod/lazydfu" } },
+            { name: "Smooth Boot", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Плавная загрузка.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/smooth-boot", modrinth: "https://modrinth.com/mod/smoothboot" } },
+            { name: "Memory Leak Fix", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Исправление утечек.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/memoryleakfix", modrinth: "https://modrinth.com/mod/memoryleakfix" } },
+            { name: "Krypton", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Сеть.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/krypton", modrinth: "https://modrinth.com/mod/krypton" } },
+            { name: "BetterFPS", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Оптимизации.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/betterfps", modrinth: "https://modrinth.com/mod/betterfps" } },
 
-            // ===== СБОРКИ МОДОВ =====
-            { 
-                name: "RLCraft", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Хардкорная сборка с реалистичной сложностью, драконами и опасным миром.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/rlcraft",
-                    modrinth: "https://modrinth.com/modpack/rlcraft"
-                }
-            },
-            { 
-                name: "SkyFactory 4", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Скайблок сборка с деревьями ресурсов и технологическим прогрессом.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/skyfactory-4",
-                    modrinth: "https://modrinth.com/modpack/skyfactory-4"
-                }
-            },
-            { 
-                name: "StoneBlock 2", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Выживание внутри каменного блока с постепенным расширением.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/stoneblock-2",
-                    modrinth: "https://modrinth.com/modpack/stoneblock-2"
-                }
-            },
-            { 
-                name: "Enigmatica 2", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Сбалансированная сборка с квестами и множеством модов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/enigmatica2",
-                    modrinth: "https://modrinth.com/modpack/enigmatica-2"
-                }
-            },
-            { 
-                name: "Enigmatica 6", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Современная сборка с квестами для новых версий.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/enigmatica6",
-                    modrinth: "https://modrinth.com/modpack/enigmatica-6"
-                }
-            },
-            { 
-                name: "All the Mods 6", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Максимально наполненная сборка с сотнями модов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-6",
-                    modrinth: "https://modrinth.com/modpack/all-the-mods-6"
-                }
-            },
-            { 
-                name: "All the Mods 7", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Новейшая сборка с самыми свежими модами.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-7",
-                    modrinth: "https://modrinth.com/modpack/all-the-mods-7"
-                }
-            },
-            { 
-                name: "Valhelsia 3", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Красивая сборка с акцентом на строительство и исследования.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/valhelsia-3",
-                    modrinth: "https://modrinth.com/modpack/valhelsia-3"
-                }
-            },
-            { 
-                name: "FTB Academy", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Обучающая сборка для новичков в модах.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/ftb-academy",
-                    modrinth: "https://modrinth.com/modpack/ftb-academy"
-                }
-            },
-            { 
-                name: "FTB University", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Продвинутая обучающая сборка для опытных игроков.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/ftb-university",
-                    modrinth: "https://modrinth.com/modpack/ftb-university"
-                }
-            },
-            { 
-                name: "SevTech: Ages", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Прогрессия через исторические эпохи развития.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/sevtech-ages",
-                    modrinth: "https://modrinth.com/modpack/sevtech-ages"
-                }
-            },
-            { 
-                name: "Regrowth", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Восстановление мёртвого мира с помощью магии и технологий.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/regrowth",
-                    modrinth: "https://modrinth.com/modpack/regrowth"
-                }
-            },
-            { 
-                name: "Agrarian Skies 2", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Классическая скайблок сборка с квестами.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/agrarian-skies-2",
-                    modrinth: "https://modrinth.com/modpack/agrarian-skies-2"
-                }
-            },
-            { 
-                name: "Project Ozone 3", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Сложная скайблок сборка с множеством измерений.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/project-ozone-3-a-new-way-forward",
-                    modrinth: "https://modrinth.com/modpack/project-ozone-3"
-                }
-            },
-            { 
-                name: "Dungeons, Dragons and Space Shuttles", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Эпическая сборка с подземельями, магией и космосом.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/dungeons-dragons-and-space-shuttles",
-                    modrinth: "https://modrinth.com/modpack/dungeons-dragons-and-space-shuttles"
-                }
-            },
-            { 
-                name: "Craft to Exile", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "RPG сборка с классами, навыками и подземельями.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/craft-to-exile",
-                    modrinth: "https://modrinth.com/modpack/craft-to-exile"
-                }
-            },
-            { 
-                name: "Medieval MC", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Средневековая сборка с замками, рыцарями и магией.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/medieval-mc",
-                    modrinth: "https://modrinth.com/modpack/medieval-mc"
-                }
-            },
-            { 
-                name: "Rougelike Adventures and Dungeons", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Приключенческая сборка с акцентом на исследование подземелий.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/roguelike-adventures-and-dungeons",
-                    modrinth: "https://modrinth.com/modpack/roguelike-adventures-and-dungeons"
-                }
-            },
-            { 
-                name: "SkyBees", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Скайблок сборка, основанная на пчеловодстве.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/skybees",
-                    modrinth: "https://modrinth.com/modpack/skybees"
-                }
-            },
-            { 
-                name: "OceanBlock", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Выживание посреди океана на маленьком острове.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/oceanblock",
-                    modrinth: "https://modrinth.com/modpack/oceanblock"
-                }
-            },
-            { 
-                name: "Create: Above and Beyond", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Сборка, основанная на моде Create с автоматизацией.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/create-above-and-beyond",
-                    modrinth: "https://modrinth.com/modpack/create-above-and-beyond"
-                }
-            },
-            { 
-                name: "Better Minecraft", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Улучшенная ванильная сборка с новыми биомами и мобами.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/better-minecraft",
-                    modrinth: "https://modrinth.com/modpack/better-minecraft"
-                }
-            },
-            { 
-                name: "Crucial 2", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Оптимизированная сборка с лучшими модами на производительность.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/crucial-2",
-                    modrinth: "https://modrinth.com/modpack/crucial-2"
-                }
-            },
-            { 
-                name: "Fabulously Optimized", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Сборка, максимально оптимизированная для слабых ПК.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/fabulously-optimized",
-                    modrinth: "https://modrinth.com/modpack/fabulously-optimized"
-                }
-            },
-            { 
-                name: "Simply Optimized", 
-                category: "modpack", 
-                versions: ["1.21.4", "1.20.1", "1.16.5"], 
-                description: "Лёгкая сборка с оптимизацией без лишних модов.",
-                links: {
-                    curseforge: "https://www.curseforge.com/minecraft/modpacks/simply-optimized",
-                    modrinth: "https://modrinth.com/modpack/simply-optimized"
-                }
-            },
+            // СБОРКИ (15)
+            { name: "RLCraft", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Хардкорная сборка.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/rlcraft", modrinth: "https://modrinth.com/modpack/rlcraft" } },
+            { name: "SkyFactory 4", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Скайблок.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/skyfactory-4", modrinth: "https://modrinth.com/modpack/skyfactory-4" } },
+            { name: "StoneBlock 2", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Каменный блок.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/stoneblock-2", modrinth: "https://modrinth.com/modpack/stoneblock-2" } },
+            { name: "Enigmatica 6", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Современная сборка.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/enigmatica6", modrinth: "https://modrinth.com/modpack/enigmatica-6" } },
+            { name: "All the Mods 6", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Максимум модов.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-6", modrinth: "https://modrinth.com/modpack/all-the-mods-6" } },
+            { name: "All the Mods 7", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Новейшая.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-7", modrinth: "https://modrinth.com/modpack/all-the-mods-7" } },
+            { name: "FTB Academy", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Обучение.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/ftb-academy", modrinth: "https://modrinth.com/modpack/ftb-academy" } },
+            { name: "FTB University", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Продвинутое обучение.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/ftb-university", modrinth: "https://modrinth.com/modpack/ftb-university" } },
+            { name: "SevTech: Ages", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Эпохи.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/sevtech-ages", modrinth: "https://modrinth.com/modpack/sevtech-ages" } },
+            { name: "Project Ozone 3", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Сложный скайблок.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/project-ozone-3-a-new-way-forward", modrinth: "https://modrinth.com/modpack/project-ozone-3" } },
+            { name: "Better Minecraft", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Улучшенная ваниль.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/better-minecraft", modrinth: "https://modrinth.com/modpack/better-minecraft" } },
+            { name: "Fabulously Optimized", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Оптимизированная.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/fabulously-optimized", modrinth: "https://modrinth.com/modpack/fabulously-optimized" } },
+            { name: "Valhelsia 3", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Красивая сборка.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/valhelsia-3", modrinth: "https://modrinth.com/modpack/valhelsia-3" } },
+            { name: "Craft to Exile", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "RPG сборка.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/craft-to-exile", modrinth: "https://modrinth.com/modpack/craft-to-exile" } },
+            { name: "Medieval MC", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Средневековье.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/medieval-mc", modrinth: "https://modrinth.com/modpack/medieval-mc" } },
         ];
 
-        // Функция для создания карточки мода
-        function createModCard(mod) {
+        let currentCategoryFilter = 'all';
+        let currentVersionFilter = 'all';
+        let currentLoaderFilter = 'all';
+
+        function createModCard(mod, index) {
             const card = document.createElement('div');
             card.className = 'mod-card';
             card.dataset.category = mod.category;
             card.dataset.name = mod.name.toLowerCase();
             card.dataset.description = mod.description.toLowerCase();
             card.dataset.versions = JSON.stringify(mod.versions);
+            card.dataset.loaders = JSON.stringify(mod.loaders);
+            card.style.animationDelay = (index * 0.02) + 's';
 
-            const versionsHtml = mod.versions.map(v => 
-                `<span class="mod-version">MC ${v}</span>`
-            ).join('');
-
-            const downloadButtonsHtml = `
-                <a href="${mod.links.curseforge}" class="download-btn curseforge" target="_blank" rel="noopener noreferrer">⬇ CurseForge</a>
-                <a href="${mod.links.modrinth}" class="download-btn modrinth" target="_blank" rel="noopener noreferrer">⬇ Modrinth</a>
-            `;
-
+            const versionsHtml = mod.versions.map(v => `<span class="mod-version" onclick="filterByVersion('${v}', this)">MC ${v}</span>`).join('');
+            const loadersHtml = mod.loaders.map(l => `<span class="loader-badge ${l}">${l === 'forge' ? 'Forge' : 'Fabric'}</span>`).join('');
+            
             card.innerHTML = `
                 <div class="mod-name">${mod.name}</div>
                 <div class="mod-versions">${versionsHtml}</div>
+                <div class="mod-loader">${loadersHtml}</div>
                 <div class="mod-description">${mod.description}</div>
-                <div class="download-buttons">${downloadButtonsHtml}</div>
+                <div class="download-buttons">
+                    <a href="${mod.links.curseforge}" class="download-btn curseforge" target="_blank" rel="noopener noreferrer">⬇ CurseForge</a>
+                    <a href="${mod.links.modrinth}" class="download-btn modrinth" target="_blank" rel="noopener noreferrer">⬇ Modrinth</a>
+                </div>
             `;
-
-            // Делаем карточку кликабельной
-            card.addEventListener('click', (e) => {
-                if (e.target.tagName !== 'A') {
-                    if (AntiDDoS.registerRequest()) {
-                        window.open(mod.links.curseforge, '_blank');
-                    }
-                }
-            });
-            card.style.cursor = 'pointer';
 
             return card;
         }
 
-        // Заполнение сеток
         function populateGrids() {
-            const modsGrid = document.getElementById('modsGrid');
-            const modpacksGrid = document.getElementById('modpacksGrid');
-            const optimizationGrid = document.getElementById('optimizationGrid');
-            const allModsGrid = document.getElementById('allModsGrid');
+            document.getElementById('modsGrid').innerHTML = '';
+            document.getElementById('modpacksGrid').innerHTML = '';
+            document.getElementById('optimizationGrid').innerHTML = '';
+            document.getElementById('allModsGrid').innerHTML = '';
 
-            // Очищаем сетки
-            modsGrid.innerHTML = '';
-            modpacksGrid.innerHTML = '';
-            optimizationGrid.innerHTML = '';
-            allModsGrid.innerHTML = '';
+            const popularMods = modsDatabase.filter(m => m.category !== 'modpack' && m.category !== 'optimization').slice(0, 60);
+            popularMods.forEach((m, i) => document.getElementById('modsGrid').appendChild(createModCard(m, i)));
 
-            // Заполняем популярные моды (первые 30 не-сборок и не-оптимизаций)
-            const popularMods = modsDatabase.filter(mod => 
-                mod.category !== 'modpack' && mod.category !== 'optimization'
-            ).slice(0, 30);
+            modsDatabase.filter(m => m.category === 'modpack').forEach((m, i) => document.getElementById('modpacksGrid').appendChild(createModCard(m, i)));
+            modsDatabase.filter(m => m.category === 'optimization').forEach((m, i) => document.getElementById('optimizationGrid').appendChild(createModCard(m, i)));
+            modsDatabase.forEach((m, i) => document.getElementById('allModsGrid').appendChild(createModCard(m, i)));
 
-            popularMods.forEach(mod => {
-                modsGrid.appendChild(createModCard(mod));
-            });
-
-            // Заполняем сборки
-            const modpacks = modsDatabase.filter(mod => mod.category === 'modpack');
-            modpacks.forEach(mod => {
-                modpacksGrid.appendChild(createModCard(mod));
-            });
-
-            // Заполняем оптимизацию
-            const optimization = modsDatabase.filter(mod => mod.category === 'optimization');
-            optimization.forEach(mod => {
-                optimizationGrid.appendChild(createModCard(mod));
-            });
-
-            // Заполняем все моды
-            modsDatabase.forEach(mod => {
-                allModsGrid.appendChild(createModCard(mod));
-            });
-
-            // Обновляем счётчик
             document.getElementById('modCount').textContent = modsDatabase.length;
         }
 
-        // Текущие фильтры
-        let currentCategoryFilter = 'all';
-        let currentVersionFilter = 'all';
-
-        // Фильтрация модов
-        function filterMods(category) {
+        function filterMods(category, btn) {
             currentCategoryFilter = category;
-            
-            // Обновляем активную кнопку
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             applyFilters();
         }
 
-        // Фильтрация по версии
-        function filterByVersion(version) {
+        function filterByVersion(version, btn) {
             currentVersionFilter = version;
-            
-            // Обновляем активную кнопку
-            document.querySelectorAll('.version-filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
+            if (btn) {
+                document.querySelectorAll('.version-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
             applyFilters();
         }
 
-        // Применение всех фильтров
+        function filterByLoader(loader, btn) {
+            currentLoaderFilter = loader;
+            document.querySelectorAll('.loader-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyFilters();
+        }
+
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const allCards = document.querySelectorAll('.mod-card');
-            let visibleCount = 0;
+            const cards = document.querySelectorAll('.mod-card');
+            let count = 0;
 
-            allCards.forEach(card => {
+            cards.forEach(card => {
                 const name = card.dataset.name;
-                const description = card.dataset.description;
-                const category = card.dataset.category;
-                const versions = JSON.parse(card.dataset.versions);
+                const desc = card.dataset.description;
+                const cat = card.dataset.category;
+                const vers = JSON.parse(card.dataset.versions);
+                const loaders = JSON.parse(card.dataset.loaders);
 
-                let showByCategory = currentCategoryFilter === 'all' || category === currentCategoryFilter;
-                let showByVersion = currentVersionFilter === 'all' || versions.includes(currentVersionFilter);
-                let showBySearch = searchTerm === '' || name.includes(searchTerm) || description.includes(searchTerm);
+                const showCat = currentCategoryFilter === 'all' || cat === currentCategoryFilter;
+                const showVer = currentVersionFilter === 'all' || vers.includes(currentVersionFilter);
+                const showLoader = currentLoaderFilter === 'all' || loaders.includes(currentLoaderFilter);
+                const showSearch = searchTerm === '' || name.includes(searchTerm) || desc.includes(searchTerm);
 
-                if (showByCategory && showByVersion && showBySearch) {
+                if (showCat && showVer && showLoader && showSearch) {
                     card.style.display = 'flex';
-                    visibleCount++;
+                    count++;
                 } else {
                     card.style.display = 'none';
                 }
             });
 
-            document.getElementById('modCount').textContent = visibleCount;
+            document.getElementById('modCount').textContent = count;
         }
 
-        // Поиск по модам
-        function searchMods() {
-            applyFilters();
-        }
-
-        // Функция проверки капчи (глобальная)
-        function verifyCaptcha() {
-            AntiDDoS.verifyCaptcha();
-        }
-
-        // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
             populateGrids();
-            
-            // Добавляем обработчик поиска
-            document.getElementById('searchInput').addEventListener('input', searchMods);
         });
 
-        // МЕТКА: ROCKET // Chubrik60HUBMODS с невидимой Anti-DDoS защитой успешно загружен
+        // МЕТКА: ROCKET // Chubrik60HUBMODS с ИИ-помощником загружен
     </script>
 </body>
 </html>
