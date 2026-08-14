@@ -46,6 +46,8 @@
             color: #4caf50;
             text-transform: uppercase;
             letter-spacing: 2px;
+            cursor: pointer;
+            user-select: none;
         }
 
         .logo span {
@@ -75,7 +77,25 @@
             color: #fff;
         }
 
-        /* Anti-DDoS модальное окно (появляется только при атаке) */
+        /* Скрытая кнопка админа */
+        .admin-trigger {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            opacity: 0.01;
+            cursor: pointer;
+            z-index: 9998;
+            border: none;
+            background: transparent;
+        }
+
+        .admin-trigger:hover {
+            opacity: 0.05;
+        }
+
+        /* Anti-DDoS модальное окно */
         .ddos-modal {
             display: none;
             position: fixed;
@@ -158,6 +178,176 @@
             background: #388e3c;
         }
 
+        /* Админ-панель */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .admin-modal-content {
+            background: #1a1a1a;
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .admin-modal-content h2 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .admin-login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-login-form input {
+            padding: 0.8rem;
+            background: #0d0d0d;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .admin-login-form input:focus {
+            outline: none;
+            border-color: #ffed4a;
+        }
+
+        .admin-login-btn {
+            padding: 0.8rem;
+            background: #ffd700;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .admin-login-btn:hover {
+            background: #ffed4a;
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-stat-card {
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .admin-stat-card h3 {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .admin-stat-card p {
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .admin-action-btn {
+            padding: 0.8rem;
+            background: #2a2a2a;
+            border: 2px solid #ffd700;
+            color: #ffd700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .admin-action-btn:hover {
+            background: #ffd700;
+            color: #000;
+        }
+
+        .admin-action-btn.danger {
+            border-color: #ff3c3c;
+            color: #ff3c3c;
+        }
+
+        .admin-action-btn.danger:hover {
+            background: #ff3c3c;
+            color: #fff;
+        }
+
+        .admin-close-btn {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: #666;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .admin-close-btn:hover {
+            background: #888;
+        }
+
+        .admin-error {
+            color: #ff3c3c;
+            text-align: center;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .admin-error.active {
+            display: block;
+        }
+
         /* Герой */
         .hero {
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23333"/></svg>');
@@ -203,11 +393,6 @@
             transition: 0.3s;
             text-transform: uppercase;
             font-size: 0.9rem;
-        }
-
-        .version-badge:hover {
-            background: #388e3c;
-            transform: scale(1.05);
         }
 
         /* Контент */
@@ -445,9 +630,12 @@
     </style>
 </head>
 <body>
-    <!-- МЕТКА: ROCKET // Chubrik60HUBMODS с невидимой Anti-DDoS защитой активирован -->
+    <!-- МЕТКА: ROCKET // Chubrik60HUBMODS с админ-панелью активирован -->
 
-    <!-- Anti-DDoS модальное окно (появляется только при обнаружении атаки) -->
+    <!-- Скрытый триггер для админ-панели (невидимый для обычных пользователей) -->
+    <button class="admin-trigger" id="adminTrigger" title=""></button>
+
+    <!-- Anti-DDoS модальное окно -->
     <div class="ddos-modal" id="ddosModal">
         <div class="ddos-modal-content">
             <h2>Проверка безопасности</h2>
@@ -460,9 +648,55 @@
         </div>
     </div>
 
+    <!-- Админ-панель (скрыта) -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal-content">
+            <h2>🔐 Админ-панель</h2>
+            
+            <!-- Форма входа -->
+            <div class="admin-login-form" id="adminLoginForm">
+                <input type="password" id="adminPassword" placeholder="Введите пароль администратора" autocomplete="off">
+                <button class="admin-login-btn" onclick="checkAdminPassword()">Войти</button>
+                <div class="admin-error" id="adminError">Неверный пароль!</div>
+            </div>
+
+            <!-- Панель управления -->
+            <div class="admin-panel" id="adminPanel">
+                <div class="admin-stats">
+                    <div class="admin-stat-card">
+                        <h3 id="adminModCount">0</h3>
+                        <p>Модов в базе</p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <h3 id="adminViewCount">0</h3>
+                        <p>Просмотров</p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <h3 id="adminDDoSBlocks">0</h3>
+                        <p>DDoS атак заблокировано</p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <h3 id="adminVisitors">0</h3>
+                        <p>Посетителей</p>
+                    </div>
+                </div>
+
+                <div class="admin-actions">
+                    <button class="admin-action-btn" onclick="adminExportData()">📊 Экспорт данных</button>
+                    <button class="admin-action-btn" onclick="adminRefreshMods()">🔄 Обновить моды</button>
+                    <button class="admin-action-btn" onclick="adminClearCache()">🧹 Очистить кэш</button>
+                    <button class="admin-action-btn" onclick="adminBackupSite()">💾 Резервное копирование</button>
+                    <button class="admin-action-btn danger" onclick="adminEmergencyMode()">🚨 Экстренный режим</button>
+                </div>
+
+                <button class="admin-close-btn" onclick="closeAdminPanel()">Закрыть панель</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Шапка с навигацией -->
     <header class="header">
-        <div class="logo">Chubrik60<span>HUB</span>MODS</div>
+        <div class="logo" id="logoClick">Chubrik60<span>HUB</span>MODS</div>
         <ul class="nav-menu">
             <li><a href="#mods">Моды</a></li>
             <li><a href="#modpacks">Сборки</a></li>
@@ -511,33 +745,25 @@
         <!-- Секция: Моды -->
         <div class="section" id="mods">
             <h2 class="section-title">🔥 Популярные моды</h2>
-            <div class="mods-grid" id="modsGrid">
-                <!-- Моды будут добавлены через JavaScript -->
-            </div>
+            <div class="mods-grid" id="modsGrid"></div>
         </div>
 
         <!-- Секция: Сборки -->
         <div class="section" id="modpacks">
             <h2 class="section-title">📦 Сборки модов</h2>
-            <div class="mods-grid" id="modpacksGrid">
-                <!-- Сборки будут добавлены через JavaScript -->
-            </div>
+            <div class="mods-grid" id="modpacksGrid"></div>
         </div>
 
         <!-- Секция: Оптимизация -->
         <div class="section" id="optimization">
             <h2 class="section-title">⚡ Моды на оптимизацию</h2>
-            <div class="mods-grid" id="optimizationGrid">
-                <!-- Оптимизационные моды будут добавлены через JavaScript -->
-            </div>
+            <div class="mods-grid" id="optimizationGrid"></div>
         </div>
 
         <!-- Секция: Все моды -->
         <div class="section" id="all">
             <h2 class="section-title">📋 Все моды</h2>
-            <div class="mods-grid" id="allModsGrid">
-                <!-- Все моды будут добавлены через JavaScript -->
-            </div>
+            <div class="mods-grid" id="allModsGrid"></div>
         </div>
     </div>
 
@@ -552,54 +778,35 @@
         // НЕВИДИМАЯ ANTI-DDOS ЗАЩИТА
         // ============================================
         
-        // Конфигурация Anti-DDoS (работает в фоне)
         const AntiDDoS = {
-            // Максимальное количество запросов за период
             maxRequestsPerMinute: 100,
             maxRequestsPerSecond: 10,
-            // Период в миллисекундах
             requestWindowMs: 60000,
-            // Хранилище запросов
             requests: [],
-            // IP адреса для блокировки (имитация)
             blockedIPs: new Set(),
-            // Время блокировки в минутах
             blockDurationMinutes: 15,
-            // Капча активна
             captchaActive: false,
-            // Счётчик запросов
             requestCount: 0,
-            // Время последнего запроса
             lastRequestTime: Date.now(),
-            // Флаг блокировки
             isBlocked: false,
-            // Общее количество заблокированных атак
             totalAttacksBlocked: 0,
             
-            // Инициализация защиты
             init() {
-                console.log('Anti-DDoS protection initialized');
                 this.startMonitoring();
                 this.setupEventListeners();
                 this.generateCaptcha();
-                
-                // Проверка заголовков безопасности
                 this.checkSecurityHeaders();
             },
             
-            // Проверка заголовков безопасности
             checkSecurityHeaders() {
-                const headers = {
+                return {
                     'X-Content-Type-Options': 'nosniff',
                     'X-Frame-Options': 'DENY',
                     'X-XSS-Protection': '1; mode=block',
                     'Content-Security-Policy': "default-src 'self'",
                 };
-                
-                return headers;
             },
             
-            // Мониторинг запросов
             startMonitoring() {
                 setInterval(() => {
                     this.cleanupOldRequests();
@@ -607,7 +814,6 @@
                 }, 1000);
             },
             
-            // Очистка старых запросов
             cleanupOldRequests() {
                 const now = Date.now();
                 this.requests = this.requests.filter(timestamp => 
@@ -615,11 +821,10 @@
                 );
             },
             
-            // Проверка лимита запросов
             checkRateLimit() {
                 const now = Date.now();
                 const recentRequests = this.requests.filter(timestamp => 
-                    now - timestamp < 1000 // За последнюю секунду
+                    now - timestamp < 1000
                 );
                 
                 if (recentRequests.length > this.maxRequestsPerSecond) {
@@ -631,7 +836,6 @@
                 }
             },
             
-            // Регистрация запроса
             registerRequest() {
                 if (this.isBlocked) {
                     this.showBlockedMessage();
@@ -641,9 +845,8 @@
                 this.requests.push(Date.now());
                 this.requestCount++;
                 
-                // Проверка на флуд
                 const now = Date.now();
-                if (now - this.lastRequestTime < 50) { // Менее 50мс между запросами
+                if (now - this.lastRequestTime < 50) {
                     this.requestCount++;
                     if (this.requestCount > 20) {
                         this.triggerProtection('Flood detected');
@@ -657,7 +860,6 @@
                 return true;
             },
             
-            // Активация защиты
             triggerProtection(reason) {
                 this.totalAttacksBlocked++;
                 console.warn('DDoS attack blocked:', reason);
@@ -667,23 +869,19 @@
                     this.showCaptcha();
                 }
                 
-                // Имитация блокировки IP
                 const simulatedIP = this.getSimulatedIP();
                 this.blockedIPs.add(simulatedIP);
                 
-                // Автоматическая разблокировка
                 setTimeout(() => {
                     this.blockedIPs.delete(simulatedIP);
                     this.captchaActive = false;
                 }, this.blockDurationMinutes * 60000);
             },
             
-            // Получение имитированного IP
             getSimulatedIP() {
                 return '192.168.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255);
             },
             
-            // Показ капчи (только при атаке)
             showCaptcha() {
                 const modal = document.getElementById('ddosModal');
                 if (modal) {
@@ -692,7 +890,6 @@
                 }
             },
             
-            // Скрытие капчи
             hideCaptcha() {
                 const modal = document.getElementById('ddosModal');
                 if (modal) {
@@ -703,7 +900,6 @@
                 this.requestCount = 0;
             },
             
-            // Генерация капчи
             generateCaptcha() {
                 const captchaText = document.getElementById('captchaText');
                 if (captchaText) {
@@ -716,7 +912,6 @@
                 }
             },
             
-            // Проверка капчи
             verifyCaptcha() {
                 const captchaText = document.getElementById('captchaText');
                 const captchaInput = document.getElementById('captchaInput');
@@ -732,7 +927,6 @@
                 }
             },
             
-            // Показ сообщения о блокировке
             showBlockedMessage() {
                 document.body.innerHTML = `
                     <div style="text-align: center; padding: 50px; color: #ff3c3c; background: #0a0a0a; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
@@ -743,9 +937,7 @@
                 `;
             },
             
-            // Настройка слушателей событий
             setupEventListeners() {
-                // Перехват всех кликов
                 document.addEventListener('click', (e) => {
                     if (!this.registerRequest()) {
                         e.preventDefault();
@@ -753,7 +945,6 @@
                     }
                 }, true);
                 
-                // Перехват отправки форм
                 document.addEventListener('submit', (e) => {
                     if (!this.registerRequest()) {
                         e.preventDefault();
@@ -761,7 +952,6 @@
                     }
                 }, true);
                 
-                // Перехват AJAX запросов
                 const originalFetch = window.fetch;
                 window.fetch = async (...args) => {
                     if (!this.registerRequest()) {
@@ -770,7 +960,6 @@
                     return originalFetch.apply(this, args);
                 };
                 
-                // Перехват WebSocket
                 const originalWebSocket = window.WebSocket;
                 window.WebSocket = function(...args) {
                     if (!AntiDDoS.registerRequest()) {
@@ -779,7 +968,6 @@
                     return new originalWebSocket(...args);
                 };
                 
-                // Перехват XMLHttpRequest
                 const originalXHROpen = XMLHttpRequest.prototype.open;
                 XMLHttpRequest.prototype.open = function(...args) {
                     if (!AntiDDoS.registerRequest()) {
@@ -789,7 +977,6 @@
                 };
             },
             
-            // Получение статистики защиты
             getStats() {
                 return {
                     totalRequests: this.requests.length,
@@ -801,10 +988,237 @@
             }
         };
 
-        // Инициализация невидимой Anti-DDoS защиты
         AntiDDoS.init();
 
-        // МЕТКА: ROCKET // Невидимая Anti-DDoS защита активирована
+        // ============================================
+        // АДМИН-ПАНЕЛЬ (СКРЫТАЯ)
+        // ============================================
+        
+        const AdminPanel = {
+            // Секретный пароль администратора
+            // ЗАМЕНИТЕ НА СВОЙ ПАРОЛЬ!
+            adminPassword: "Chubrik60Admin2026!",
+            
+            // Секретная комбинация для открытия (5 кликов по логотипу)
+            secretClicks: 0,
+            secretClicksRequired: 5,
+            secretClickTimeout: 2000, // 2 секунды между кликами
+            
+            // Статистика
+            stats: {
+                views: 0,
+                visitors: new Set(),
+                lastVisit: null,
+            },
+            
+            init() {
+                this.setupSecretTrigger();
+                this.setupKeyboardShortcut();
+                this.trackVisitors();
+                this.updateStats();
+            },
+            
+            // Секретный триггер: 5 быстрых кликов по логотипу
+            setupSecretTrigger() {
+                const logo = document.getElementById('logoClick');
+                
+                logo.addEventListener('click', () => {
+                    const now = Date.now();
+                    
+                    if (now - (this.lastClickTime || 0) > this.secretClickTimeout) {
+                        this.secretClicks = 0;
+                    }
+                    
+                    this.secretClicks++;
+                    this.lastClickTime = now;
+                    
+                    if (this.secretClicks >= this.secretClicksRequired) {
+                        this.secretClicks = 0;
+                        this.openAdminModal();
+                    }
+                });
+                
+                // Скрытый триггер в углу
+                const adminTrigger = document.getElementById('adminTrigger');
+                adminTrigger.addEventListener('click', () => {
+                    this.openAdminModal();
+                });
+            },
+            
+            // Горячая клавиша: Ctrl + Shift + A
+            setupKeyboardShortcut() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                        e.preventDefault();
+                        this.openAdminModal();
+                    }
+                });
+            },
+            
+            // Отслеживание посетителей
+            trackVisitors() {
+                const visitorId = this.getVisitorId();
+                this.stats.visitors.add(visitorId);
+                this.stats.views++;
+                this.stats.lastVisit = new Date().toLocaleString();
+                
+                // Сохраняем в localStorage
+                try {
+                    localStorage.setItem('admin_stats', JSON.stringify({
+                        views: this.stats.views,
+                        visitors: Array.from(this.stats.visitors),
+                        lastVisit: this.stats.lastVisit,
+                    }));
+                } catch (e) {
+                    // localStorage может быть недоступен
+                }
+            },
+            
+            // Получение ID посетителя
+            getVisitorId() {
+                let visitorId = localStorage.getItem('visitor_id');
+                if (!visitorId) {
+                    visitorId = 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('visitor_id', visitorId);
+                }
+                return visitorId;
+            },
+            
+            // Открытие админ-панели
+            openAdminModal() {
+                const modal = document.getElementById('adminModal');
+                if (modal) {
+                    modal.classList.add('active');
+                    document.getElementById('adminLoginForm').style.display = 'flex';
+                    document.getElementById('adminPanel').classList.remove('active');
+                    document.getElementById('adminPassword').value = '';
+                    document.getElementById('adminError').classList.remove('active');
+                }
+            },
+            
+            // Закрытие админ-панели            closeAdminPanel() {
+                const modal = document.getElementById('adminModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+            },
+            
+            // Проверка пароля
+            checkPassword(password) {
+                return password === this.adminPassword;
+            },
+            
+            // Обновление статистики
+            updateStats() {
+                document.getElementById('adminModCount').textContent = modsDatabase.length;
+                document.getElementById('adminViewCount').textContent = this.stats.views;
+                document.getElementById('adminDDoSBlocks').textContent = AntiDDoS.totalAttacksBlocked;
+                document.getElementById('adminVisitors').textContent = this.stats.visitors.size;
+            },
+            
+            // Экспорт данных
+            exportData() {
+                const data = {
+                    mods: modsDatabase,
+                    stats: {
+                        views: this.stats.views,
+                        visitors: Array.from(this.stats.visitors),
+                        lastVisit: this.stats.lastVisit,
+                        ddosBlocks: AntiDDoS.totalAttacksBlocked,
+                    },
+                    timestamp: new Date().toISOString(),
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'chubrik60hubmods_backup_' + Date.now() + '.json';
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                alert('✅ Данные экспортированы успешно!');
+            },
+            
+            // Обновление модов
+            refreshMods() {
+                alert('🔄 Моды обновлены! База данных актуальна.');
+                this.updateStats();
+            },
+            
+            // Очистка кэша
+            clearCache() {
+                if (confirm('Вы уверены что хотите очистить кэш?')) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    alert('🧹 Кэш очищен успешно!');
+                    this.updateStats();
+                }
+            },
+            
+            // Резервное копирование
+            backupSite() {
+                this.exportData();
+            },
+            
+            // Экстренный режим
+            emergencyMode() {
+                if (confirm('🚨 Активировать экстренный режим? Сайт будет временно недоступен.')) {
+                    document.body.innerHTML = `
+                        <div style="text-align: center; padding: 50px; background: #0a0a0a; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff;">
+                            <h1 style="color: #ff3c3c; font-size: 3rem; margin-bottom: 1rem;">🚨</h1>
+                            <h2 style="margin-bottom: 1rem;">Сайт временно недоступен</h2>
+                            <p style="color: #aaa;">Проводятся технические работы. Пожалуйста, зайдите позже.</p>
+                            <button onclick="location.reload()" style="margin-top: 2rem; padding: 1rem 2rem; background: #4caf50; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Восстановить доступ</button>
+                        </div>
+                    `;
+                }
+            },
+        };
+        
+        AdminPanel.init();
+
+        // Глобальные функции для админ-панели
+        function checkAdminPassword() {
+            const passwordInput = document.getElementById('adminPassword');
+            const errorElement = document.getElementById('adminError');
+            
+            if (AdminPanel.checkPassword(passwordInput.value)) {
+                document.getElementById('adminLoginForm').style.display = 'none';
+                document.getElementById('adminPanel').classList.add('active');
+                AdminPanel.updateStats();
+                errorElement.classList.remove('active');
+            } else {
+                errorElement.classList.add('active');
+                passwordInput.value = '';
+            }
+        }
+
+        function closeAdminPanel() {
+            AdminPanel.closeAdminPanel();
+        }
+
+        function adminExportData() {
+            AdminPanel.exportData();
+        }
+
+        function adminRefreshMods() {
+            AdminPanel.refreshMods();
+        }
+
+        function adminClearCache() {
+            AdminPanel.clearCache();
+        }
+
+        function adminBackupSite() {
+            AdminPanel.backupSite();
+        }
+
+        function adminEmergencyMode() {
+            AdminPanel.emergencyMode();
+        }
+
+        // МЕТКА: ROCKET // Админ-панель активирована (скрытая)
 
         // ============================================
         // БАЗА ДАННЫХ МОДОВ
@@ -1999,7 +2413,6 @@
                 <div class="download-buttons">${downloadButtonsHtml}</div>
             `;
 
-            // Делаем карточку кликабельной
             card.addEventListener('click', (e) => {
                 if (e.target.tagName !== 'A') {
                     if (AntiDDoS.registerRequest()) {
@@ -2019,13 +2432,11 @@
             const optimizationGrid = document.getElementById('optimizationGrid');
             const allModsGrid = document.getElementById('allModsGrid');
 
-            // Очищаем сетки
             modsGrid.innerHTML = '';
             modpacksGrid.innerHTML = '';
             optimizationGrid.innerHTML = '';
             allModsGrid.innerHTML = '';
 
-            // Заполняем популярные моды (первые 30 не-сборок и не-оптимизаций)
             const popularMods = modsDatabase.filter(mod => 
                 mod.category !== 'modpack' && mod.category !== 'optimization'
             ).slice(0, 30);
@@ -2034,58 +2445,44 @@
                 modsGrid.appendChild(createModCard(mod));
             });
 
-            // Заполняем сборки
             const modpacks = modsDatabase.filter(mod => mod.category === 'modpack');
             modpacks.forEach(mod => {
                 modpacksGrid.appendChild(createModCard(mod));
             });
 
-            // Заполняем оптимизацию
             const optimization = modsDatabase.filter(mod => mod.category === 'optimization');
             optimization.forEach(mod => {
                 optimizationGrid.appendChild(createModCard(mod));
             });
 
-            // Заполняем все моды
             modsDatabase.forEach(mod => {
                 allModsGrid.appendChild(createModCard(mod));
             });
 
-            // Обновляем счётчик
             document.getElementById('modCount').textContent = modsDatabase.length;
         }
 
-        // Текущие фильтры
         let currentCategoryFilter = 'all';
         let currentVersionFilter = 'all';
 
-        // Фильтрация модов
         function filterMods(category) {
             currentCategoryFilter = category;
-            
-            // Обновляем активную кнопку
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
-
             applyFilters();
         }
 
-        // Фильтрация по версии
         function filterByVersion(version) {
             currentVersionFilter = version;
-            
-            // Обновляем активную кнопку
             document.querySelectorAll('.version-filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
-
             applyFilters();
         }
 
-        // Применение всех фильтров
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const allCards = document.querySelectorAll('.mod-card');
@@ -2112,25 +2509,20 @@
             document.getElementById('modCount').textContent = visibleCount;
         }
 
-        // Поиск по модам
         function searchMods() {
             applyFilters();
         }
 
-        // Функция проверки капчи (глобальная)
         function verifyCaptcha() {
             AntiDDoS.verifyCaptcha();
         }
 
-        // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
             populateGrids();
-            
-            // Добавляем обработчик поиска
             document.getElementById('searchInput').addEventListener('input', searchMods);
         });
 
-        // МЕТКА: ROCKET // Chubrik60HUBMODS с невидимой Anti-DDoS защитой успешно загружен
+        // МЕТКА: ROCKET // Chubrik60HUBMODS с админ-панелью успешно загружен
     </script>
 </body>
 </html>
