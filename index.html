@@ -3,1239 +3,676 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chubrik60HUBMODS — Моды для Minecraft</title>
+    <title>CHUBRIK60HUBMODS — Моды, Шейдеры, Ресурспаки</title>
+    <meta name="description" content="500+ модов, шейдеров и ресурспаков для Minecraft">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: #0a0a0a;
-            color: #e0e0e0;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            overflow-x: hidden;
-        }
-
-        body.loaded {
-            opacity: 1;
-        }
-
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #4caf50;
-            border-radius: 50%;
-            animation: floatParticle linear infinite;
-            opacity: 0.3;
-        }
-
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
-        }
-
-        .header {
-            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid #4caf50;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #4caf50;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            user-select: none;
-            text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
-            animation: logoGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes logoGlow {
-            0%, 100% { text-shadow: 0 0 20px rgba(76, 175, 80, 0.5); }
-            50% { text-shadow: 0 0 40px rgba(76, 175, 80, 0.8), 0 0 60px rgba(76, 175, 80, 0.4); }
-        }
-
-        .logo span { color: #8bc34a; }
-
-        .nav-menu {
-            display: flex;
-            gap: 1rem;
-            list-style: none;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .nav-menu a {
-            color: #ccc;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        .nav-menu a:hover {
-            background: #4caf50;
-            color: #fff;
-        }
-
-        /* Кнопка ИИ */
-        .ai-chat-btn {
-            background: linear-gradient(135deg, #4caf50, #2196f3);
-            color: #fff;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            animation: aiPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes aiPulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }
-            50% { box-shadow: 0 0 30px rgba(33, 150, 243, 0.7); }
-        }
-
-        .ai-chat-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(76, 175, 80, 0.8);
-        }
-
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
-            padding: 4rem 5%;
-            text-align: center;
-            border-bottom: 3px solid #4caf50;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            color: #fff;
-            margin-bottom: 1rem;
-        }
-
-        .hero h1 .green {
-            color: #4caf50;
-            text-shadow: 0 0 30px rgba(76, 175, 80, 0.7);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #aaa;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem 3%;
-            position: relative;
-            z-index: 1;
-        }
-
-        .updates-section {
-            background: linear-gradient(135deg, #151515, #1a1a1a);
-            border: 1px solid #2a2a2a;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .updates-title {
-            color: #ffd700;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            border-bottom: 2px solid #ffd700;
-            padding-bottom: 0.5rem;
-        }
-
-        .update-item {
-            background: #1a1a1a;
-            border-left: 4px solid #4caf50;
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            border-radius: 0 10px 10px 0;
-            transition: all 0.3s ease;
-        }
-
-        .update-item:hover {
-            border-left-color: #ffd700;
-            background: #222;
-            transform: translateX(10px);
-        }
-
-        .update-date {
-            color: #ffd700;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .update-text {
-            color: #ccc;
-            line-height: 1.6;
-        }
-
-        .update-text ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .update-text li {
-            padding: 0.2rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .update-text li::before {
-            content: '✅';
-            position: absolute;
-            left: 0;
-            color: #4caf50;
-        }
-
-        .section {
-            margin-bottom: 3rem;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            color: #4caf50;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #4caf50;
-            text-transform: uppercase;
-        }
-
-        .mods-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .mod-card {
-            background: #151515;
-            border: 1px solid #2a2a2a;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mod-card:hover {
-            border-color: #4caf50;
-            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
-            transform: translateY(-8px);
-        }
-
-        .mod-name {
-            font-size: 1.2rem;
-            color: #4caf50;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .mod-versions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .mod-version {
-            background: #2a2a2a;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #aaa;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .mod-version:hover {
-            background: #2196f3;
-            color: #fff;
-        }
-
-        .mod-loader {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .loader-badge {
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .loader-badge.forge { background: #f16436; color: #fff; }
-        .loader-badge.fabric { background: #1bd96a; color: #000; }
-
-        .mod-description {
-            color: #ccc;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            flex-grow: 1;
-            margin-bottom: 1rem;
-        }
-
-        .download-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .download-btn {
-            display: block;
-            padding: 0.7rem 1.5rem;
-            border-radius: 5px;
-            font-weight: 600;
-            text-align: center;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            text-decoration: none;
-        }
-
-        .download-btn.curseforge { background: #f16436; color: #fff; }
-        .download-btn.curseforge:hover { background: #d54e24; transform: scale(1.05); }
-        .download-btn.modrinth { background: #1bd96a; color: #000; }
-        .download-btn.modrinth:hover { background: #17b557; transform: scale(1.05); }
-
-        .search-bar {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            background: #151515;
-            border: 2px solid #2a2a2a;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1.1rem;
-        }
-
-        .search-bar:focus {
-            outline: none;
-            border-color: #4caf50;
-            box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 0.7rem 1.5rem;
-            background: #151515;
-            border: 2px solid #2a2a2a;
-            color: #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background: #4caf50;
-            border-color: #4caf50;
-            color: #fff;
-        }
-
-        .version-filter, .loader-filter {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .version-filter-btn, .loader-filter-btn {
-            padding: 0.4rem 1rem;
-            background: #151515;
-            border: 2px solid #2a2a2a;
-            color: #ccc;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-
-        .version-filter-btn:hover, .version-filter-btn.active {
-            background: #2196f3;
-            border-color: #2196f3;
-            color: #fff;
-        }
-
-        .loader-filter-btn:hover, .loader-filter-btn.active {
-            background: #ff9800;
-            border-color: #ff9800;
-            color: #fff;
-        }
-
-        .counter {
-            color: #aaa;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .counter span {
-            color: #4caf50;
-            font-weight: 700;
-            font-size: 1.3rem;
-        }
-
-        .footer {
-            background: #0d0d0d;
-            padding: 2rem 5%;
-            text-align: center;
-            border-top: 3px solid #4caf50;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer p { color: #666; }
-        .footer a { color: #4caf50; text-decoration: none; }
-
-        /* ИИ Чат */
-        .ai-chat-modal {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 380px;
-            max-height: 500px;
-            background: #1a1a1a;
-            border: 2px solid #4caf50;
-            border-radius: 15px;
-            z-index: 10000;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            animation: slideInRight 0.3s ease;
-        }
-
-        .ai-chat-modal.active {
-            display: flex;
-            flex-direction: column;
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .ai-chat-header {
-            background: linear-gradient(135deg, #4caf50, #2196f3);
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .ai-chat-header h3 {
-            color: #fff;
-            font-size: 1.1rem;
-        }
-
-        .ai-chat-close {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .ai-chat-close:hover {
-            transform: scale(1.2);
-        }
-
-        .ai-language-selector {
-            padding: 0.5rem 1rem;
-            background: #0d0d0d;
-            border-bottom: 1px solid #2a2a2a;
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .ai-language-selector label {
-            color: #aaa;
-            font-size: 0.8rem;
-        }
-
-        .ai-language-selector select {
-            background: #2a2a2a;
-            color: #fff;
-            border: 1px solid #4caf50;
-            border-radius: 5px;
-            padding: 0.3rem 0.5rem;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .ai-chat-messages {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            max-height: 300px;
-        }
-
-        .ai-message {
-            padding: 0.8rem;
-            border-radius: 10px;
-            max-width: 80%;
-            word-wrap: break-word;
-            animation: messageIn 0.3s ease;
-        }
-
-        @keyframes messageIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .ai-message.user {
-            background: #4caf50;
-            color: #fff;
-            align-self: flex-end;
-        }
-
-        .ai-message.bot {
-            background: #2a2a2a;
-            color: #e0e0e0;
-            align-self: flex-start;
-        }
-
-        .ai-chat-input-area {
-            display: flex;
-            gap: 0.5rem;
-            padding: 1rem;
-            background: #0d0d0d;
-            border-top: 1px solid #2a2a2a;
-        }
-
-        .ai-chat-input {
-            flex-grow: 1;
-            padding: 0.7rem;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 0.9rem;
-        }
-
-        .ai-chat-input:focus {
-            outline: none;
-            border-color: #4caf50;
-        }
-
-        .ai-chat-send {
-            padding: 0.7rem 1.2rem;
-            background: #4caf50;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .ai-chat-send:hover {
-            background: #388e3c;
-        }
-
-        .ai-typing {
-            display: none;
-            color: #aaa;
-            font-size: 0.8rem;
-            padding: 0.5rem;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        @media (max-width: 768px) {
-            .ai-chat-modal {
-                width: 90%;
-                right: 5%;
-                bottom: 10px;
-            }
-            .header { flex-direction: column; text-align: center; }
-            .nav-menu { justify-content: center; }
-            .hero h1 { font-size: 2rem; }
-            .mods-grid { grid-template-columns: 1fr; }
-        }
+        :root{--accent:#4caf50;--accent2:#2196f3;--gold:#ffd700}
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+        html{scroll-behavior:smooth}
+        body{background:#0a0a0a;color:#e0e0e0;overflow-x:hidden;min-height:100vh}
+        
+        .cursor-particle{position:fixed;pointer-events:none;border-radius:50%;z-index:99999;animation:cpFade .7s ease-out forwards}
+        @keyframes cpFade{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
+        
+        #particlesCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+        
+        .header{background:rgba(13,13,13,.95);padding:.7rem 2%;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:1000;flex-wrap:wrap;gap:.3rem;backdrop-filter:blur(15px)}
+        
+        .logo{font-size:1.2rem;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;user-select:none;animation:logoFloat 3s infinite}
+        .logo .chubrik{color:#4caf50;text-shadow:0 0 15px #4caf50,0 0 30px #4caf50,0 0 60px #4caf50}
+        .logo .num60{color:#ff6b35;text-shadow:0 0 15px #ff6b35,0 0 30px #ff6b35}
+        .logo .hub{color:#2196f3;text-shadow:0 0 15px #2196f3,0 0 30px #2196f3}
+        .logo .mods{color:#ffd700;text-shadow:0 0 15px #ffd700,0 0 30px #ffd700}
+        @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+        
+        .nav-menu{display:flex;gap:.2rem;list-style:none;flex-wrap:wrap;align-items:center}
+        .nav-menu a{color:#ccc;text-decoration:none;font-weight:600;padding:.3rem .5rem;border-radius:4px;transition:.3s;text-transform:uppercase;font-size:.55rem}
+        .nav-menu a:hover{color:#fff;background:var(--accent);box-shadow:0 0 15px rgba(76,175,80,.6);text-shadow:0 0 10px #fff}
+        .nav-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:.3rem .6rem;border-radius:15px;cursor:pointer;font-weight:700;font-size:.55rem;transition:.3s;text-transform:uppercase}
+        .nav-btn:hover{transform:scale(1.1);box-shadow:0 0 20px rgba(76,175,80,.7)}
+        
+        .updates-toggle{position:fixed;top:50%;right:0;background:var(--accent);color:#fff;border:none;padding:.8rem .4rem;border-radius:8px 0 0 8px;cursor:pointer;z-index:999;font-weight:700;writing-mode:vertical-rl;letter-spacing:1px;font-size:.6rem;text-shadow:0 0 10px #fff}
+        .updates-panel{position:fixed;top:70px;right:-380px;width:350px;background:rgba(13,13,13,.95);border:2px solid var(--accent);border-radius:15px 0 0 15px;padding:.8rem;z-index:999;transition:right .4s ease;max-height:85vh;overflow-y:auto;backdrop-filter:blur(10px)}
+        .updates-panel.open{right:0}
+        .updates-close{position:sticky;top:0;float:right;background:#ff3c3c;color:#fff;border:none;width:25px;height:25px;border-radius:50%;cursor:pointer;font-weight:700;font-size:.8rem;margin-bottom:.5rem}
+        .updates-close:hover{background:#d32f2f;transform:scale(1.1)}
+        
+        .hero{background:linear-gradient(135deg,#0a0a0a,#1a2a1a,#0a0a0a);padding:2rem 5%;text-align:center;border-bottom:3px solid var(--accent)}
+        .hero h1{font-size:1.8rem;color:#fff;text-shadow:0 0 20px #4caf50,0 0 40px #4caf50,0 0 80px #4caf50;animation:neonGlow 2s infinite alternate}
+        @keyframes neonGlow{from{filter:brightness(1)}to{filter:brightness(1.4)}}
+        .hero p{color:#aaa;font-size:.85rem}
+        
+        .container{max-width:1400px;margin:0 auto;padding:1rem 2%;position:relative;z-index:1}
+        .section{margin-bottom:1.5rem}
+        .section-title{font-size:1rem;margin-bottom:.6rem;padding-bottom:.3rem;border-bottom:2px solid var(--accent);text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 10px currentColor,0 0 20px currentColor;animation:glowPulse 2s infinite}
+        @keyframes glowPulse{0%,100%{text-shadow:0 0 5px currentColor}50%{text-shadow:0 0 15px currentColor,0 0 30px currentColor}}
+        
+        .mods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}
+        .mod-card{background:#151515;border:1px solid #2a2a2a;border-radius:8px;padding:.5rem;transition:.3s;display:flex;flex-direction:column;cursor:pointer}
+        .mod-card:hover{border-color:var(--accent);box-shadow:0 5px 15px rgba(76,175,80,.4);transform:translateY(-4px)}
+        .mod-name{font-size:.7rem;font-weight:700;margin-bottom:.2rem;letter-spacing:.5px;text-shadow:0 0 8px currentColor}
+        .mod-rating{display:flex;gap:.05rem;margin-bottom:.2rem}
+        .star{font-size:.6rem;color:#555}
+        .star.active{color:#ffd700;text-shadow:0 0 8px #ffd700}
+        .mod-versions{display:flex;flex-wrap:wrap;gap:.1rem;margin-bottom:.2rem}
+        .mod-version{background:#2a2a2a;padding:.1rem .3rem;border-radius:8px;font-size:.45rem;color:#aaa}
+        .mod-loader{display:flex;gap:.1rem;margin-bottom:.2rem}
+        .loader-badge{padding:.1rem .3rem;border-radius:8px;font-size:.45rem;font-weight:600}
+        .loader-badge.forge{background:#f16436;color:#fff}
+        .loader-badge.fabric{background:#1bd96a;color:#000}
+        .mod-description{color:#ccc;font-size:.55rem;line-height:1.3;flex-grow:1;margin-bottom:.3rem}
+        .download-buttons{display:flex;gap:.2rem}
+        .download-btn{flex:1;padding:.25rem;border-radius:4px;font-weight:600;text-align:center;text-transform:uppercase;font-size:.45rem;text-decoration:none;transition:.3s}
+        .download-btn.curseforge{background:#f16436;color:#fff}
+        .download-btn.modrinth{background:#1bd96a;color:#000}
+        
+        .search-bar{width:100%;padding:.5rem;margin-bottom:.6rem;background:#151515;border:2px solid #2a2a2a;border-radius:8px;color:#fff;font-size:.8rem}
+        .search-bar:focus{outline:none;border-color:var(--accent)}
+        .filter-buttons{display:flex;gap:.2rem;margin-bottom:.6rem;flex-wrap:wrap}
+        .filter-btn{padding:.25rem .5rem;background:#151515;border:2px solid #2a2a2a;color:#ccc;border-radius:12px;cursor:pointer;font-weight:600;text-transform:uppercase;font-size:.5rem;transition:.3s}
+        .filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;text-shadow:0 0 8px #fff}
+        
+        .roulette-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:10001;justify-content:center;align-items:center}
+        .roulette-modal.active{display:flex}
+        .roulette-content{background:#1a1a1a;border:3px solid #ffd700;border-radius:20px;padding:1.5rem;max-width:400px;width:90%;text-align:center}
+        .roulette-result{font-size:.9rem;color:#ffd700;margin:.6rem 0;min-height:35px;text-shadow:0 0 15px #ffd700}
+        .roulette-btn{padding:.5rem 1rem;background:#ffd700;color:#000;border:none;border-radius:20px;cursor:pointer;font-weight:700;font-size:.8rem;margin:.2rem}
+        .roulette-count{padding:.3rem;background:#2a2a2a;border:2px solid #ffd700;border-radius:8px;color:#fff;font-size:.8rem;width:55px;text-align:center}
+        
+        .footer{background:#0d0d0d;padding:1rem 5%;text-align:center;border-top:3px solid var(--accent)}
+        
+        @media(max-width:768px){.header{flex-direction:column}.nav-menu{justify-content:center}.hero h1{font-size:1.3rem}.mods-grid{grid-template-columns:1fr}.updates-panel{width:90%}}
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <button class="updates-toggle" onclick="toggleUpdates()">📢 ОБНОВЛЕНИЯ</button>
+    <div class="updates-panel" id="updatesPanel">
+        <button class="updates-close" onclick="toggleUpdates()">✕</button>
+        <h3 style="color:#ffd700;text-shadow:0 0 15px #ffd700;margin-bottom:.6rem;font-size:.9rem;">📢 Обновления</h3>
+        <div style="background:#1a1a1a;padding:.5rem;border-radius:8px;margin-bottom:.3rem;border-left:4px solid #4caf50;">
+            <strong style="color:#4caf50;font-size:.7rem;">🎨 Глобальное обновление визуалов 1.0</strong><br>
+            <span style="color:#ccc;font-size:.6rem;">• Светящиеся буквы<br>• Частицы за курсором<br>• Оптимизация<br>• Улучшенные карточки</span>
+        </div>
+        <div style="background:#1a1a1a;padding:.5rem;border-radius:8px;margin-bottom:.3rem;border-left:4px solid #2196f3;">
+            <strong style="color:#2196f3;font-size:.7rem;">v6.0 — Контент</strong><br>
+            <span style="color:#ccc;font-size:.6rem;">• 700+ элементов<br>• 15+ категорий</span>
+        </div>
+        <div style="background:#1a1a1a;padding:.5rem;border-radius:8px;margin-bottom:.3rem;border-left:4px solid #ff6b35;">
+            <strong style="color:#ff6b35;font-size:.7rem;">v5.0 — Функции</strong><br>
+            <span style="color:#ccc;font-size:.6rem;">• Рулетка<br>• Оценки<br>• Свои моды</span>
+        </div>
+        <div style="background:#1a1a1a;padding:.5rem;border-radius:8px;border-left:4px solid #e91e63;">
+            <strong style="color:#e91e63;font-size:.7rem;">v4.0 — Шейдеры</strong><br>
+            <span style="color:#ccc;font-size:.6rem;">• 60+ шейдеров<br>• Для слабых и мощных ПК</span>
+        </div>
+        <div style="background:#1a1a1a;padding:.5rem;border-radius:8px;border-left:4px solid #ffd700;">
+            <strong style="color:#ffd700;font-size:.7rem;">v3.0 — Ресурспаки</strong><br>
+            <span style="color:#ccc;font-size:.6rem;">• 60+ ресурспаков</span>
+        </div>
+    </div>
 
     <header class="header">
-        <div class="logo">Chubrik60<span>HUB</span>MODS</div>
+        <div class="logo"><span class="chubrik">CHUBRIK</span><span class="num60">60</span><span class="hub">HUB</span><span class="mods">MODS</span></div>
         <ul class="nav-menu">
-            <li><a href="#updates">Обновления</a></li>
-            <li><a href="#mods">Моды</a></li>
-            <li><a href="#modpacks">Сборки</a></li>
-            <li><a href="#optimization">Оптимизация</a></li>
-            <li><a href="#all">Все моды</a></li>
-            <li><button class="ai-chat-btn" onclick="toggleAIChat()">🤖 ИИ-Помощник</button></li>
+            <li><a href="#tech">Тех</a></li><li><a href="#magic">Магия</a></li><li><a href="#adventure">Прикл</a></li><li><a href="#decoration">Декор</a></li><li><a href="#food">Еда</a></li><li><a href="#mobs">Мобы</a></li><li><a href="#world">Мир</a></li><li><a href="#storage">Хран</a></li><li><a href="#energy">Энерг</a></li><li><a href="#transport">Транс</a></li><li><a href="#tools">Инстр</a></li><li><a href="#armor">Броня</a></li><li><a href="#shaders">Шейд</a></li><li><a href="#resourcepacks">Ресурс</a></li><li><a href="#custom">Мои</a></li>
+            <li><button class="nav-btn" onclick="openRoulette()">🎰</button></li>
+            <li><button class="nav-btn" onclick="toggleAIChat()">🤖</button></li>
         </ul>
     </header>
 
     <div class="hero">
-        <h1>🚀 <span class="green">Chubrik60</span>HUBMODS</h1>
-        <p>200+ модов для Minecraft | Версии: 1.21.4, 1.20.1, 1.16.5 | Forge, Fabric</p>
+        <h1>🚀 CHUBRIK60HUBMODS</h1>
+        <p>700+ элементов • Глобальное обновление визуалов 1.0</p>
     </div>
 
     <div class="container">
-        <div class="updates-section" id="updates">
-            <h2 class="updates-title">📢 Подробные обновления сайта</h2>
-            <div class="update-item">
-                <div class="update-date">📅 20.05.2026 — Версия 3.0</div>
-                <div class="update-text"><ul>
-                    <li>Добавлен ИИ-помощник с выбором языка</li>
-                    <li>Добавлены визуальные эффекты и анимации</li>
-                    <li>Добавлено 200+ модов</li>
-                    <li>Фильтрация по версиям и загрузчикам</li>
-                    <li>Исправлены ссылки на CurseForge и Modrinth</li>
-                </ul></div>
+        <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Поиск..." oninput="applyFilters()">
+        <div class="filter-buttons" id="filterContainer"></div>
+        <div class="section" id="tech"><h2 class="section-title" style="color:#4caf50;">⚙️ Технические</h2><div class="mods-grid" id="techGrid"></div></div>
+        <div class="section" id="magic"><h2 class="section-title" style="color:#9c27b0;">🔮 Магические</h2><div class="mods-grid" id="magicGrid"></div></div>
+        <div class="section" id="adventure"><h2 class="section-title" style="color:#ff6b35;">🗺️ Приключения</h2><div class="mods-grid" id="adventureGrid"></div></div>
+        <div class="section" id="decoration"><h2 class="section-title" style="color:#e91e63;">🎨 Декоративные</h2><div class="mods-grid" id="decorationGrid"></div></div>
+        <div class="section" id="food"><h2 class="section-title" style="color:#ff9800;">🍖 Еда</h2><div class="mods-grid" id="foodGrid"></div></div>
+        <div class="section" id="mobs"><h2 class="section-title" style="color:#f44336;">👾 Мобы</h2><div class="mods-grid" id="mobsGrid"></div></div>
+        <div class="section" id="world"><h2 class="section-title" style="color:#00bcd4;">🌍 Мир</h2><div class="mods-grid" id="worldGrid"></div></div>
+        <div class="section" id="storage"><h2 class="section-title" style="color:#3f51b5;">📦 Хранение</h2><div class="mods-grid" id="storageGrid"></div></div>
+        <div class="section" id="energy"><h2 class="section-title" style="color:#ffeb3b;">⚡ Энергия</h2><div class="mods-grid" id="energyGrid"></div></div>
+        <div class="section" id="transport"><h2 class="section-title" style="color:#8bc34a;">🚂 Транспорт</h2><div class="mods-grid" id="transportGrid"></div></div>
+        <div class="section" id="tools"><h2 class="section-title" style="color:#607d8b;">🛠️ Инструменты</h2><div class="mods-grid" id="toolsGrid"></div></div>
+        <div class="section" id="armor"><h2 class="section-title" style="color:#795548;">🛡️ Броня</h2><div class="mods-grid" id="armorGrid"></div></div>
+        <div class="section" id="shaders"><h2 class="section-title" style="color:#2196f3;">✨ Шейдеры</h2>
+            <div style="display:flex;gap:.3rem;margin-bottom:.5rem;">
+                <button onclick="filterShaders('weak')" style="padding:.3rem .6rem;background:#2a2a2a;border:2px solid #4caf50;color:#fff;border-radius:12px;cursor:pointer;font-size:.6rem;">💻 Слабые (30)</button>
+                <button onclick="filterShaders('powerful')" style="padding:.3rem .6rem;background:#2a2a2a;border:2px solid #ff6b35;color:#fff;border-radius:12px;cursor:pointer;font-size:.6rem;">🖥️ Мощные (30)</button>
             </div>
-            <div class="update-item">
-                <div class="update-date">📅 15.05.2026 — Версия 2.5</div>
-                <div class="update-text"><ul>
-                    <li>Добавлена поддержка Minecraft 1.21.4</li>
-                    <li>Обновлены ссылки</li>
-                    <li>Улучшена производительность</li>
-                </ul></div>
+            <div class="mods-grid" id="shadersGrid"></div>
+        </div>
+        <div class="section" id="resourcepacks"><h2 class="section-title" style="color:#ffd700;">🎨 Ресурспаки</h2><div class="mods-grid" id="resourcepacksGrid"></div></div>
+        <div class="section" id="custom"><h2 class="section-title" style="color:#ff6b35;">📦 Мои моды</h2>
+            <div style="background:#151515;border:1px solid #2a2a2a;border-radius:8px;padding:.6rem;margin-bottom:.5rem;">
+                <input type="text" id="customModName" placeholder="Название" style="padding:.4rem;background:#0d0d0d;border:2px solid #2a2a2a;border-radius:6px;color:#fff;margin:.2rem;width:45%;font-size:.65rem;">
+                <input type="text" id="customModDesc" placeholder="Описание" style="padding:.4rem;background:#0d0d0d;border:2px solid #2a2a2a;border-radius:6px;color:#fff;margin:.2rem;width:45%;font-size:.65rem;">
+                <button onclick="addCustomMod()" style="padding:.4rem .8rem;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:.65rem;">➕</button>
             </div>
-        </div>
-
-        <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Поиск мода..." oninput="applyFilters()">
-        
-        <div class="filter-buttons">
-            <button class="filter-btn active" onclick="filterMods('all', this)">Все</button>
-            <button class="filter-btn" onclick="filterMods('tech', this)">Технические</button>
-            <button class="filter-btn" onclick="filterMods('magic', this)">Магические</button>
-            <button class="filter-btn" onclick="filterMods('adventure', this)">Приключения</button>
-            <button class="filter-btn" onclick="filterMods('decoration', this)">Декоративные</button>
-            <button class="filter-btn" onclick="filterMods('optimization', this)">Оптимизация</button>
-            <button class="filter-btn" onclick="filterMods('modpack', this)">Сборки</button>
-        </div>
-
-        <div class="version-filter">
-            <button class="version-filter-btn active" onclick="filterByVersion('all', this)">Все версии</button>
-            <button class="version-filter-btn" onclick="filterByVersion('1.21.4', this)">1.21.4</button>
-            <button class="version-filter-btn" onclick="filterByVersion('1.20.1', this)">1.20.1</button>
-            <button class="version-filter-btn" onclick="filterByVersion('1.16.5', this)">1.16.5</button>
-        </div>
-
-        <div class="loader-filter">
-            <button class="loader-filter-btn active" onclick="filterByLoader('all', this)">Все загрузчики</button>
-            <button class="loader-filter-btn" onclick="filterByLoader('forge', this)">Forge</button>
-            <button class="loader-filter-btn" onclick="filterByLoader('fabric', this)">Fabric</button>
-        </div>
-
-        <div class="counter">Найдено модов: <span id="modCount">0</span></div>
-
-        <div class="section" id="mods">
-            <h2 class="section-title">🔥 Популярные моды</h2>
-            <div class="mods-grid" id="modsGrid"></div>
-        </div>
-        <div class="section" id="modpacks">
-            <h2 class="section-title">📦 Сборки модов</h2>
-            <div class="mods-grid" id="modpacksGrid"></div>
-        </div>
-        <div class="section" id="optimization">
-            <h2 class="section-title">⚡ Моды на оптимизацию</h2>
-            <div class="mods-grid" id="optimizationGrid"></div>
-        </div>
-        <div class="section" id="all">
-            <h2 class="section-title">📋 Все моды</h2>
-            <div class="mods-grid" id="allModsGrid"></div>
+            <div class="mods-grid" id="customGrid"></div>
         </div>
     </div>
 
-    <!-- ИИ Чат -->
-    <div class="ai-chat-modal" id="aiChatModal">
-        <div class="ai-chat-header">
-            <h3>🤖 ИИ-Помощник Chubrik60</h3>
-            <button class="ai-chat-close" onclick="toggleAIChat()">✕</button>
+    <div class="roulette-modal" id="rouletteModal">
+        <div class="roulette-content">
+            <h2 style="color:#ffd700;text-shadow:0 0 15px #ffd700;">🎰 Рулетка</h2>
+            <input type="number" class="roulette-count" id="rouletteCount" value="1" min="1" max="10">
+            <div class="roulette-result" id="rouletteResult">Крутите!</div>
+            <button class="roulette-btn" onclick="spinRoulette()">🎲</button>
+            <button class="roulette-btn" onclick="closeRoulette()" style="background:#666;">✕</button>
         </div>
-        <div class="ai-language-selector">
-            <label>🌐 Язык:</label>
-            <select id="aiLanguage" onchange="changeAILanguage()">
-                <option value="ru">🇷🇺 Русский</option>
-                <option value="en">🇬🇧 English</option>
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="es">🇪🇸 Español</option>
-                <option value="it">🇮🇹 Italiano</option>
-                <option value="pt">🇵🇹 Português</option>
-                <option value="pl">🇵🇱 Polski</option>
-                <option value="uk">🇺🇦 Українська</option>
-                <option value="ja">🇯🇵 日本語</option>
-                <option value="ko">🇰🇷 한국어</option>
-                <option value="zh">🇨🇳 中文</option>
-            </select>
+    </div>
+
+    <div id="aiChatModal" style="display:none;position:fixed;bottom:20px;right:20px;width:280px;background:#1a1a1a;border:2px solid #4caf50;border-radius:12px;z-index:10000;">
+        <div style="background:#4caf50;padding:.5rem;display:flex;justify-content:space-between;">
+            <strong style="font-size:.7rem;">🤖 ИИ</strong>
+            <button onclick="toggleAIChat()" style="background:none;border:none;color:#fff;cursor:pointer;">✕</button>
         </div>
-        <div class="ai-chat-messages" id="aiChatMessages">
-            <div class="ai-message bot" id="aiWelcomeMessage">Привет! Я ИИ-помощник Chubrik60HUBMODS. Задайте мне вопрос о модах, Minecraft или сайте!</div>
-        </div>
-        <div class="ai-typing" id="aiTyping">ИИ печатает...</div>
-        <div class="ai-chat-input-area">
-            <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Введите сообщение..." onkeypress="handleAIKeyPress(event)">
-            <button class="ai-chat-send" onclick="sendAIMessage()">➤</button>
+        <div id="aiChatMessages" style="height:100px;overflow-y:auto;padding:.5rem;"></div>
+        <div style="display:flex;padding:.4rem;">
+            <input id="aiChatInput" placeholder="Сообщение..." onkeypress="if(event.key==='Enter')sendAIMessage()" style="flex-grow:1;padding:.4rem;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:4px;color:#fff;margin-right:.3rem;font-size:.65rem;">
+            <button onclick="sendAIMessage()" style="background:#4caf50;color:#fff;border:none;border-radius:4px;padding:.4rem;cursor:pointer;">➤</button>
         </div>
     </div>
 
     <footer class="footer">
-        <p>© 2026 <a href="#">Chubrik60HUBMODS</a>. Все права защищены.</p>
-        <p>Источники: CurseForge, Modrinth | 200+ модов | ИИ-помощник доступен</p>
+        <p style="color:#4caf50;text-shadow:0 0 15px #4caf50;">© 2026 CHUBRIK60HUBMODS | Глобальное обновление визуалов 1.0</p>
     </footer>
 
     <script>
-        // Частицы
-        function createParticles() {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < 30; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDuration = (Math.random() * 10 + 5) + 's';
-                p.style.animationDelay = Math.random() * 5 + 's';
-                p.style.width = (Math.random() * 4 + 2) + 'px';
-                p.style.height = p.style.width;
-                container.appendChild(p);
-            }
-        }
-        createParticles();
+        // Оптимизированные частицы
+        document.addEventListener('mousemove',(e)=>{
+            if(Math.random()>0.3)return;
+            const p=document.createElement('div');
+            p.className='cursor-particle';
+            p.style.left=e.clientX+'px';p.style.top=e.clientY+'px';
+            p.style.width=Math.random()*4+1+'px';p.style.height=p.style.width;
+            p.style.background=['#4caf50','#2196f3','#ffd700','#ff6b35','#e91e63','#9c27b0','#00bcd4'][Math.floor(Math.random()*7)];
+            p.style.setProperty('--dx',(Math.random()-.5)*30+'px');
+            p.style.setProperty('--dy',(Math.random()-.5)*30+'px');
+            document.body.appendChild(p);
+            setTimeout(()=>p.remove(),700);
+        });
 
-        // ИИ Чат
-        let aiLanguage = 'ru';
-        const aiResponses = {
-            ru: {
-                welcome: "Привет! Я ИИ-помощник Chubrik60HUBMODS. Задайте мне вопрос о модах, Minecraft или сайте!",
-                help: "Я могу помочь с: поиском модов, выбором версии, рекомендациями по сборкам, объяснением категорий модов.",
-                mods: "У нас 200+ модов! Используйте поиск и фильтры для нахождения нужного мода.",
-                versions: "Поддерживаемые версии: 1.21.4, 1.20.1, 1.16.5. Выберите нужную версию в фильтре.",
-                loaders: "Доступны загрузчики Forge и Fabric. Выберите нужный в фильтре.",
-                optimize: "Для оптимизации рекомендуем: OptiFine (Forge), Sodium (Fabric), Lithium, Starlight.",
-                magic: "Популярные магические моды: Thaumcraft, Botania, Blood Magic, Astral Sorcery.",
-                tech: "Лучшие технические моды: Mekanism, Create, Thermal Expansion, Applied Energistics 2.",
-                adventure: "Приключенческие моды: Twilight Forest, Aether, Ice and Fire.",
-                decoration: "Декоративные моды: Chisel, Decocraft, Macaw's серия.",
-                modpack: "Популярные сборки: RLCraft, SkyFactory 4, All the Mods, Enigmatica.",
-                default: "Я понимаю ваш вопрос. Задайте его конкретнее о модах, версиях или загрузчиках.",
-                download: "Скачать моды можно по кнопкам CurseForge или Modrinth на каждой карточке мода.",
-                search: "Используйте поисковую строку для быстрого поиска модов по названию.",
-            },
-            en: {
-                welcome: "Hello! I'm the Chubrik60HUBMODS AI assistant. Ask me about mods, Minecraft, or the site!",
-                help: "I can help with: finding mods, choosing versions, modpack recommendations, explaining mod categories.",
-                mods: "We have 200+ mods! Use search and filters to find the mod you need.",
-                versions: "Supported versions: 1.21.4, 1.20.1, 1.16.5. Select the version in the filter.",
-                loaders: "Forge and Fabric loaders are available. Select the one you need in the filter.",
-                optimize: "For optimization we recommend: OptiFine (Forge), Sodium (Fabric), Lithium, Starlight.",
-                magic: "Popular magic mods: Thaumcraft, Botania, Blood Magic, Astral Sorcery.",
-                tech: "Best tech mods: Mekanism, Create, Thermal Expansion, Applied Energistics 2.",
-                adventure: "Adventure mods: Twilight Forest, Aether, Ice and Fire.",
-                decoration: "Decoration mods: Chisel, Decocraft, Macaw's series.",
-                modpack: "Popular modpacks: RLCraft, SkyFactory 4, All the Mods, Enigmatica.",
-                default: "I understand your question. Ask more specifically about mods, versions, or loaders.",
-                download: "You can download mods via CurseForge or Modrinth buttons on each mod card.",
-                search: "Use the search bar to quickly find mods by name.",
-            },
-            de: {
-                welcome: "Hallo! Ich bin der Chubrik60HUBMODS KI-Assistent. Fragen Sie mich über Mods, Minecraft oder die Website!",
-                help: "Ich kann helfen bei: Mods finden, Versionen wählen, Modpack-Empfehlungen, Mod-Kategorien erklären.",
-                mods: "Wir haben 200+ Mods! Nutzen Sie Suche und Filter.",
-                versions: "Unterstützte Versionen: 1.21.4, 1.20.1, 1.16.5.",
-                loaders: "Forge und Fabric Loader sind verfügbar.",
-                optimize: "Zur Optimierung empfehlen wir: OptiFine, Sodium, Lithium, Starlight.",
-                default: "Ich verstehe Ihre Frage. Bitte fragen Sie genauer.",
-                download: "Laden Sie Mods über CurseForge oder Modrinth Buttons herunter.",
-                search: "Nutzen Sie die Suchleiste.",
-            },
-            fr: {
-                welcome: "Bonjour ! Je suis l'assistant IA Chubrik60HUBMODS. Posez-moi des questions sur les mods, Minecraft ou le site !",
-                help: "Je peux aider avec : trouver des mods, choisir des versions, recommandations de modpacks.",
-                mods: "Nous avons 200+ mods ! Utilisez la recherche et les filtres.",
-                versions: "Versions supportées : 1.21.4, 1.20.1, 1.16.5.",
-                loaders: "Les loaders Forge et Fabric sont disponibles.",
-                optimize: "Pour l'optimisation : OptiFine, Sodium, Lithium, Starlight.",
-                default: "Je comprends. Posez une question plus précise.",
-                download: "Téléchargez via les boutons CurseForge ou Modrinth.",
-                search: "Utilisez la barre de recherche.",
-            },
-            es: {
-                welcome: "¡Hola! Soy el asistente IA de Chubrik60HUBMODS. ¡Pregúntame sobre mods, Minecraft o el sitio!",
-                help: "Puedo ayudar con: encontrar mods, elegir versiones, recomendaciones de modpacks.",
-                mods: "¡Tenemos más de 200 mods! Usa la búsqueda y los filtros.",
-                versions: "Versiones soportadas: 1.21.4, 1.20.1, 1.16.5.",
-                loaders: "Los loaders Forge y Fabric están disponibles.",
-                optimize: "Para optimización: OptiFine, Sodium, Lithium, Starlight.",
-                default: "Entiendo. Haz una pregunta más específica.",
-                download: "Descarga mediante los botones de CurseForge o Modrinth.",
-                search: "Usa la barra de búsqueda.",
-            },
-            it: {
-                welcome: "Ciao! Sono l'assistente IA di Chubrik60HUBMODS. Chiedimi di mod, Minecraft o del sito!",
-                help: "Posso aiutare con: trovare mod, scegliere versioni, consigli su modpack.",
-                mods: "Abbiamo 200+ mod! Usa ricerca e filtri.",
-                versions: "Versioni supportate: 1.21.4, 1.20.1, 1.16.5.",
-                loaders: "Loader Forge e Fabric disponibili.",
-                optimize: "Per ottimizzazione: OptiFine, Sodium, Lithium, Starlight.",
-                default: "Capisco. Fai una domanda più specifica.",
-                download: "Scarica tramite i pulsanti CurseForge o Modrinth.",
-                search: "Usa la barra di ricerca.",
-            },
-            pt: {
-                welcome: "Olá! Sou o assistente IA do Chubrik60HUBMODS. Pergunte-me sobre mods, Minecraft ou o site!",
-                help: "Posso ajudar com: encontrar mods, escolher versões, recomendações de modpacks.",
-                mods: "Temos mais de 200 mods! Use a busca e os filtros.",
-                versions: "Versões suportadas: 1.21.4, 1.20.1, 1.16.5.",
-                loaders: "Loaders Forge e Fabric disponíveis.",
-                optimize: "Para otimização: OptiFine, Sodium, Lithium, Starlight.",
-                default: "Entendo. Faça uma pergunta mais específica.",
-                download: "Baixe pelos botões CurseForge ou Modrinth.",
-                search: "Use a barra de busca.",
-            },
-            pl: {
-                welcome: "Cześć! Jestem asystentem AI Chubrik60HUBMODS. Zapytaj mnie o mody, Minecraft lub stronę!",
-                help: "Mogę pomóc z: znajdowaniem modów, wyborem wersji, rekomendacjami modpacków.",
-                mods: "Mamy ponad 200 modów! Użyj wyszukiwania i filtrów.",
-                versions: "Wspierane wersje: 1.21.4, 1.20.1, 1.16.5.",
-                loaders: "Dostępne loadery Forge i Fabric.",
-                optimize: "Do optymalizacji: OptiFine, Sodium, Lithium, Starlight.",
-                default: "Rozumiem. Zadaj bardziej konkretne pytanie.",
-                download: "Pobierz przez przyciski CurseForge lub Modrinth.",
-                search: "Użyj paska wyszukiwania.",
-            },
-            uk: {
-                welcome: "Привіт! Я ШІ-помічник Chubrik60HUBMODS. Запитайте мене про моди, Minecraft або сайт!",
-                help: "Я можу допомогти з: пошуком модів, вибором версій, рекомендаціями збірок.",
-                mods: "У нас 200+ модів! Використовуйте пошук і фільтри.",
-                versions: "Підтримувані версії: 1.21.4, 1.20.1, 1.16.5.",
-                loaders: "Доступні завантажувачі Forge і Fabric.",
-                optimize: "Для оптимізації: OptiFine, Sodium, Lithium, Starlight.",
-                default: "Розумію. Задайте більш конкретне питання.",
-                download: "Завантажте через кнопки CurseForge або Modrinth.",
-                search: "Використовуйте рядок пошуку.",
-            },
-            ja: {
-                welcome: "こんにちは！Chubrik60HUBMODSのAIアシスタントです。MOD、Minecraft、サイトについて質問してください！",
-                help: "MOD探し、バージョン選択、MODパックのおすすめなどをお手伝いします。",
-                mods: "200以上のMODがあります！検索とフィルターをお使いください。",
-                versions: "対応バージョン：1.21.4、1.20.1、1.16.5",
-                loaders: "ForgeとFabricローダーが利用可能です。",
-                optimize: "最適化には：OptiFine、Sodium、Lithium、Starlight",
-                default: "理解しました。より具体的な質問をしてください。",
-                download: "CurseForgeまたはModrinthのボタンからダウンロードできます。",
-                search: "検索バーをご利用ください。",
-            },
-            ko: {
-                welcome: "안녕하세요! Chubrik60HUBMODS AI 어시스턴트입니다. 모드, Minecraft, 사이트에 대해 질문하세요!",
-                help: "모드 찾기, 버전 선택, 모드팩 추천을 도와드립니다.",
-                mods: "200개 이상의 모드가 있습니다! 검색과 필터를 사용하세요.",
-                versions: "지원 버전: 1.21.4, 1.20.1, 1.16.5",
-                loaders: "Forge와 Fabric 로더를 사용할 수 있습니다.",
-                optimize: "최적화: OptiFine, Sodium, Lithium, Starlight",
-                default: "이해했습니다. 더 구체적인 질문을 해주세요.",
-                download: "CurseForge 또는 Modrinth 버튼으로 다운로드하세요.",
-                search: "검색창을 사용하세요.",
-            },
-            zh: {
-                welcome: "你好！我是Chubrik60HUBMODS的AI助手。请向我提问关于MOD、Minecraft或网站的问题！",
-                help: "我可以帮助：查找MOD、选择版本、推荐整合包。",
-                mods: "我们有200多个MOD！请使用搜索和筛选。",
-                versions: "支持版本：1.21.4、1.20.1、1.16.5",
-                loaders: "可用Forge和Fabric加载器。",
-                optimize: "优化推荐：OptiFine、Sodium、Lithium、Starlight",
-                default: "我理解。请提出更具体的问题。",
-                download: "通过CurseForge或Modrinth按钮下载。",
-                search: "请使用搜索栏。",
-            },
-        };
+        const canvas=document.getElementById('particlesCanvas');
+        const ctx=canvas.getContext('2d');
+        function resizeCanvas(){canvas.width=innerWidth;canvas.height=innerHeight}
+        resizeCanvas();window.addEventListener('resize',resizeCanvas);
+        const particles=[];
+        for(let i=0;i<50;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.8,vy:(Math.random()-.5)*.8,size:Math.random()*3+1,color:['#4caf50','#2196f3','#ffd700','#ff6b35','#e91e63'][Math.floor(Math.random()*5)]});
+        function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle=p.color;ctx.globalAlpha=.4;ctx.fill();ctx.globalAlpha=1;});requestAnimationFrame(anim);}
+        anim();
 
-        function toggleAIChat() {
-            const modal = document.getElementById('aiChatModal');
-            modal.classList.toggle('active');
-            if (modal.classList.contains('active')) {
-                document.getElementById('aiChatInput').focus();
-            }
-        }
+        function toggleUpdates(){document.getElementById('updatesPanel').classList.toggle('open');}
 
-        function changeAILanguage() {
-            aiLanguage = document.getElementById('aiLanguage').value;
-            const welcomeMsg = aiResponses[aiLanguage].welcome;
-            const welcomeElement = document.getElementById('aiWelcomeMessage');
-            if (welcomeElement) {
-                welcomeElement.textContent = welcomeMsg;
-            }
-        }
-
-        function handleAIKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendAIMessage();
-            }
-        }
-
-        function sendAIMessage() {
-            const input = document.getElementById('aiChatInput');
-            const message = input.value.trim();
-            if (!message) return;
-
-            const messagesContainer = document.getElementById('aiChatMessages');
-            
-            // Добавляем сообщение пользователя
-            const userMsg = document.createElement('div');
-            userMsg.className = 'ai-message user';
-            userMsg.textContent = message;
-            messagesContainer.appendChild(userMsg);
-            
-            input.value = '';
-            
-            // Показываем индикатор печати
-            const typingIndicator = document.getElementById('aiTyping');
-            typingIndicator.style.display = 'block';
-            
-            // Генерируем ответ
-            setTimeout(() => {
-                typingIndicator.style.display = 'none';
-                const botMsg = document.createElement('div');
-                botMsg.className = 'ai-message bot';
-                botMsg.textContent = generateAIResponse(message);
-                messagesContainer.appendChild(botMsg);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 800 + Math.random() * 1200);
-            
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function generateAIResponse(message) {
-            const lower = message.toLowerCase();
-            const responses = aiResponses[aiLanguage];
-            
-            if (lower.includes('привет') || lower.includes('hello') || lower.includes('hi') || lower.includes('здрав')) return responses.welcome;
-            if (lower.includes('помощ') || lower.includes('help') || lower.includes('что ты')) return responses.help;
-            if (lower.includes('мод') || lower.includes('mod')) return responses.mods;
-            if (lower.includes('верси') || lower.includes('version')) return responses.versions;
-            if (lower.includes('загруз') || lower.includes('loader') || lower.includes('forge') || lower.includes('fabric')) return responses.loaders;
-            if (lower.includes('оптимиз') || lower.includes('fps') || lower.includes('лаг') || lower.includes('производительн')) return responses.optimize;
-            if (lower.includes('маги') || lower.includes('magic')) return responses.magic;
-            if (lower.includes('техн') || lower.includes('tech')) return responses.tech;
-            if (lower.includes('приключ') || lower.includes('adventure') || lower.includes('измерен')) return responses.adventure;
-            if (lower.includes('декор') || lower.includes('decor') || lower.includes('мебель')) return responses.decoration;
-            if (lower.includes('сборк') || lower.includes('modpack') || lower.includes('пак')) return responses.modpack;
-            if (lower.includes('скачат') || lower.includes('download') || lower.includes('загруз')) return responses.download;
-            if (lower.includes('поиск') || lower.includes('search') || lower.includes('найт')) return responses.search;
-            if (lower.includes('спасибо') || lower.includes('thank') || lower.includes('благодар')) return responses.welcome;
-            
-            return responses.default;
-        }
-
-        // База данных модов
-        const modsDatabase = [
+        const modsDatabase=[
             // ТЕХНИЧЕСКИЕ (40)
-            { name: "Industrial Craft 2", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Классический технический мод.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/industrial-craft", modrinth: "https://modrinth.com/mod/industrial-craft" } },
-            { name: "BuildCraft", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Автоматизация добычи ресурсов.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/buildcraft", modrinth: "https://modrinth.com/mod/buildcraft" } },
-            { name: "Thermal Expansion", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Тепловые машины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/thermal-expansion", modrinth: "https://modrinth.com/mod/thermal-expansion" } },
-            { name: "Applied Energistics 2", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Цифровое хранение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2", modrinth: "https://modrinth.com/mod/ae2" } },
-            { name: "Mekanism", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Высокотехнологичные машины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mekanism", modrinth: "https://modrinth.com/mod/mekanism" } },
-            { name: "Ender IO", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Компактные машины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/ender-io", modrinth: "https://modrinth.com/mod/enderio" } },
-            { name: "Refined Storage", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Система хранения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/refined-storage", modrinth: "https://modrinth.com/mod/refined-storage" } },
-            { name: "Immersive Engineering", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Многоблочные структуры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/immersive-engineering", modrinth: "https://modrinth.com/mod/immersive-engineering" } },
-            { name: "RFTools", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Телепортация.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/rftools", modrinth: "https://modrinth.com/mod/rftools" } },
-            { name: "Draconic Evolution", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Мощная броня.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/draconic-evolution", modrinth: "https://modrinth.com/mod/draconic-evolution" } },
-            { name: "Extreme Reactors", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Реакторы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/extreme-reactors", modrinth: "https://modrinth.com/mod/extreme-reactors" } },
-            { name: "CC:Tweaked", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Компьютеры Lua.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/cc-tweaked", modrinth: "https://modrinth.com/mod/cc-tweaked" } },
-            { name: "Create", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Механизмы и шестерни.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/create", modrinth: "https://modrinth.com/mod/create" } },
-            { name: "Forestry", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Фермерство.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/forestry", modrinth: "https://modrinth.com/mod/forestry" } },
-            { name: "PneumaticCraft", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Пневматика.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/pneumaticcraft-repressurized", modrinth: "https://modrinth.com/mod/pneumaticcraft-repressurized" } },
-            { name: "NuclearCraft", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Ядерные реакторы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/nuclearcraft-mod", modrinth: "https://modrinth.com/mod/nuclearcraft" } },
-            { name: "Galacticraft", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Космос.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/galacticraft", modrinth: "https://modrinth.com/mod/galacticraft" } },
-            { name: "Advanced Rocketry", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Ракеты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/advanced-rocketry", modrinth: "https://modrinth.com/mod/advanced-rocketry" } },
-            { name: "OpenComputers", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Компьютеры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/opencomputers", modrinth: "https://modrinth.com/mod/opencomputers" } },
-            { name: "Actually Additions", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Машины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/actually-additions", modrinth: "https://modrinth.com/mod/actually-additions" } },
-            { name: "Extra Utilities 2", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Генераторы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/extra-utilities", modrinth: "https://modrinth.com/mod/extra-utilities" } },
-            { name: "Iron Chests", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Улучшенные сундуки.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/iron-chests", modrinth: "https://modrinth.com/mod/iron-chests" } },
-            { name: "Storage Drawers", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Ящики для хранения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/storage-drawers", modrinth: "https://modrinth.com/mod/storage-drawers" } },
-            { name: "Flux Networks", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Беспроводная энергия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/flux-networks", modrinth: "https://modrinth.com/mod/flux-networks" } },
-            { name: "Simply Jetpacks", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Джетпаки.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/simply-jetpacks-2", modrinth: "https://modrinth.com/mod/simply-jetpacks" } },
-            { name: "Industrial Foregoing", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Индустриальная автоматизация.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/industrial-foregoing", modrinth: "https://modrinth.com/mod/industrial-foregoing" } },
-            { name: "Cyclic", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Разнообразные механизмы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/cyclic", modrinth: "https://modrinth.com/mod/cyclic" } },
-            { name: "Powah!", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Энергетика.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/powah", modrinth: "https://modrinth.com/mod/powah" } },
-            { name: "Pipez", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Трубы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/pipez", modrinth: "https://modrinth.com/mod/pipez" } },
-            { name: "Solar Flux Reborn", category: "tech", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Солнечные панели.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/solar-flux-reborn", modrinth: "https://modrinth.com/mod/solar-flux-reborn" } },
+            {name:"Industrial Craft 2",category:"tech",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Классика.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/industrial-craft",modrinth:"https://modrinth.com/mod/industrial-craft"}},
+            {name:"BuildCraft",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Трубы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/buildcraft",modrinth:"https://modrinth.com/mod/buildcraft"}},
+            {name:"Thermal Expansion",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Машины.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/thermal-expansion",modrinth:"https://modrinth.com/mod/thermal-expansion"}},
+            {name:"Applied Energistics 2",category:"tech",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Хранение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2",modrinth:"https://modrinth.com/mod/ae2"}},
+            {name:"Mekanism",category:"tech",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Технологии.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mekanism",modrinth:"https://modrinth.com/mod/mekanism"}},
+            {name:"Ender IO",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Машины.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/ender-io",modrinth:"https://modrinth.com/mod/enderio"}},
+            {name:"Refined Storage",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Хранение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/refined-storage",modrinth:"https://modrinth.com/mod/refined-storage"}},
+            {name:"Create",category:"tech",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Механизмы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/create",modrinth:"https://modrinth.com/mod/create"}},
+            {name:"Immersive Engineering",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Мультиблоки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/immersive-engineering",modrinth:"https://modrinth.com/mod/immersive-engineering"}},
+            {name:"RFTools",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Телепорт.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/rftools",modrinth:"https://modrinth.com/mod/rftools"}},
+            {name:"Draconic Evolution",category:"tech",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Мощь.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/draconic-evolution",modrinth:"https://modrinth.com/mod/draconic-evolution"}},
+            {name:"CC:Tweaked",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Компьютеры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/cc-tweaked",modrinth:"https://modrinth.com/mod/cc-tweaked"}},
+            {name:"Forestry",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Фермы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/forestry",modrinth:"https://modrinth.com/mod/forestry"}},
+            {name:"PneumaticCraft",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Пневматика.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/pneumaticcraft-repressurized",modrinth:"https://modrinth.com/mod/pneumaticcraft-repressurized"}},
+            {name:"NuclearCraft",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Реакторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/nuclearcraft-mod",modrinth:"https://modrinth.com/mod/nuclearcraft"}},
+            {name:"Galacticraft",category:"tech",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Космос.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/galacticraft",modrinth:"https://modrinth.com/mod/galacticraft"}},
+            {name:"Advanced Rocketry",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Ракеты.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/advanced-rocketry",modrinth:"https://modrinth.com/mod/advanced-rocketry"}},
+            {name:"OpenComputers",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Компьютеры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/opencomputers",modrinth:"https://modrinth.com/mod/opencomputers"}},
+            {name:"Actually Additions",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Машины.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/actually-additions",modrinth:"https://modrinth.com/mod/actually-additions"}},
+            {name:"Extra Utilities 2",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Генераторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/extra-utilities",modrinth:"https://modrinth.com/mod/extra-utilities"}},
+            {name:"Iron Chests",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Сундуки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/iron-chests",modrinth:"https://modrinth.com/mod/iron-chests"}},
+            {name:"Storage Drawers",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ящики.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/storage-drawers",modrinth:"https://modrinth.com/mod/storage-drawers"}},
+            {name:"Flux Networks",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Энергия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/flux-networks",modrinth:"https://modrinth.com/mod/flux-networks"}},
+            {name:"Simply Jetpacks",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Джетпаки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/simply-jetpacks-2",modrinth:"https://modrinth.com/mod/simply-jetpacks"}},
+            {name:"Industrial Foregoing",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Индустрия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/industrial-foregoing",modrinth:"https://modrinth.com/mod/industrial-foregoing"}},
+            {name:"Cyclic",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Механизмы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/cyclic",modrinth:"https://modrinth.com/mod/cyclic"}},
+            {name:"Powah!",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Энергия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/powah",modrinth:"https://modrinth.com/mod/powah"}},
+            {name:"Pipez",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Трубы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/pipez",modrinth:"https://modrinth.com/mod/pipez"}},
+            {name:"Solar Flux Reborn",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Солнце.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/solar-flux-reborn",modrinth:"https://modrinth.com/mod/solar-flux-reborn"}},
+            {name:"Mob Grinding Utils",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Фермы мобов.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mob-grinding-utils",modrinth:"https://modrinth.com/mod/mob-grinding-utils"}},
+            {name:"Environmental Tech",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Эко-тех.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/environmental-tech",modrinth:"https://modrinth.com/mod/environmental-tech"}},
+            {name:"XNet",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Сеть.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/xnet",modrinth:"https://modrinth.com/mod/xnet"}},
+            {name:"Silent's Mechanisms",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Механизмы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/silents-mechanisms",modrinth:"https://modrinth.com/mod/silents-mechanisms"}},
+            {name:"Big Reactors",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Реакторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/big-reactors",modrinth:"https://modrinth.com/mod/big-reactors"}},
+            {name:"Ender Storage",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Хранилища.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/ender-storage-1-8",modrinth:"https://modrinth.com/mod/ender-storage"}},
+            {name:"JABBA",category:"tech",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Бочки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/jabba",modrinth:"https://modrinth.com/mod/jabba"}},
+            {name:"Ender Tanks",category:"tech",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Танки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/ender-tanks",modrinth:"https://modrinth.com/mod/ender-tanks"}},
+            {name:"Mekanism Generators",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Генераторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mekanism-generators",modrinth:"https://modrinth.com/mod/mekanism-generators"}},
+            {name:"Mekanism Tools",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Инструменты.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mekanism-tools",modrinth:"https://modrinth.com/mod/mekanism-tools"}},
+            {name:"Extreme Reactors",category:"tech",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Реакторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/extreme-reactors",modrinth:"https://modrinth.com/mod/extreme-reactors"}},
 
-            // МАГИЧЕСКИЕ (25)
-            { name: "Thaumcraft", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Исследование магии.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/thaumcraft", modrinth: "https://modrinth.com/mod/thaumcraft" } },
-            { name: "Botania", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Магия цветов.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/botania", modrinth: "https://modrinth.com/mod/botania" } },
-            { name: "Blood Magic", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Магия крови.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/blood-magic", modrinth: "https://modrinth.com/mod/blood-magic" } },
-            { name: "Astral Sorcery", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Магия звёзд.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/astral-sorcery", modrinth: "https://modrinth.com/mod/astral-sorcery" } },
-            { name: "Psi", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Программируемая магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/psi", modrinth: "https://modrinth.com/mod/psi" } },
-            { name: "Mystical Agriculture", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Выращивание ресурсов.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mystical-agriculture", modrinth: "https://modrinth.com/mod/mystical-agriculture" } },
-            { name: "Mahou Tsukai", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Японская магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mahou-tsukai", modrinth: "https://modrinth.com/mod/mahou-tsukai" } },
-            { name: "Eidolon", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Некромантия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/eidolon", modrinth: "https://modrinth.com/mod/eidolon" } },
-            { name: "Ars Nouveau", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Современная магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/ars-nouveau", modrinth: "https://modrinth.com/mod/ars-nouveau" } },
-            { name: "Occultism", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Оккультизм.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/occultism", modrinth: "https://modrinth.com/mod/occultism" } },
-            { name: "Mana and Artifice", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Мана и артефакты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mana-and-artifice", modrinth: "https://modrinth.com/mod/mana-and-artifice" } },
-            { name: "Nature's Aura", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Аура природы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/natures-aura", modrinth: "https://modrinth.com/mod/natures-aura" } },
-            { name: "Forbidden and Arcanus", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Запретная магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/forbidden-arcanus", modrinth: "https://modrinth.com/mod/forbidden-arcanus" } },
-            { name: "Malum", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Тёмная магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/malum", modrinth: "https://modrinth.com/mod/malum" } },
-            { name: "Hexerei", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Ведьмовство.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/hexerei", modrinth: "https://modrinth.com/mod/hexerei" } },
-            { name: "Bewitchment", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Колдовство.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/bewitchment", modrinth: "https://modrinth.com/mod/bewitchment" } },
-            { name: "Spectrum", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Цветовая магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/spectrum", modrinth: "https://modrinth.com/mod/spectrum" } },
-            { name: "Wizards", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Волшебники.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/wizards", modrinth: "https://modrinth.com/mod/wizards" } },
-            { name: "Spell Engine", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Движок заклинаний.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/spell-engine", modrinth: "https://modrinth.com/mod/spell-engine" } },
-            { name: "Runes", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Руны.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/runes", modrinth: "https://modrinth.com/mod/runes" } },
-            { name: "Goety", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Тёмное колдовство.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/goety", modrinth: "https://modrinth.com/mod/goety" } },
-            { name: "EvilCraft", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Тёмная магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/evilcraft", modrinth: "https://modrinth.com/mod/evilcraft" } },
-            { name: "AbyssalCraft", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Лавкрафт магия.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/abyssalcraft", modrinth: "https://modrinth.com/mod/abyssalcraft" } },
-            { name: "Totemic", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Магия тотемов.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/totemic", modrinth: "https://modrinth.com/mod/totemic" } },
-            { name: "Enigmatic Legacy", category: "magic", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Загадочное наследие.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/enigmatic-legacy", modrinth: "https://modrinth.com/mod/enigmatic-legacy" } },
+            // МАГИЧЕСКИЕ (30)
+            {name:"Thaumcraft",category:"magic",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Магия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/thaumcraft",modrinth:"https://modrinth.com/mod/thaumcraft"}},
+            {name:"Botania",category:"magic",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Цветы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/botania",modrinth:"https://modrinth.com/mod/botania"}},
+            {name:"Blood Magic",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Кровь.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/blood-magic",modrinth:"https://modrinth.com/mod/blood-magic"}},
+            {name:"Astral Sorcery",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Звёзды.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/astral-sorcery",modrinth:"https://modrinth.com/mod/astral-sorcery"}},
+            {name:"Psi",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Магия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/psi",modrinth:"https://modrinth.com/mod/psi"}},
+            {name:"Mystical Agriculture",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Ресурсы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mystical-agriculture",modrinth:"https://modrinth.com/mod/mystical-agriculture"}},
+            {name:"Mahou Tsukai",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Япония.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mahou-tsukai",modrinth:"https://modrinth.com/mod/mahou-tsukai"}},
+            {name:"Eidolon",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Некромантия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/eidolon",modrinth:"https://modrinth.com/mod/eidolon"}},
+            {name:"Ars Nouveau",category:"magic",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Магия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/ars-nouveau",modrinth:"https://modrinth.com/mod/ars-nouveau"}},
+            {name:"Occultism",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Оккультизм.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/occultism",modrinth:"https://modrinth.com/mod/occultism"}},
+            {name:"Mana and Artifice",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Мана.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mana-and-artifice",modrinth:"https://modrinth.com/mod/mana-and-artifice"}},
+            {name:"Nature's Aura",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Природа.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/natures-aura",modrinth:"https://modrinth.com/mod/natures-aura"}},
+            {name:"Forbidden and Arcanus",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Запретное.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/forbidden-arcanus",modrinth:"https://modrinth.com/mod/forbidden-arcanus"}},
+            {name:"Malum",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Тьма.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/malum",modrinth:"https://modrinth.com/mod/malum"}},
+            {name:"Hexerei",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Ведьмы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/hexerei",modrinth:"https://modrinth.com/mod/hexerei"}},
+            {name:"Bewitchment",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Колдовство.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/bewitchment",modrinth:"https://modrinth.com/mod/bewitchment"}},
+            {name:"Spectrum",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Цвета.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/spectrum",modrinth:"https://modrinth.com/mod/spectrum"}},
+            {name:"Wizards",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Волшебники.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/wizards",modrinth:"https://modrinth.com/mod/wizards"}},
+            {name:"Spell Engine",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Заклинания.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/spell-engine",modrinth:"https://modrinth.com/mod/spell-engine"}},
+            {name:"Runes",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Руны.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/runes",modrinth:"https://modrinth.com/mod/runes"}},
+            {name:"Goety",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Тьма.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/goety",modrinth:"https://modrinth.com/mod/goety"}},
+            {name:"EvilCraft",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Зло.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/evilcraft",modrinth:"https://modrinth.com/mod/evilcraft"}},
+            {name:"AbyssalCraft",category:"magic",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Лавкрафт.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/abyssalcraft",modrinth:"https://modrinth.com/mod/abyssalcraft"}},
+            {name:"Totemic",category:"magic",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Тотемы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/totemic",modrinth:"https://modrinth.com/mod/totemic"}},
+            {name:"Witchery",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Колдовство.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/witchery",modrinth:"https://modrinth.com/mod/witchery"}},
+            {name:"Ars Magica 2",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Заклинания.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/ars-magica-2",modrinth:"https://modrinth.com/mod/ars-magica-2"}},
+            {name:"Embers",category:"magic",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Огонь.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/embers",modrinth:"https://modrinth.com/mod/embers"}},
+            {name:"Enigmatic Legacy",category:"magic",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Наследие.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/enigmatic-legacy",modrinth:"https://modrinth.com/mod/enigmatic-legacy"}},
 
-            // ПРИКЛЮЧЕНЧЕСКИЕ (25)
-            { name: "Twilight Forest", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Новое измерение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest", modrinth: "https://modrinth.com/mod/the-twilight-forest" } },
-            { name: "Aether", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Небесное измерение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/aether", modrinth: "https://modrinth.com/mod/aether" } },
-            { name: "Ice and Fire", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Драконы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/ice-and-fire-dragons", modrinth: "https://modrinth.com/mod/ice-and-fire" } },
-            { name: "Advent of Ascension", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Много измерений.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/advent-of-ascension-nevermine", modrinth: "https://modrinth.com/mod/advent-of-ascension" } },
-            { name: "Mowzie's Mobs", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Боссы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mowzies-mobs", modrinth: "https://modrinth.com/mod/mowzies-mobs" } },
-            { name: "Blue Skies", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Два измерения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/blue-skies", modrinth: "https://modrinth.com/mod/blue-skies" } },
-            { name: "Dungeons Mod", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Подземелья.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/dungeons-mod", modrinth: "https://modrinth.com/mod/dungeons-mod" } },
-            { name: "Roguelike Dungeons", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Сложные подземелья.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/roguelike-dungeons", modrinth: "https://modrinth.com/mod/roguelike-dungeons" } },
-            { name: "Lycanites Mobs", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Опасные мобы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/lycanites-mobs", modrinth: "https://modrinth.com/mod/lycanites-mobs" } },
-            { name: "Dimensional Doors", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Карманные измерения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/dimensional-doors", modrinth: "https://modrinth.com/mod/dimensional-doors" } },
-            { name: "When Dungeons Arise", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Генерация структур.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/when-dungeons-arise", modrinth: "https://modrinth.com/mod/when-dungeons-arise" } },
-            { name: "YUNG's Better Dungeons", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Улучшенные подземелья.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/yungs-better-dungeons", modrinth: "https://modrinth.com/mod/yungs-better-dungeons" } },
-            { name: "YUNG's Better Mineshafts", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Улучшенные шахты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/yungs-better-mineshafts", modrinth: "https://modrinth.com/mod/yungs-better-mineshafts" } },
-            { name: "Repurposed Structures", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Новые структуры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/repurposed-structures", modrinth: "https://modrinth.com/mod/repurposed-structures" } },
-            { name: "Dungeon Crawl", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Подземелья-лабиринты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/dungeon-crawl", modrinth: "https://modrinth.com/mod/dungeon-crawl" } },
-            { name: "Friends and Foes", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Новые мобы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/friends-and-foes", modrinth: "https://modrinth.com/mod/friends-and-foes" } },
-            { name: "Bosses of Mass Destruction", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Боссы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/bosses-of-mass-destruction", modrinth: "https://modrinth.com/mod/bosses-of-mass-destruction" } },
-            { name: "Deeper and Darker", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Глубины.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/deeper-and-darker", modrinth: "https://modrinth.com/mod/deeper-and-darker" } },
-            { name: "Voidscape", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Пустота.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/voidscape", modrinth: "https://modrinth.com/mod/voidscape" } },
-            { name: "Undergarden", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Подземный сад.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/the-undergarden", modrinth: "https://modrinth.com/mod/the-undergarden" } },
-            { name: "Infernal Expansion", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Адское измерение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/infernal-expansion", modrinth: "https://modrinth.com/mod/infernal-expansion" } },
-            { name: "Aquamirae", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Морские приключения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/aquamirae", modrinth: "https://modrinth.com/mod/aquamirae" } },
-            { name: "The Graveyard", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Кладбища.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/the-graveyard-forge", modrinth: "https://modrinth.com/mod/the-graveyard" } },
-            { name: "Mystcraft", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Создание измерений.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mystcraft", modrinth: "https://modrinth.com/mod/mystcraft" } },
-            { name: "Atum 2", category: "adventure", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Египет.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/atum", modrinth: "https://modrinth.com/mod/atum" } },
+            // ПРИКЛЮЧЕНИЯ (25)
+            {name:"Twilight Forest",category:"adventure",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Измерение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest",modrinth:"https://modrinth.com/mod/the-twilight-forest"}},
+            {name:"Aether",category:"adventure",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Небеса.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/aether",modrinth:"https://modrinth.com/mod/aether"}},
+            {name:"Ice and Fire",category:"adventure",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Драконы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/ice-and-fire-dragons",modrinth:"https://modrinth.com/mod/ice-and-fire"}},
+            {name:"Advent of Ascension",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Измерения.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/advent-of-ascension-nevermine",modrinth:"https://modrinth.com/mod/advent-of-ascension"}},
+            {name:"Mowzie's Mobs",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Боссы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mowzies-mobs",modrinth:"https://modrinth.com/mod/mowzies-mobs"}},
+            {name:"Blue Skies",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Измерения.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/blue-skies",modrinth:"https://modrinth.com/mod/blue-skies"}},
+            {name:"Dungeons Mod",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Подземелья.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/dungeons-mod",modrinth:"https://modrinth.com/mod/dungeons-mod"}},
+            {name:"Roguelike Dungeons",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Подземелья.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/roguelike-dungeons",modrinth:"https://modrinth.com/mod/roguelike-dungeons"}},
+            {name:"Lycanites Mobs",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Монстры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/lycanites-mobs",modrinth:"https://modrinth.com/mod/lycanites-mobs"}},
+            {name:"Dimensional Doors",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Двери.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/dimensional-doors",modrinth:"https://modrinth.com/mod/dimensional-doors"}},
+            {name:"When Dungeons Arise",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Структуры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/when-dungeons-arise",modrinth:"https://modrinth.com/mod/when-dungeons-arise"}},
+            {name:"YUNG's Better Dungeons",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Подземелья.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/yungs-better-dungeons",modrinth:"https://modrinth.com/mod/yungs-better-dungeons"}},
+            {name:"Repurposed Structures",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Структуры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/repurposed-structures",modrinth:"https://modrinth.com/mod/repurposed-structures"}},
+            {name:"Bosses of Mass Destruction",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Боссы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/bosses-of-mass-destruction",modrinth:"https://modrinth.com/mod/bosses-of-mass-destruction"}},
+            {name:"Deeper and Darker",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Глубины.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/deeper-and-darker",modrinth:"https://modrinth.com/mod/deeper-and-darker"}},
+            {name:"Mystcraft",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Измерения.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mystcraft",modrinth:"https://modrinth.com/mod/mystcraft"}},
+            {name:"The Erebus",category:"adventure",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Насекомые.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/the-erebus",modrinth:"https://modrinth.com/mod/the-erebus"}},
+            {name:"Atum 2",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Египет.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/atum",modrinth:"https://modrinth.com/mod/atum"}},
+            {name:"Betweenlands",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Болота.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/angry-pixel-the-betweenlands",modrinth:"https://modrinth.com/mod/the-betweenlands"}},
+            {name:"Undergarden",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Подземелье.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/the-undergarden",modrinth:"https://modrinth.com/mod/the-undergarden"}},
+            {name:"Infernal Expansion",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Ад.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/infernal-expansion",modrinth:"https://modrinth.com/mod/infernal-expansion"}},
+            {name:"Aquamirae",category:"adventure",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Море.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/aquamirae",modrinth:"https://modrinth.com/mod/aquamirae"}},
+            {name:"Voidscape",category:"adventure",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Пустота.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/voidscape",modrinth:"https://modrinth.com/mod/voidscape"}},
+            {name:"Chocolate Quest",category:"adventure",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Подземелья.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/chocolate-quest",modrinth:"https://modrinth.com/mod/chocolate-quest"}},
 
             // ДЕКОРАТИВНЫЕ (20)
-            { name: "Chisel", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Новые текстуры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/chisel", modrinth: "https://modrinth.com/mod/chisel" } },
-            { name: "Decocraft", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Декор.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/decocraft", modrinth: "https://modrinth.com/mod/decocraft" } },
-            { name: "MrCrayfish's Furniture", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Мебель.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/mrcrayfish-furniture-mod", modrinth: "https://modrinth.com/mod/mrcrayfish-furniture" } },
-            { name: "Fairy Lights", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Гирлянды.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/fairy-lights", modrinth: "https://modrinth.com/mod/fairy-lights" } },
-            { name: "Macaw's Roofs", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Крыши.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-roofs", modrinth: "https://modrinth.com/mod/macaws-roofs" } },
-            { name: "Macaw's Furniture", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Мебель.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-furniture", modrinth: "https://modrinth.com/mod/macaws-furniture" } },
-            { name: "Macaw's Windows", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Окна.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-windows", modrinth: "https://modrinth.com/mod/macaws-windows" } },
-            { name: "Macaw's Bridges", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Мосты.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-bridges", modrinth: "https://modrinth.com/mod/macaws-bridges" } },
-            { name: "Macaw's Doors", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Двери.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-doors", modrinth: "https://modrinth.com/mod/macaws-doors" } },
-            { name: "Macaw's Fences", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Заборы.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-fences-and-walls", modrinth: "https://modrinth.com/mod/macaws-fences-and-walls" } },
-            { name: "Macaw's Trapdoors", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Люки.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-trapdoors", modrinth: "https://modrinth.com/mod/macaws-trapdoors" } },
-            { name: "Macaw's Lights", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Освещение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/macaws-lights-and-lamps", modrinth: "https://modrinth.com/mod/macaws-lights-and-lamps" } },
-            { name: "Supplementaries", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Дополнительный декор.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/supplementaries", modrinth: "https://modrinth.com/mod/supplementaries" } },
-            { name: "Quark", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Улучшения ванили.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/quark", modrinth: "https://modrinth.com/mod/quark" } },
-            { name: "Chipped", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Варианты блоков.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/chipped", modrinth: "https://modrinth.com/mod/chipped" } },
-            { name: "Handcrafted", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Ручная работа.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/handcrafted", modrinth: "https://modrinth.com/mod/handcrafted" } },
-            { name: "Another Furniture", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Мебель.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/another-furniture", modrinth: "https://modrinth.com/mod/another-furniture" } },
-            { name: "Beautify", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Украшения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/beautify", modrinth: "https://modrinth.com/mod/beautify" } },
-            { name: "Paladin's Furniture", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Мебель.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/paladins-furniture", modrinth: "https://modrinth.com/mod/paladins-furniture" } },
-            { name: "Adorn", category: "decoration", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Украшения.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/adorn", modrinth: "https://modrinth.com/mod/adorn" } },
+            {name:"Chisel",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Текстуры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/chisel",modrinth:"https://modrinth.com/mod/chisel"}},
+            {name:"Decocraft",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Декор.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/decocraft",modrinth:"https://modrinth.com/mod/decocraft"}},
+            {name:"MrCrayfish's Furniture",category:"decoration",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Мебель.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mrcrayfish-furniture-mod",modrinth:"https://modrinth.com/mod/mrcrayfish-furniture"}},
+            {name:"Fairy Lights",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Гирлянды.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/fairy-lights",modrinth:"https://modrinth.com/mod/fairy-lights"}},
+            {name:"Macaw's Roofs",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Крыши.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/macaws-roofs",modrinth:"https://modrinth.com/mod/macaws-roofs"}},
+            {name:"Macaw's Furniture",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мебель.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/macaws-furniture",modrinth:"https://modrinth.com/mod/macaws-furniture"}},
+            {name:"Macaw's Windows",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Окна.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/macaws-windows",modrinth:"https://modrinth.com/mod/macaws-windows"}},
+            {name:"Macaw's Bridges",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мосты.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/macaws-bridges",modrinth:"https://modrinth.com/mod/macaws-bridges"}},
+            {name:"Macaw's Doors",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Двери.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/macaws-doors",modrinth:"https://modrinth.com/mod/macaws-doors"}},
+            {name:"Macaw's Fences",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Заборы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/macaws-fences-and-walls",modrinth:"https://modrinth.com/mod/macaws-fences-and-walls"}},
+            {name:"Macaw's Trapdoors",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Люки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/macaws-trapdoors",modrinth:"https://modrinth.com/mod/macaws-trapdoors"}},
+            {name:"Macaw's Lights",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Свет.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/macaws-lights-and-lamps",modrinth:"https://modrinth.com/mod/macaws-lights-and-lamps"}},
+            {name:"Supplementaries",category:"decoration",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Декор.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/supplementaries",modrinth:"https://modrinth.com/mod/supplementaries"}},
+            {name:"Quark",category:"decoration",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Улучшения.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/quark",modrinth:"https://modrinth.com/mod/quark"}},
+            {name:"Chipped",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Блоки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/chipped",modrinth:"https://modrinth.com/mod/chipped"}},
+            {name:"Handcrafted",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мебель.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/handcrafted",modrinth:"https://modrinth.com/mod/handcrafted"}},
+            {name:"Another Furniture",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мебель.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/another-furniture",modrinth:"https://modrinth.com/mod/another-furniture"}},
+            {name:"Beautify",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Красота.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/beautify",modrinth:"https://modrinth.com/mod/beautify"}},
+            {name:"Paladin's Furniture",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мебель.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/paladins-furniture",modrinth:"https://modrinth.com/mod/paladins-furniture"}},
+            {name:"Adorn",category:"decoration",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Декор.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/adorn",modrinth:"https://modrinth.com/mod/adorn"}},
 
-            // ОПТИМИЗАЦИЯ (15)
-            { name: "OptiFine", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Производительность и шейдеры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/optifine", modrinth: "https://modrinth.com/mod/optifine" } },
-            { name: "Sodium", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Увеличение FPS.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/sodium", modrinth: "https://modrinth.com/mod/sodium" } },
-            { name: "Lithium", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Оптимизация сервера.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/lithium", modrinth: "https://modrinth.com/mod/lithium" } },
-            { name: "Phosphor", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Освещение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/phosphor", modrinth: "https://modrinth.com/mod/phosphor" } },
-            { name: "Iris Shaders", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Шейдеры.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/irisshaders", modrinth: "https://modrinth.com/mod/iris" } },
-            { name: "FerriteCore", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Память.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/ferritecore", modrinth: "https://modrinth.com/mod/ferrite-core" } },
-            { name: "Starlight", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Освещение.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/starlight", modrinth: "https://modrinth.com/mod/starlight" } },
-            { name: "Entity Culling", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Отсечение сущностей.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/entityculling", modrinth: "https://modrinth.com/mod/entityculling" } },
-            { name: "Clumps", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Группировка опыта.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/clumps", modrinth: "https://modrinth.com/mod/clumps" } },
-            { name: "Dynamic FPS", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "FPS в фоне.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/dynamic-fps", modrinth: "https://modrinth.com/mod/dynamic-fps" } },
-            { name: "LazyDFU", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Быстрая загрузка.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/lazy-dfu", modrinth: "https://modrinth.com/mod/lazydfu" } },
-            { name: "Smooth Boot", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Плавная загрузка.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/smooth-boot", modrinth: "https://modrinth.com/mod/smoothboot" } },
-            { name: "Memory Leak Fix", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge", "fabric"], description: "Исправление утечек.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/memoryleakfix", modrinth: "https://modrinth.com/mod/memoryleakfix" } },
-            { name: "Krypton", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Сеть.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/krypton", modrinth: "https://modrinth.com/mod/krypton" } },
-            { name: "BetterFPS", category: "optimization", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Оптимизации.", links: { curseforge: "https://www.curseforge.com/minecraft/mc-mods/betterfps", modrinth: "https://modrinth.com/mod/betterfps" } },
+            // ЕДА (15)
+            {name:"Pam's HarvestCraft",category:"food",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Еда.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/pams-harvestcraft",modrinth:"https://modrinth.com/mod/pams-harvestcraft"}},
+            {name:"Farmer's Delight",category:"food",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Готовка.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/farmers-delight",modrinth:"https://modrinth.com/mod/farmers-delight"}},
+            {name:"Cooking for Blockheads",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Кухня.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/cooking-for-blockheads",modrinth:"https://modrinth.com/mod/cooking-for-blockheads"}},
+            {name:"Croptopia",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Культуры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/croptopia",modrinth:"https://modrinth.com/mod/croptopia"}},
+            {name:"Nether's Delight",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Адская еда.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/nethers-delight",modrinth:"https://modrinth.com/mod/nethers-delight"}},
+            {name:"End's Delight",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Энд еда.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/ends-delight",modrinth:"https://modrinth.com/mod/ends-delight"}},
+            {name:"Delightful",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Дополнение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/delightful",modrinth:"https://modrinth.com/mod/delightful"}},
+            {name:"Aquaculture",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Рыбалка.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/aquaculture",modrinth:"https://modrinth.com/mod/aquaculture"}},
+            {name:"Brewin' and Chewin'",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Напитки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/brewin-and-chewin",modrinth:"https://modrinth.com/mod/brewin-and-chewin"}},
+            {name:"Corn Delight",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Кукуруза.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/corn-delight",modrinth:"https://modrinth.com/mod/corn-delight"}},
+            {name:"Ocean's Delight",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Море.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/oceans-delight",modrinth:"https://modrinth.com/mod/oceans-delight"}},
+            {name:"Pineapple Delight",category:"food",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Ананас.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/pineapple-delight",modrinth:"https://modrinth.com/mod/pineapple-delight"}},
+            {name:"Miner's Delight",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Шахтёрская.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/miners-delight",modrinth:"https://modrinth.com/mod/miners-delight"}},
+            {name:"Festive Delight",category:"food",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Праздник.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/festive-delight",modrinth:"https://modrinth.com/mod/festive-delight"}},
+            {name:"Cultural Delights",category:"food",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Культуры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/cultural-delights",modrinth:"https://modrinth.com/mod/cultural-delights"}},
 
-            // СБОРКИ (15)
-            { name: "RLCraft", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Хардкорная сборка.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/rlcraft", modrinth: "https://modrinth.com/modpack/rlcraft" } },
-            { name: "SkyFactory 4", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Скайблок.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/skyfactory-4", modrinth: "https://modrinth.com/modpack/skyfactory-4" } },
-            { name: "StoneBlock 2", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Каменный блок.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/stoneblock-2", modrinth: "https://modrinth.com/modpack/stoneblock-2" } },
-            { name: "Enigmatica 6", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Современная сборка.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/enigmatica6", modrinth: "https://modrinth.com/modpack/enigmatica-6" } },
-            { name: "All the Mods 6", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Максимум модов.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-6", modrinth: "https://modrinth.com/modpack/all-the-mods-6" } },
-            { name: "All the Mods 7", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Новейшая.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-7", modrinth: "https://modrinth.com/modpack/all-the-mods-7" } },
-            { name: "FTB Academy", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Обучение.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/ftb-academy", modrinth: "https://modrinth.com/modpack/ftb-academy" } },
-            { name: "FTB University", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Продвинутое обучение.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/ftb-university", modrinth: "https://modrinth.com/modpack/ftb-university" } },
-            { name: "SevTech: Ages", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Эпохи.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/sevtech-ages", modrinth: "https://modrinth.com/modpack/sevtech-ages" } },
-            { name: "Project Ozone 3", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Сложный скайблок.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/project-ozone-3-a-new-way-forward", modrinth: "https://modrinth.com/modpack/project-ozone-3" } },
-            { name: "Better Minecraft", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Улучшенная ваниль.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/better-minecraft", modrinth: "https://modrinth.com/modpack/better-minecraft" } },
-            { name: "Fabulously Optimized", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["fabric"], description: "Оптимизированная.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/fabulously-optimized", modrinth: "https://modrinth.com/modpack/fabulously-optimized" } },
-            { name: "Valhelsia 3", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Красивая сборка.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/valhelsia-3", modrinth: "https://modrinth.com/modpack/valhelsia-3" } },
-            { name: "Craft to Exile", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "RPG сборка.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/craft-to-exile", modrinth: "https://modrinth.com/modpack/craft-to-exile" } },
-            { name: "Medieval MC", category: "modpack", versions: ["1.21.4", "1.20.1", "1.16.5"], loaders: ["forge"], description: "Средневековье.", links: { curseforge: "https://www.curseforge.com/minecraft/modpacks/medieval-mc", modrinth: "https://modrinth.com/modpack/medieval-mc" } },
+            // МОБЫ (15)
+            {name:"Mowzie's Mobs",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Боссы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mowzies-mobs",modrinth:"https://modrinth.com/mod/mowzies-mobs"}},
+            {name:"Lycanites Mobs",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Монстры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/lycanites-mobs",modrinth:"https://modrinth.com/mod/lycanites-mobs"}},
+            {name:"Friends and Foes",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Новые мобы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/friends-and-foes",modrinth:"https://modrinth.com/mod/friends-and-foes"}},
+            {name:"Alex's Mobs",category:"mobs",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Много мобов.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/alexs-mobs",modrinth:"https://modrinth.com/mod/alexs-mobs"}},
+            {name:"Mystical World",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Мистика.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mystical-world",modrinth:"https://modrinth.com/mod/mystical-world"}},
+            {name:"Zoo and Wild Animals",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Животные.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/zawa",modrinth:"https://modrinth.com/mod/zawa"}},
+            {name:"Exotic Birds",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Птицы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/exotic-birds",modrinth:"https://modrinth.com/mod/exotic-birds"}},
+            {name:"Aquatic Animals",category:"mobs",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Водные.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/aquatic",modrinth:"https://modrinth.com/mod/aquatic"}},
+            {name:"Cave Dweller",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Пещеры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/cave-dweller",modrinth:"https://modrinth.com/mod/cave-dweller"}},
+            {name:"Grimoire of Gaia",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Монстры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/grimoire-of-gaia",modrinth:"https://modrinth.com/mod/grimoire-of-gaia"}},
+            {name:"Mutant Beasts",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Мутанты.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mutant-beasts",modrinth:"https://modrinth.com/mod/mutant-beasts"}},
+            {name:"Fish of Thieves",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Рыбы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/fish-of-thieves",modrinth:"https://modrinth.com/mod/fish-of-thieves"}},
+            {name:"Creatures and Beasts",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Существа.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/creatures-and-beasts",modrinth:"https://modrinth.com/mod/creatures-and-beasts"}},
+            {name:"Naturalist",category:"mobs",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Природа.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/naturalist",modrinth:"https://modrinth.com/mod/naturalist"}},
+            {name:"Unusual End",category:"mobs",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Энд мобы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/unusual-end",modrinth:"https://modrinth.com/mod/unusual-end"}},
+
+            // МИР (15)
+            {name:"Biomes O' Plenty",category:"world",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Биомы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/biomes-o-plenty",modrinth:"https://modrinth.com/mod/biomes-o-plenty"}},
+            {name:"Terralith",category:"world",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ландшафт.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/terralith",modrinth:"https://modrinth.com/mod/terralith"}},
+            {name:"Oh The Biomes",category:"world",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Биомы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/oh-the-biomes",modrinth:"https://modrinth.com/mod/oh-the-biomes"}},
+            {name:"William Wythers Overhauled Overworld",category:"world",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мир.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/wwoo",modrinth:"https://modrinth.com/mod/wwoo"}},
+            {name:"Tectonic",category:"world",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Тектоника.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/tectonic",modrinth:"https://modrinth.com/mod/tectonic"}},
+            {name:"Climatic Biomes",category:"world",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Климат.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/climatic-biomes",modrinth:"https://modrinth.com/mod/climatic-biomes"}},
+            {name:"Regions Unexplored",category:"world",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Регионы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/regions-unexplored",modrinth:"https://modrinth.com/mod/regions-unexplored"}},
+            {name:"Amplified Nether",category:"world",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ад.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/amplified-nether",modrinth:"https://modrinth.com/mod/amplified-nether"}},
+            {name:"Nullscape",category:"world",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Энд.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/nullscape",modrinth:"https://modrinth.com/mod/nullscape"}},
+            {name:"Incendium",category:"world",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ад.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/incendium",modrinth:"https://modrinth.com/mod/incendium"}},
+            {name:"Terrestria",category:"world",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Биомы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/terrestria",modrinth:"https://modrinth.com/mod/terrestria"}},
+            {name:"Traverse",category:"world",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Биомы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/traverse",modrinth:"https://modrinth.com/mod/traverse"}},
+            {name:"Cave Enhancements",category:"world",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Пещеры.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/cave-enhancements",modrinth:"https://modrinth.com/mod/cave-enhancements"}},
+            {name:"Better End",category:"world",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Энд.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/betterend",modrinth:"https://modrinth.com/mod/betterend"}},
+            {name:"Better Nether",category:"world",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["fabric"],description:"Ад.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/betternether",modrinth:"https://modrinth.com/mod/betternether"}},
+
+            // ХРАНЕНИЕ (10)
+            {name:"Iron Chests",category:"storage",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Сундуки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/iron-chests",modrinth:"https://modrinth.com/mod/iron-chests"}},
+            {name:"Storage Drawers",category:"storage",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ящики.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/storage-drawers",modrinth:"https://modrinth.com/mod/storage-drawers"}},
+            {name:"Refined Storage",category:"storage",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Хранение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/refined-storage",modrinth:"https://modrinth.com/mod/refined-storage"}},
+            {name:"Applied Energistics 2",category:"storage",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Хранение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2",modrinth:"https://modrinth.com/mod/ae2"}},
+            {name:"Sophisticated Backpacks",category:"storage",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Рюкзаки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks",modrinth:"https://modrinth.com/mod/sophisticated-backpacks"}},
+            {name:"Sophisticated Storage",category:"storage",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Хранение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/sophisticated-storage",modrinth:"https://modrinth.com/mod/sophisticated-storage"}},
+            {name:"Expanded Storage",category:"storage",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Хранение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/expanded-storage",modrinth:"https://modrinth.com/mod/expanded-storage"}},
+            {name:"Simple Storage Network",category:"storage",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Сеть.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/simple-storage-network",modrinth:"https://modrinth.com/mod/simple-storage-network"}},
+            {name:"Tom's Simple Storage",category:"storage",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Хранение.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/toms-storage",modrinth:"https://modrinth.com/mod/toms-storage"}},
+            {name:"Ranged Pumps",category:"storage",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Насосы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/ranged-pumps",modrinth:"https://modrinth.com/mod/ranged-pumps"}},
+
+            // ЭНЕРГИЯ (8)
+            {name:"Flux Networks",category:"energy",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Энергия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/flux-networks",modrinth:"https://modrinth.com/mod/flux-networks"}},
+            {name:"Powah!",category:"energy",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Генерация.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/powah",modrinth:"https://modrinth.com/mod/powah"}},
+            {name:"Extreme Reactors",category:"energy",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Реакторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/extreme-reactors",modrinth:"https://modrinth.com/mod/extreme-reactors"}},
+            {name:"Solar Flux Reborn",category:"energy",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Солнце.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/solar-flux-reborn",modrinth:"https://modrinth.com/mod/solar-flux-reborn"}},
+            {name:"Draconic Evolution",category:"energy",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Энергия.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/draconic-evolution",modrinth:"https://modrinth.com/mod/draconic-evolution"}},
+            {name:"Mekanism Generators",category:"energy",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Генераторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mekanism-generators",modrinth:"https://modrinth.com/mod/mekanism-generators"}},
+            {name:"NuclearCraft",category:"energy",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Реакторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/nuclearcraft-mod",modrinth:"https://modrinth.com/mod/nuclearcraft"}},
+            {name:"Big Reactors",category:"energy",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Реакторы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/big-reactors",modrinth:"https://modrinth.com/mod/big-reactors"}},
+
+            // ТРАНСПОРТ (5)
+            {name:"Railcraft",category:"transport",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Рельсы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/railcraft",modrinth:"https://modrinth.com/mod/railcraft"}},
+            {name:"Simply Jetpacks",category:"transport",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Джетпаки.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/simply-jetpacks-2",modrinth:"https://modrinth.com/mod/simply-jetpacks"}},
+            {name:"Pipez",category:"transport",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Трубы.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/pipez",modrinth:"https://modrinth.com/mod/pipez"}},
+            {name:"Waystones",category:"transport",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Телепорт.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/waystones",modrinth:"https://modrinth.com/mod/waystones"}},
+            {name:"Grappling Hook",category:"transport",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Крюк.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/grappling-hook",modrinth:"https://modrinth.com/mod/grappling-hook"}},
+
+            // ИНСТРУМЕНТЫ (5)
+            {name:"Tinkers Construct",category:"tools",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Инструменты.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/tinkers-construct",modrinth:"https://modrinth.com/mod/tinkers-construct"}},
+            {name:"Silent Gear",category:"tools",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Экипировка.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/silent-gear",modrinth:"https://modrinth.com/mod/silent-gear"}},
+            {name:"Tool Belt",category:"tools",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Пояс.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/tool-belt",modrinth:"https://modrinth.com/mod/tool-belt"}},
+            {name:"Building Gadgets",category:"tools",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Стройка.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/building-gadgets",modrinth:"https://modrinth.com/mod/building-gadgets"}},
+            {name:"Mining Gadgets",category:"tools",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Шахтёрство.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mining-gadgets",modrinth:"https://modrinth.com/mod/mining-gadgets"}},
+
+            // БРОНЯ (4)
+            {name:"Draconic Evolution",category:"armor",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Мощная броня.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/draconic-evolution",modrinth:"https://modrinth.com/mod/draconic-evolution"}},
+            {name:"Mekanism Tools",category:"armor",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Броня.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/mekanism-tools",modrinth:"https://modrinth.com/mod/mekanism-tools"}},
+            {name:"Simply Jetpacks Armor",category:"armor",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Броня.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/simply-jetpacks-2",modrinth:"https://modrinth.com/mod/simply-jetpacks"}},
+            {name:"Silent Gear Armor",category:"armor",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Броня.",links:{curseforge:"https://www.curseforge.com/minecraft/mc-mods/silent-gear",modrinth:"https://modrinth.com/mod/silent-gear"}},
+
+            // ШЕЙДЕРЫ (60)
+            {name:"BSL Shaders",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Красивые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/bsl-shaders",modrinth:"https://modrinth.com/shader/bsl-shaders"}},
+            {name:"Complementary",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Популярные.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/complementary-shaders",modrinth:"https://modrinth.com/shader/complementary-shaders"}},
+            {name:"SEUS",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Реализм.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/seus",modrinth:"https://modrinth.com/shader/seus"}},
+            {name:"SEUS PTGI",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Трассировка.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/seus-ptgi",modrinth:"https://modrinth.com/shader/seus-ptgi"}},
+            {name:"Continuum",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Кино.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/continuum",modrinth:"https://modrinth.com/shader/continuum"}},
+            {name:"Nostalgia",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Реализм.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/nostalgia",modrinth:"https://modrinth.com/shader/nostalgia"}},
+            {name:"ProjectLUMA",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Продвинутые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/projectluma",modrinth:"https://modrinth.com/shader/projectluma"}},
+            {name:"Kappa",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge"],description:"Качество.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/kappa",modrinth:"https://modrinth.com/shader/kappa"}},
+            {name:"Voyager",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Красивые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/voyager",modrinth:"https://modrinth.com/shader/voyager"}},
+            {name:"Rethinking Voxels",category:"shaders",pc:"powerful",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Воксели.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/rethinking-voxels",modrinth:"https://modrinth.com/shader/rethinking-voxels"}},
+            {name:"AstraLex",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Космос.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/astralex",modrinth:"https://modrinth.com/shader/astralex"}},
+            {name:"Bliss",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Красивые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/bliss",modrinth:"https://modrinth.com/shader/bliss"}},
+            {name:"Photon",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Свет.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/photon",modrinth:"https://modrinth.com/shader/photon"}},
+            {name:"Soft Voxels",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Воксели.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/soft-voxels",modrinth:"https://modrinth.com/shader/soft-voxels"}},
+            {name:"Super Duper Vanilla",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ваниль.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/super-duper-vanilla",modrinth:"https://modrinth.com/shader/super-duper-vanilla"}},
+            {name:"Derivative",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Современные.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/derivative",modrinth:"https://modrinth.com/shader/derivative"}},
+            {name:"Hysteria",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Эффекты.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/hysteria",modrinth:"https://modrinth.com/shader/hysteria"}},
+            {name:"Chocapic Extreme",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Экстрим.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/chocapic13-shaders",modrinth:"https://modrinth.com/shader/chocapic13-shaders"}},
+            {name:"Sildur's Vibrant Extreme",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Экстрим.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/sildurs-shaders",modrinth:"https://modrinth.com/shader/sildurs-shaders"}},
+            {name:"MakeUp Ultra Fast",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Быстрые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/makeup-ultra-fast-shaders",modrinth:"https://modrinth.com/shader/makeup-ultra-fast-shaders"}},
+            {name:"Oceano",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Вода.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/oceano",modrinth:"https://modrinth.com/shader/oceano"}},
+            {name:"Vanilla Plus",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ваниль.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/vanilla-plus",modrinth:"https://modrinth.com/shader/vanilla-plus"}},
+            {name:"SORA",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Красивые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/sora",modrinth:"https://modrinth.com/shader/sora"}},
+            {name:"Tea",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Лёгкие.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/tea",modrinth:"https://modrinth.com/shader/tea"}},
+            {name:"DrDestens",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Красивые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/drdestens",modrinth:"https://modrinth.com/shader/drdestens"}},
+            {name:"YoFPS",category:"shaders",pc:"powerful",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"FPS.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/yofps",modrinth:"https://modrinth.com/shader/yofps"}},
+            {name:"Builder's QOL",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Стройка.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/builders-qol",modrinth:"https://modrinth.com/shader/builders-qol"}},
+            {name:"Simplicissimus",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Простые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/simplicissimus",modrinth:"https://modrinth.com/shader/simplicissimus"}},
+            {name:"Enhanced Default",category:"shaders",pc:"powerful",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ваниль.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/enhanced-default",modrinth:"https://modrinth.com/shader/enhanced-default"}},
+            {name:"Mini",category:"shaders",pc:"powerful",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мини.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/mini",modrinth:"https://modrinth.com/shader/mini"}},
+
+            // СЛАБЫЕ ШЕЙДЕРЫ (30)
+            {name:"Sildur's Lite",category:"shaders",pc:"weak",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Лёгкие.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/sildurs-shaders",modrinth:"https://modrinth.com/shader/sildurs-shaders"}},
+            {name:"Chocapic Lite",category:"shaders",pc:"weak",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Лёгкие.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/chocapic13-shaders",modrinth:"https://modrinth.com/shader/chocapic13-shaders"}},
+            {name:"MakeUp Fast",category:"shaders",pc:"weak",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Быстрые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/makeup-ultra-fast-shaders",modrinth:"https://modrinth.com/shader/makeup-ultra-fast-shaders"}},
+            {name:"Complementary Lite",category:"shaders",pc:"weak",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Лёгкая версия.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/complementary-shaders",modrinth:"https://modrinth.com/shader/complementary-shaders"}},
+            {name:"BSL Lite",category:"shaders",pc:"weak",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Лёгкий BSL.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/bsl-shaders",modrinth:"https://modrinth.com/shader/bsl-shaders"}},
+            {name:"Tea Lite",category:"shaders",pc:"weak",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Лёгкие.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/tea",modrinth:"https://modrinth.com/shader/tea"}},
+            {name:"Vanilla Plus Lite",category:"shaders",pc:"weak",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ваниль.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/vanilla-plus",modrinth:"https://modrinth.com/shader/vanilla-plus"}},
+            {name:"SORA Lite",category:"shaders",pc:"weak",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Лёгкие.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/sora",modrinth:"https://modrinth.com/shader/sora"}},
+            {name:"YoFPS Lite",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"FPS.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/yofps",modrinth:"https://modrinth.com/shader/yofps"}},
+            {name:"Potato Shaders",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Слабые ПК.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/potato",modrinth:"https://modrinth.com/shader/potato"}},
+            {name:"Lite Shaders",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Очень лёгкие.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/lite",modrinth:"https://modrinth.com/shader/lite"}},
+            {name:"Basic Shaders",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Базовые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/basic",modrinth:"https://modrinth.com/shader/basic"}},
+            {name:"Simple Shaders",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Простые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/simple",modrinth:"https://modrinth.com/shader/simple"}},
+            {name:"Light Shaders",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Светлые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/light",modrinth:"https://modrinth.com/shader/light"}},
+            {name:"Mini Shaders",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мини.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/mini",modrinth:"https://modrinth.com/shader/mini"}},
+            {name:"Fast Shaders",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Быстрые.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/fast",modrinth:"https://modrinth.com/shader/fast"}},
+            {name:"Ultra Lite",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ультра лёгкие.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/ultra-lite",modrinth:"https://modrinth.com/shader/ultra-lite"}},
+            {name:"FPS Boost",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"FPS.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/fps-boost",modrinth:"https://modrinth.com/shader/fps-boost"}},
+            {name:"Performance Plus",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Производительность.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/performance-plus",modrinth:"https://modrinth.com/shader/performance-plus"}},
+            {name:"Low End",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Слабые ПК.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/low-end",modrinth:"https://modrinth.com/shader/low-end"}},
+            {name:"Optimized",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Оптимизация.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/optimized",modrinth:"https://modrinth.com/shader/optimized"}},
+            {name:"Smooth Light",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Свет.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/smooth-light",modrinth:"https://modrinth.com/shader/smooth-light"}},
+            {name:"Minimal",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Минимум.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/minimal",modrinth:"https://modrinth.com/shader/minimal"}},
+            {name:"Tiny",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Крошечные.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/tiny",modrinth:"https://modrinth.com/shader/tiny"}},
+            {name:"Micro",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Микро.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/micro",modrinth:"https://modrinth.com/shader/micro"}},
+            {name:"Nano",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Нано.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/nano",modrinth:"https://modrinth.com/shader/nano"}},
+            {name:"Pixel",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Пиксели.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/pixel",modrinth:"https://modrinth.com/shader/pixel"}},
+            {name:"Retro",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ретро.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/retro",modrinth:"https://modrinth.com/shader/retro"}},
+            {name:"Old School",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Старая школа.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/old-school",modrinth:"https://modrinth.com/shader/old-school"}},
+            {name:"Classic",category:"shaders",pc:"weak",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Классика.",links:{curseforge:"https://www.curseforge.com/minecraft/shaders/classic",modrinth:"https://modrinth.com/shader/classic"}},
+
+            // РЕСУРСПАКИ (60)
+            {name:"Faithful 32x",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"32x.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/faithful-32x",modrinth:"https://modrinth.com/resourcepack/faithful-32x"}},
+            {name:"Default HD",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"HD.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/default-hd",modrinth:"https://modrinth.com/resourcepack/default-hd"}},
+            {name:"Bare Bones",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Минимализм.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/bare-bones",modrinth:"https://modrinth.com/resourcepack/bare-bones"}},
+            {name:"Jicklus",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Стильный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/jicklus",modrinth:"https://modrinth.com/resourcepack/jicklus"}},
+            {name:"Mizuno's 16 Craft",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Красивый.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/mizunos-16-craft",modrinth:"https://modrinth.com/resourcepack/mizunos-16-craft"}},
+            {name:"Stay True",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Реализм.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/stay-true",modrinth:"https://modrinth.com/resourcepack/stay-true"}},
+            {name:"Compliance 32x",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"32x.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/compliance",modrinth:"https://modrinth.com/resourcepack/compliance"}},
+            {name:"Patrix 32x",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Детали.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/patrix",modrinth:"https://modrinth.com/resourcepack/patrix"}},
+            {name:"Better Vanilla Building",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Стройка.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/better-vanilla-building",modrinth:"https://modrinth.com/resourcepack/better-vanilla-building"}},
+            {name:"Excalibur",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Средневековье.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/excalibur",modrinth:"https://modrinth.com/resourcepack/excalibur"}},
+            {name:"John Smith Legacy",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Классика.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/john-smith-legacy",modrinth:"https://modrinth.com/resourcepack/john-smith-legacy"}},
+            {name:"Soartex Fanver",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Гладкий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/soartex-fanver",modrinth:"https://modrinth.com/resourcepack/soartex-fanver"}},
+            {name:"Dokucraft",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Фэнтези.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/dokucraft",modrinth:"https://modrinth.com/resourcepack/dokucraft"}},
+            {name:"Sphax PureBDcraft",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Комикс.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/purebdcraft",modrinth:"https://modrinth.com/resourcepack/purebdcraft"}},
+            {name:"Roguelike",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Приключения.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/roguelike",modrinth:"https://modrinth.com/resourcepack/roguelike"}},
+            {name:"Chroma Hills",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"HD.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/chroma-hills",modrinth:"https://modrinth.com/resourcepack/chroma-hills"}},
+            {name:"Lithos Core",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Реализм.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/lithos-core",modrinth:"https://modrinth.com/resourcepack/lithos-core"}},
+            {name:"Misa's Realistic",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Реализм.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/misas-realistic",modrinth:"https://modrinth.com/resourcepack/misas-realistic"}},
+            {name:"A Little Taste of Jerm",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Уютный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/jerm",modrinth:"https://modrinth.com/resourcepack/jerm"}},
+            {name:"Canvas",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Современный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/canvas",modrinth:"https://modrinth.com/resourcepack/canvas"}},
+            {name:"Unity",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Единый.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/unity",modrinth:"https://modrinth.com/resourcepack/unity"}},
+            {name:"Coterie Craft",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мягкий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/coterie-craft",modrinth:"https://modrinth.com/resourcepack/coterie-craft"}},
+            {name:"Prime's HD",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"HD.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/primes-hd",modrinth:"https://modrinth.com/resourcepack/primes-hd"}},
+            {name:"Rodrigo's Pack",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"8x.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/rodrigos",modrinth:"https://modrinth.com/resourcepack/rodrigos"}},
+            {name:"Smooth Operator",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Гладкий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/smooth-operator",modrinth:"https://modrinth.com/resourcepack/smooth-operator"}},
+            {name:"Triton",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Современный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/triton",modrinth:"https://modrinth.com/resourcepack/triton"}},
+            {name:"Whimscape",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мягкий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/whimscape",modrinth:"https://modrinth.com/resourcepack/whimscape"}},
+            {name:"ZigZag",category:"resourcepack",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Необычный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/zigzag",modrinth:"https://modrinth.com/resourcepack/zigzag"}},
+            {name:"Naturus",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Природа.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/naturus",modrinth:"https://modrinth.com/resourcepack/naturus"}},
+            {name:"Optimum Realism",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Реализм.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/optimum-realism",modrinth:"https://modrinth.com/resourcepack/optimum-realism"}},
+            {name:"Clarity",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Чёткость.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/clarity",modrinth:"https://modrinth.com/resourcepack/clarity"}},
+            {name:"Fresh Animations",category:"resourcepack",rating:5,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Анимации.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/fresh-animations",modrinth:"https://modrinth.com/resourcepack/fresh-animations"}},
+            {name:"New Default+",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Улучшенный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/new-default-plus",modrinth:"https://modrinth.com/resourcepack/new-default-plus"}},
+            {name:"Motschen's Better Leaves",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Листья.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/better-leaves",modrinth:"https://modrinth.com/resourcepack/better-leaves"}},
+            {name:"Round Trees",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Деревья.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/round-trees",modrinth:"https://modrinth.com/resourcepack/round-trees"}},
+            {name:"Epic Adventures",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Приключения.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/epic-adventures",modrinth:"https://modrinth.com/resourcepack/epic-adventures"}},
+            {name:"Minecraft HD",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"HD.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/minecraft-hd",modrinth:"https://modrinth.com/resourcepack/minecraft-hd"}},
+            {name:"Modern HD",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Современный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/modern-hd",modrinth:"https://modrinth.com/resourcepack/modern-hd"}},
+            {name:"Pixel Perfection",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Пиксели.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/pixel-perfection",modrinth:"https://modrinth.com/resourcepack/pixel-perfection"}},
+            {name:"Retro NES",category:"resourcepack",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Ретро.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/retro-nes",modrinth:"https://modrinth.com/resourcepack/retro-nes"}},
+            {name:"Clean Cut",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Чистый.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/clean-cut",modrinth:"https://modrinth.com/resourcepack/clean-cut"}},
+            {name:"Crisp",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Чёткий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/crisp",modrinth:"https://modrinth.com/resourcepack/crisp"}},
+            {name:"Smooth",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Гладкий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/smooth",modrinth:"https://modrinth.com/resourcepack/smooth"}},
+            {name:"Vivid",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Яркий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/vivid",modrinth:"https://modrinth.com/resourcepack/vivid"}},
+            {name:"Pastel",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Пастель.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/pastel",modrinth:"https://modrinth.com/resourcepack/pastel"}},
+            {name:"Dark Mode",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Тёмный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/dark-mode",modrinth:"https://modrinth.com/resourcepack/dark-mode"}},
+            {name:"Light Mode",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Светлый.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/light-mode",modrinth:"https://modrinth.com/resourcepack/light-mode"}},
+            {name:"Monochrome",category:"resourcepack",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Монохром.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/monochrome",modrinth:"https://modrinth.com/resourcepack/monochrome"}},
+            {name:"Sepia",category:"resourcepack",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Сепия.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/sepia",modrinth:"https://modrinth.com/resourcepack/sepia"}},
+            {name:"Vibrant",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Яркий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/vibrant",modrinth:"https://modrinth.com/resourcepack/vibrant"}},
+            {name:"Muted",category:"resourcepack",rating:3,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Приглушённый.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/muted",modrinth:"https://modrinth.com/resourcepack/muted"}},
+            {name:"Contrast",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Контраст.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/contrast",modrinth:"https://modrinth.com/resourcepack/contrast"}},
+            {name:"Bright",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Яркий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/bright",modrinth:"https://modrinth.com/resourcepack/bright"}},
+            {name:"Soft",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Мягкий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/soft",modrinth:"https://modrinth.com/resourcepack/soft"}},
+            {name:"Sharp",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Резкий.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/sharp",modrinth:"https://modrinth.com/resourcepack/sharp"}},
+            {name:"Clean",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Чистый.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/clean",modrinth:"https://modrinth.com/resourcepack/clean"}},
+            {name:"Pristine",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Безупречный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/pristine",modrinth:"https://modrinth.com/resourcepack/pristine"}},
+            {name:"Elegant",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Элегантный.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/elegant",modrinth:"https://modrinth.com/resourcepack/elegant"}},
+            {name:"Luxury",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Люкс.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/luxury",modrinth:"https://modrinth.com/resourcepack/luxury"}},
+            {name:"Premium",category:"resourcepack",rating:4,versions:["1.21.4","1.20.1","1.16.5"],loaders:["forge","fabric"],description:"Премиум.",links:{curseforge:"https://www.curseforge.com/minecraft/texture-packs/premium",modrinth:"https://modrinth.com/resourcepack/premium"}},
         ];
 
-        let currentCategoryFilter = 'all';
-        let currentVersionFilter = 'all';
-        let currentLoaderFilter = 'all';
+        let customMods = JSON.parse(localStorage.getItem('customMods') || '[]');
+        let currentFilter = 'all';
 
-        function createModCard(mod, index) {
+        const categories = ['tech','magic','adventure','decoration','food','mobs','world','storage','energy','transport','tools','armor','shaders','resourcepack','custom'];
+        const categoryNames = {tech:'⚙️',magic:'🔮',adventure:'🗺️',decoration:'🎨',food:'🍖',mobs:'👾',world:'🌍',storage:'📦',energy:'⚡',transport:'🚂',tools:'🛠️',armor:'🛡️',shaders:'✨',resourcepack:'🎨',custom:'📦'};
+
+        function createFilterButtons() {
+            const container = document.getElementById('filterContainer');
+            container.innerHTML = '<button class="filter-btn active" onclick="filterMods(\'all\', this)">Все</button>';
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.textContent = categoryNames[cat] + ' ' + cat;
+                btn.onclick = () => filterMods(cat, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function createModCard(mod) {
             const card = document.createElement('div');
             card.className = 'mod-card';
             card.dataset.category = mod.category;
-            card.dataset.name = mod.name.toLowerCase();
-            card.dataset.description = mod.description.toLowerCase();
-            card.dataset.versions = JSON.stringify(mod.versions);
-            card.dataset.loaders = JSON.stringify(mod.loaders);
-            card.style.animationDelay = (index * 0.02) + 's';
-
-            const versionsHtml = mod.versions.map(v => `<span class="mod-version" onclick="filterByVersion('${v}', this)">MC ${v}</span>`).join('');
-            const loadersHtml = mod.loaders.map(l => `<span class="loader-badge ${l}">${l === 'forge' ? 'Forge' : 'Fabric'}</span>`).join('');
-            
+            card.dataset.name = (mod.name||'').toLowerCase();
+            card.dataset.description = (mod.description||'').toLowerCase();
+            const stars = [1,2,3,4,5].map(s => `<span class="star ${s<=(mod.rating||0)?'active':''}" onclick="rateMod('${mod.name}',${s})">★</span>`).join('');
+            const vers = (mod.versions||[]).map(v=>`<span class="mod-version">MC ${v}</span>`).join('');
+            const loads = (mod.loaders||[]).map(l=>`<span class="loader-badge ${l}">${l==='forge'?'Forge':'Fabric'}</span>`).join('');
+            const colors = {tech:'#4caf50',magic:'#9c27b0',adventure:'#ff6b35',decoration:'#e91e63',food:'#ff9800',mobs:'#f44336',world:'#00bcd4',storage:'#3f51b5',energy:'#ffeb3b',transport:'#8bc34a',tools:'#607d8b',armor:'#795548',shaders:'#2196f3',resourcepack:'#ffd700',custom:'#ff6b35'};
             card.innerHTML = `
-                <div class="mod-name">${mod.name}</div>
-                <div class="mod-versions">${versionsHtml}</div>
-                <div class="mod-loader">${loadersHtml}</div>
-                <div class="mod-description">${mod.description}</div>
+                <div class="mod-name" style="color:${colors[mod.category]||'#4caf50'};">${mod.name}</div>
+                <div class="mod-rating">${stars}</div>
+                <div class="mod-versions">${vers}</div>
+                <div class="mod-loader">${loads}</div>
+                <div class="mod-description">${mod.description||''}</div>
                 <div class="download-buttons">
-                    <a href="${mod.links.curseforge}" class="download-btn curseforge" target="_blank" rel="noopener noreferrer">⬇ CurseForge</a>
-                    <a href="${mod.links.modrinth}" class="download-btn modrinth" target="_blank" rel="noopener noreferrer">⬇ Modrinth</a>
-                </div>
-            `;
-
+                    ${mod.links?`<a href="${mod.links.curseforge}" class="download-btn curseforge" target="_blank">⬇ CF</a><a href="${mod.links.modrinth}" class="download-btn modrinth" target="_blank">⬇ MR</a>`:'<span style="color:#666;font-size:0.5rem;">Мой мод</span>'}
+                </div>`;
             return card;
         }
 
-        function populateGrids() {
-            document.getElementById('modsGrid').innerHTML = '';
-            document.getElementById('modpacksGrid').innerHTML = '';
-            document.getElementById('optimizationGrid').innerHTML = '';
-            document.getElementById('allModsGrid').innerHTML = '';
-
-            const popularMods = modsDatabase.filter(m => m.category !== 'modpack' && m.category !== 'optimization').slice(0, 60);
-            popularMods.forEach((m, i) => document.getElementById('modsGrid').appendChild(createModCard(m, i)));
-
-            modsDatabase.filter(m => m.category === 'modpack').forEach((m, i) => document.getElementById('modpacksGrid').appendChild(createModCard(m, i)));
-            modsDatabase.filter(m => m.category === 'optimization').forEach((m, i) => document.getElementById('optimizationGrid').appendChild(createModCard(m, i)));
-            modsDatabase.forEach((m, i) => document.getElementById('allModsGrid').appendChild(createModCard(m, i)));
-
-            document.getElementById('modCount').textContent = modsDatabase.length;
+        function rateMod(name, rating) {
+            const m = modsDatabase.find(x=>x.name===name);
+            if (m) m.rating = rating;
+            const cm = customMods.find(x=>x.name===name);
+            if (cm) cm.rating = rating;
+            localStorage.setItem('customMods', JSON.stringify(customMods));
+            populateAllGrids();
         }
 
-        function filterMods(category, btn) {
-            currentCategoryFilter = category;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            applyFilters();
+        function populateAllGrids() {
+            const allData = [...modsDatabase, ...customMods];
+            categories.forEach(cat => {
+                const grid = document.getElementById(cat + 'Grid');
+                if (grid) {
+                    grid.innerHTML = '';
+                    allData.filter(m => m.category === cat).forEach(m => grid.appendChild(createModCard(m)));
+                }
+            });
         }
 
-        function filterByVersion(version, btn) {
-            currentVersionFilter = version;
-            if (btn) {
-                document.querySelectorAll('.version-filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            applyFilters();
+        function filterShaders(pc) {
+            const allData = [...modsDatabase, ...customMods];
+            document.getElementById('shadersGrid').innerHTML = '';
+            allData.filter(m => m.category === 'shaders' && (pc === 'all' || m.pc === pc)).forEach(m => document.getElementById('shadersGrid').appendChild(createModCard(m)));
         }
 
-        function filterByLoader(loader, btn) {
-            currentLoaderFilter = loader;
-            document.querySelectorAll('.loader-filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        function addCustomMod() {
+            const name = document.getElementById('customModName').value.trim();
+            const desc = document.getElementById('customModDesc').value.trim();
+            if (!name) return;
+            customMods.push({name, description:desc, category:'custom', rating:0, versions:['1.21.4','1.20.1','1.16.5'], loaders:['forge','fabric']});
+            localStorage.setItem('customMods', JSON.stringify(customMods));
+            document.getElementById('customModName').value='';
+            document.getElementById('customModDesc').value='';
+            populateAllGrids();
+        }
+
+        function filterMods(cat, btn) {
+            currentFilter = cat;
+            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
             applyFilters();
         }
 
         function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.mod-card');
-            let count = 0;
-
-            cards.forEach(card => {
-                const name = card.dataset.name;
-                const desc = card.dataset.description;
-                const cat = card.dataset.category;
-                const vers = JSON.parse(card.dataset.versions);
-                const loaders = JSON.parse(card.dataset.loaders);
-
-                const showCat = currentCategoryFilter === 'all' || cat === currentCategoryFilter;
-                const showVer = currentVersionFilter === 'all' || vers.includes(currentVersionFilter);
-                const showLoader = currentLoaderFilter === 'all' || loaders.includes(currentLoaderFilter);
-                const showSearch = searchTerm === '' || name.includes(searchTerm) || desc.includes(searchTerm);
-
-                if (showCat && showVer && showLoader && showSearch) {
-                    card.style.display = 'flex';
-                    count++;
-                } else {
-                    card.style.display = 'none';
-                }
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.mod-card').forEach(card=>{
+                const show = (currentFilter==='all'||card.dataset.category===currentFilter)&&
+                             (term===''||card.dataset.name.includes(term)||card.dataset.description.includes(term));
+                card.style.display = show?'flex':'none';
             });
-
-            document.getElementById('modCount').textContent = count;
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('loaded');
-            populateGrids();
-        });
+        function openRoulette(){document.getElementById('rouletteModal').classList.add('active');}
+        function closeRoulette(){document.getElementById('rouletteModal').classList.remove('active');}
+        function spinRoulette(){
+            const count = parseInt(document.getElementById('rouletteCount').value)||1;
+            const allData=[...modsDatabase,...customMods];
+            const results=[];
+            for(let i=0;i<count;i++) results.push(allData[Math.floor(Math.random()*allData.length)].name);
+            const res=document.getElementById('rouletteResult');
+            res.textContent='🎲 Крутим...';
+            setTimeout(()=>{res.textContent='🎉 '+results.join(' | ');},1500);
+        }
 
-        // МЕТКА: ROCKET // Chubrik60HUBMODS с ИИ-помощником загружен
+        function toggleAIChat(){const m=document.getElementById('aiChatModal');m.style.display=m.style.display==='none'?'block':'none';}
+        function sendAIMessage(){
+            const input=document.getElementById('aiChatInput');
+            const msg=input.value.trim();
+            if(!msg)return;
+            const c=document.getElementById('aiChatMessages');
+            const u=document.createElement('div');
+            u.style.cssText='background:#4caf50;padding:0.8rem;border-radius:10px;margin-bottom:0.5rem;color:#fff;text-align:right;';
+            u.textContent=msg;c.appendChild(u);input.value='';
+            setTimeout(()=>{const b=document.createElement('div');b.style.cssText='background:#2a2a2a;padding:0.8rem;border-radius:10px;';b.textContent='Используйте фильтры!';c.appendChild(b);},500);
+        }
+
+        createFilterButtons();
+        document.addEventListener('DOMContentLoaded', populateAllGrids);
     </script>
 </body>
 </html>
