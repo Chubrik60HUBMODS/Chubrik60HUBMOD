@@ -3,535 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHUBRIK HUB — Глобальный Чат + Много Функций</title>
-
-    <!-- Firebase SDK для глобального чата -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-
+    <title>CHUBRIK60HUBMODS — 1000+ Модов, Шейдеров, Ресурспаков, Читов</title>
+    
     <style>
         :root{
-            --accent:#00ff88;
-            --accent2:#00ccff;
-            --accent3:#ff00ff;
-            --bg:#0a0a0f;
-            --card:rgba(255,255,255,0.03);
-            --border:rgba(0,255,136,0.3);
-            --text:#e0ffe0;
-            --glass:rgba(10,10,20,0.92);
-            --neon1:#00ff88;
-            --neon2:#00ccff;
-            --neon3:#ff00ff;
+            --accent:#7c3aed;
+            --bg:#050505;
+            --card:#0d0d0d;
+            --border:#1a1a1a;
+            --text:#d1d5db;
         }
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
         html{scroll-behavior:smooth}
-        body{background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;cursor:none}
-
-        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-        @keyframes glitch{0%,100%{transform:translate(0)}20%{transform:translate(-3px,3px)}40%{transform:translate(3px,-3px)}60%{transform:translate(-2px,-2px)}80%{transform:translate(2px,2px)}}
-        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
-        @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.7}}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-        @keyframes borderGlow{0%,100%{border-color:#00ff88;box-shadow:0 0 20px #00ff88}50%{border-color:#00ccff;box-shadow:0 0 50px #00ccff}}
-        @keyframes textFlicker{0%,100%{opacity:1}50%{opacity:.6}}
-        @keyframes scanline{0%{top:-100%}100%{top:100%}}
-        @keyframes matrixRain{0%{background-position:0 0}100%{background-position:0 1000px}}
-        @keyframes typing{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-        @keyframes newMessage{0%{transform:translateX(50px);opacity:0}100%{transform:translateX(0);opacity:1}}
-
-        /* ЛОГОТИП */
-        .logo-cyber{
-            display:inline-flex;
-            align-items:center;
-            font-weight:900;
-            text-transform:uppercase;
-            letter-spacing:.25rem;
-            cursor:pointer;
-            font-size:1.8rem;
-            position:relative;
-            color:#fff;
-            text-shadow:
-                0 0 10px #00ff88,
-                0 0 20px #00ff88,
-                0 0 40px #00ccff,
-                0 0 80px #ff00ff;
-            animation:neonFlicker 3s infinite, glitch 7s infinite;
+        body{background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
+        
+        .logo-metal{
+            display:inline-flex;align-items:center;font-weight:900;text-transform:uppercase;
+            letter-spacing:.12rem;cursor:pointer;font-size:1.4rem;position:relative;
+            background:linear-gradient(180deg,#e0e0e0,#8b5cf6,#4c1d95,#2e1065,#1e1b4b);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            filter:drop-shadow(0 2px 4px rgba(139,92,246,.5)) drop-shadow(0 0 20px rgba(139,92,246,.3));
         }
-        @keyframes neonFlicker{
-            0%,100%{text-shadow:0 0 10px #00ff88,0 0 20px #00ff88,0 0 40px #00ccff,0 0 80px #ff00ff}
-            25%{text-shadow:0 0 20px #00ccff,0 0 40px #00ccff,0 0 80px #ff00ff,0 0 120px #00ff88}
-            50%{text-shadow:0 0 30px #ff00ff,0 0 60px #ff00ff,0 0 100px #00ccff,0 0 150px #00ff88}
-            75%{text-shadow:0 0 20px #00ff88,0 0 50px #00ff88,0 0 90px #00ccff,0 0 130px #ff00ff}
-        }
-        .logo-cyber span{
-            font-size:1.4rem;
-            margin:0 .3rem;
-            color:#00ccff;
-            text-shadow:0 0 50px #00ccff,0 0 100px #ff00ff;
-            animation:spin 4s infinite linear;
-            display:inline-block;
-        }
-
-        /* ИНТРО */
-        .intro-overlay{
-            position:fixed;top:0;left:0;width:100%;height:100%;
-            background:#000010;
-            z-index:99999;display:flex;flex-direction:column;justify-content:center;align-items:center;
-            transition:opacity .8s,visibility .8s;
-            overflow:hidden;
-        }
-        .intro-overlay::before{
-            content:'';
-            position:absolute;
-            top:0;left:0;width:100%;height:100%;
-            background:linear-gradient(transparent,rgba(0,255,136,.1),transparent);
-            animation:scanline 2s infinite;
-        }
+        
+        .intro-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#050505;z-index:99999;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .6s,visibility .6s}
         .intro-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
-        .intro-logo-cyber{
-            font-size:5rem;font-weight:900;text-transform:uppercase;letter-spacing:.5rem;
-            color:#fff;
-            text-shadow:0 0 30px #00ff88,0 0 60px #00ccff,0 0 100px #ff00ff;
-            animation:introCyber 2s ease forwards, neonFlicker 3s infinite;
-            position:relative;z-index:1;
-        }
-        @keyframes introCyber{
-            0%{transform:scale(0) rotate(360deg) skewX(30deg);opacity:0}
-            50%{transform:scale(1.5) rotate(10deg) skewX(-10deg);opacity:1}
-            100%{transform:scale(1) rotate(0) skewX(0);opacity:1}
-        }
-        .intro-progress{
-            width:350px;height:8px;background:rgba(0,255,136,.1);border-radius:8px;
-            margin-top:2.5rem;overflow:hidden;border:2px solid #00ff88;
-            box-shadow:0 0 40px rgba(0,255,136,.5);position:relative;z-index:1;
-        }
-        .intro-progress-bar{
-            height:100%;width:0%;
-            background:linear-gradient(90deg,#00ff88,#00ccff,#ff00ff,#00ff88);
-            background-size:300% 100%;
-            animation:progressFill 2.5s forwards, gradientShift 1s infinite;
-            box-shadow:0 0 30px #00ff88,0 0 60px #00ccff;
-        }
+        .intro-logo-metal{font-size:3.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.3rem;background:linear-gradient(180deg,#e0e0e0,#8b5cf6,#4c1d95,#2e1065,#1e1b4b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 8px rgba(139,92,246,.6)) drop-shadow(0 0 40px rgba(139,92,246,.4));animation:metalIntro 1.5s ease forwards}
+        @keyframes metalIntro{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+        .intro-progress{width:250px;height:3px;background:#1a1a1a;border-radius:2px;margin-top:2rem;overflow:hidden}
+        .intro-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#e0e0e0,#8b5cf6,#4c1d95);animation:progressFill 1.5s forwards}
         @keyframes progressFill{to{width:100%}}
-        .intro-skip{
-            position:fixed;bottom:25px;right:25px;z-index:100001;
-            background:rgba(0,255,136,.3);color:#fff;border:1px solid #00ff88;
-            padding:.6rem 1.2rem;border-radius:30px;cursor:pointer;font-size:.7rem;
-            backdrop-filter:blur(15px);animation:pulse 2s infinite;
-        }
-
-        /* ФОН */
+        .intro-skip{position:fixed;bottom:15px;right:15px;z-index:100001;background:rgba(139,92,246,.3);color:#fff;border:1px solid #8b5cf6;padding:.4rem .8rem;border-radius:15px;cursor:pointer;font-size:.7rem}
+        
         #bgParticles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1}
-        .matrix-rain{
-            position:fixed;top:0;left:0;width:100%;height:100%;
-            pointer-events:none;z-index:-2;
-            background-image:
-                linear-gradient(rgba(0,255,136,.05) 1px,transparent 1px),
-                linear-gradient(90deg,rgba(0,255,136,.05) 1px,transparent 1px);
-            background-size:30px 30px;
-            animation:matrixRain 2s linear infinite;
-        }
-
-        /* КУРСОР */
-        .cursor-neon{
-            position:fixed;pointer-events:none;z-index:99998;
-            width:30px;height:30px;
-            background:radial-gradient(circle,#00ff88 0%,#00ccff 50%,transparent 70%);
-            border-radius:50%;
-            box-shadow:0 0 20px #00ff88,0 0 40px #00ccff,0 0 80px #ff00ff;
-            animation:cursorPulse .4s infinite alternate;
-            transition:transform .05s;
-        }
-        @keyframes cursorPulse{
-            0%{transform:scale(1);filter:brightness(1)}
-            100%{transform:scale(1.4);filter:brightness(2)}
-        }
-        .cursor-trail{
-            position:fixed;pointer-events:none;z-index:99997;
-            width:6px;height:6px;border-radius:50%;
-            background:#00ff88;
-            box-shadow:0 0 15px #00ff88,0 0 30px #00ccff;
-            animation:trailFade 1.2s forwards;
-        }
-        @keyframes trailFade{0%{transform:scale(2);opacity:1}100%{transform:scale(0);opacity:0}}
-        .cursor-spark{
-            position:fixed;pointer-events:none;z-index:99998;
-            width:10px;height:10px;border-radius:50%;
-            background:radial-gradient(circle,#00ccff,#ff00ff,transparent);
-            animation:sparkFly 1s forwards;
-        }
-        @keyframes sparkFly{
-            0%{transform:translate(0,0) scale(1);opacity:1}
-            100%{transform:translate(var(--dx),var(--dy)) scale(0) rotate(360deg);opacity:0}
-        }
-        .cursor-ring{
-            position:fixed;pointer-events:none;z-index:99998;
-            width:50px;height:50px;border:3px solid #00ff88;
-            border-radius:50%;
-            animation:ringExpand .8s forwards;
-        }
-        @keyframes ringExpand{
-            0%{transform:scale(.2);opacity:1;border-color:#00ccff}
-            100%{transform:scale(4);opacity:0;border-color:#ff00ff}
-        }
-
-        /* ШАПКА */
-        .header{
-            background:var(--glass);padding:.8rem 2%;
-            display:flex;justify-content:space-between;align-items:center;
-            border-bottom:3px solid #00ff88;position:sticky;top:0;z-index:1000;
-            flex-wrap:wrap;gap:.5rem;backdrop-filter:blur(40px);
-            box-shadow:0 5px 50px rgba(0,255,136,.3);
-            animation:borderGlow 3s infinite;
-        }
-        .nav-menu{display:flex;gap:.3rem;list-style:none;flex-wrap:wrap;align-items:center}
-        .nav-menu a{
-            color:#a0a0a0;text-decoration:none;font-weight:600;
-            padding:.4rem .7rem;border-radius:10px;font-size:.6rem;
-            text-transform:uppercase;transition:.3s;border:1px solid transparent;
-        }
-        .nav-menu a:hover{
-            color:#fff;background:rgba(0,255,136,.2);border-color:#00ff88;
-            box-shadow:0 0 30px rgba(0,255,136,.5);transform:scale(1.1);
-            animation:shake .3s;
-        }
-        .nav-btn{
-            background:linear-gradient(45deg,#00ff88,#00ccff,#ff00ff);
-            background-size:300% 300%;
-            color:#fff;border:none;padding:.4rem .9rem;border-radius:25px;
-            cursor:pointer;font-weight:700;font-size:.6rem;transition:.3s;
-            animation:gradientShift 2s infinite;
-        }
-        .nav-btn:hover{transform:scale(1.15);box-shadow:0 0 50px #00ff88;animation:shake .3s}
-
-        /* СЛАЙД-ПАНЕЛИ */
-        .slide-panel-toggle{
-            position:fixed;top:50%;right:0;
-            background:linear-gradient(45deg,#00ff88,#00ccff);
-            color:#000;border:none;padding:.8rem .4rem;border-radius:12px 0 0 12px;
-            cursor:pointer;z-index:998;font-weight:700;writing-mode:vertical-rl;font-size:.6rem;
-            box-shadow:0 0 40px rgba(0,255,136,.7);animation:pulse 2s infinite;
-        }
+        .cursor-flame{position:fixed;pointer-events:none;z-index:99998;width:8px;height:12px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(ellipse at bottom,#8b5cf6,#4c1d95,transparent);animation:flameFlicker .3s infinite alternate;filter:blur(1px)}
+        @keyframes flameFlicker{0%{transform:scale(1) rotate(-2deg);opacity:.8}100%{transform:scale(1.3) rotate(2deg);opacity:1}}
+        
+        .header{background:rgba(5,5,5,.98);padding:.6rem 2%;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:1000;flex-wrap:wrap;gap:.3rem}
+        .nav-menu{display:flex;gap:.2rem;list-style:none;flex-wrap:wrap;align-items:center}
+        .nav-menu a{color:#9ca3af;text-decoration:none;font-weight:600;padding:.3rem .5rem;border-radius:4px;font-size:.55rem;text-transform:uppercase;transition:.2s}
+        .nav-menu a:hover{color:#fff;background:var(--accent)}
+        .nav-btn{background:var(--accent);color:#fff;border:none;padding:.3rem .6rem;border-radius:15px;cursor:pointer;font-weight:700;font-size:.55rem}
+        
+        .slide-panel-toggle{position:fixed;top:50%;right:0;background:var(--accent);color:#fff;border:none;padding:.7rem .35rem;border-radius:8px 0 0 8px;cursor:pointer;z-index:998;font-weight:700;writing-mode:vertical-rl;font-size:.55rem}
         .slide-panel-toggle.chat-toggle{top:35%}
         .slide-panel-toggle.ai-toggle{top:20%}
-        .slide-panel{
-            position:fixed;top:60px;right:-420px;width:400px;max-width:95vw;
-            background:var(--glass);border:2px solid #00ff88;border-radius:15px 0 0 15px;
-            padding:1rem;z-index:997;transition:right .4s;max-height:85vh;overflow-y:auto;
-            backdrop-filter:blur(50px);
-        }
-        .slide-panel.open{right:0;box-shadow:-20px 0 80px rgba(0,255,136,.5)}
-        .slide-panel-close{
-            float:right;background:#ff00ff;color:#fff;border:none;
-            width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.8rem;
-            margin-bottom:.5rem;transition:.3s;
-        }
-        .slide-panel-close:hover{transform:rotate(180deg) scale(1.3);box-shadow:0 0 30px #ff00ff}
-
-        /* ОСНОВНОЙ КОНТЕНТ */
-        .layout-container{display:flex;gap:1rem;max-width:1600px;margin:0 auto;padding:1rem 2%}
-        .sidebar{
-            width:220px;min-width:220px;background:var(--glass);
-            border:1px solid var(--border);border-radius:15px;padding:1rem;
-            position:sticky;top:80px;height:calc(100vh - 100px);overflow-y:auto;
-            backdrop-filter:blur(40px);transition:.3s;
-        }
-        .sidebar h3{color:#00ff88;font-size:.8rem;text-transform:uppercase;margin-bottom:.5rem;text-shadow:0 0 20px #00ff88}
-        .sidebar-btn{
-            display:block;width:100%;padding:.4rem .6rem;background:transparent;
-            border:1px solid var(--border);color:#a0a0a0;border-radius:10px;
-            cursor:pointer;font-size:.6rem;margin-bottom:.2rem;text-align:left;transition:.3s;
-        }
-        .sidebar-btn:hover,.sidebar-btn.active{
-            background:linear-gradient(45deg,#00ff88,#00ccff);color:#000;
-            box-shadow:0 0 40px rgba(0,255,136,.6);transform:translateX(8px);
-        }
+        .slide-panel{position:fixed;top:60px;right:-400px;width:360px;max-width:90vw;background:rgba(5,5,5,.98);border:2px solid var(--accent);border-radius:12px 0 0 12px;padding:.8rem;z-index:997;transition:right .35s;max-height:85vh;overflow-y:auto}
+        .slide-panel.open{right:0}
+        .slide-panel-close{float:right;background:#ef4444;color:#fff;border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.7rem;margin-bottom:.4rem}
+        
+        .layout-container{display:flex;gap:.8rem;max-width:1600px;margin:0 auto;padding:.8rem 1.5%}
+        .sidebar{width:200px;min-width:200px;background:#0a0a0a;border:1px solid var(--border);border-radius:10px;padding:.8rem;position:sticky;top:70px;height:calc(100vh - 85px);overflow-y:auto}
+        .sidebar h3{color:var(--accent);font-size:.7rem;text-transform:uppercase;margin-bottom:.4rem}
+        .sidebar-btn{display:block;width:100%;padding:.25rem .4rem;background:transparent;border:1px solid var(--border);color:#9ca3af;border-radius:5px;cursor:pointer;font-size:.55rem;margin-bottom:.15rem;text-align:left;transition:.15s}
+        .sidebar-btn:hover,.sidebar-btn.active{background:var(--accent);color:#fff}
+        
         .main-content{flex:1;min-width:0}
-        .hero{
-            background:linear-gradient(135deg,rgba(0,255,136,.2),rgba(0,204,255,.2),rgba(255,0,255,.1));
-            background-size:300% 300%;
-            animation:gradientShift 4s infinite;
-            padding:2rem 3%;text-align:center;border:2px solid var(--border);
-            border-radius:20px;margin-bottom:1.5rem;backdrop-filter:blur(40px);
-        }
-        .hero h1{font-size:2.2rem;color:#fff;text-shadow:0 0 30px #00ff88,0 0 60px #00ccff;animation:textFlicker 3s infinite}
-        .section{margin-bottom:1.5rem}
-        .section-title{
-            font-size:1rem;margin-bottom:.6rem;padding:.5rem 1rem;
-            border:1px solid var(--border);border-radius:10px;text-transform:uppercase;
-            background:var(--glass);display:inline-block;backdrop-filter:blur(20px);
-            animation:borderGlow 4s infinite;
-        }
-        .mods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.6rem}
-        .mod-card{
-            background:var(--card);border:1px solid var(--border);border-radius:12px;
-            padding:.6rem;transition:.3s;display:flex;flex-direction:column;position:relative;
-            backdrop-filter:blur(20px);
-        }
-        .mod-card:hover{
-            border-color:#00ff88;transform:translateY(-10px) scale(1.05);
-            box-shadow:0 20px 60px rgba(0,255,136,.4);animation:shake .3s;
-        }
-        .mod-card.paid{border-left:4px solid #ff00ff}
-        .mod-card.free{border-left:4px solid #00ff88}
-        .price-badge{position:absolute;top:.4rem;right:.4rem;font-size:.45rem;padding:.1rem .3rem;border-radius:8px;font-weight:700;animation:pulse 2s infinite}
-        .price-badge.paid{background:#ff00ff;color:#fff}
-        .price-badge.free{background:#00ff88;color:#000}
-        .vpn-badge{position:absolute;top:.4rem;left:.4rem;font-size:.45rem;padding:.1rem .3rem;border-radius:8px;font-weight:700;background:#f59e0b;color:#000}
-        .mod-name{font-size:.7rem;font-weight:700;margin-bottom:.2rem;padding-right:40px;color:#fff}
-        .mod-loaders{display:flex;flex-wrap:wrap;gap:.1rem;margin-bottom:.2rem}
-        .loader-badge{padding:.1rem .3rem;border-radius:8px;font-size:.45rem;font-weight:600}
+        .hero{background:#0a0510;padding:1.5rem 3%;text-align:center;border-bottom:2px solid var(--accent);margin-bottom:1rem}
+        .hero h1{font-size:1.5rem;color:#fff;text-shadow:0 0 15px #7c3aed}
+        
+        .section{margin-bottom:1.2rem}
+        .section-title{font-size:.9rem;margin-bottom:.5rem;padding-bottom:.25rem;border-bottom:2px solid var(--accent);text-transform:uppercase}
+        
+        .mods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.3rem}
+        .mod-card{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:.35rem;transition:.25s;display:flex;flex-direction:column;position:relative}
+        .mod-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+        .mod-card.paid{border-left:3px solid #ef4444}
+        .mod-card.free{border-left:3px solid #22c55e}
+        .price-badge{position:absolute;top:.2rem;right:.2rem;font-size:.35rem;padding:.06rem .2rem;border-radius:4px;font-weight:700}
+        .price-badge.paid{background:#ef4444;color:#fff}
+        .price-badge.free{background:#22c55e;color:#fff}
+        .vpn-badge{position:absolute;top:.2rem;left:.2rem;font-size:.35rem;padding:.06rem .2rem;border-radius:4px;font-weight:700;background:#f59e0b;color:#000}
+        .mod-name{font-size:.55rem;font-weight:700;margin-bottom:.1rem;padding-right:30px}
+        .mod-loaders{display:flex;flex-wrap:wrap;gap:.06rem;margin-bottom:.1rem}
+        .loader-badge{padding:.06rem .2rem;border-radius:6px;font-size:.35rem;font-weight:600}
         .loader-badge.forge{background:#dc2626;color:#fff}
         .loader-badge.fabric{background:#f59e0b;color:#000}
-        .loader-badge.neoforge{background:#00ff88;color:#000}
+        .loader-badge.neoforge{background:#06b6d4;color:#000}
         .loader-badge.optifine{background:#84cc16;color:#000}
-        .mod-versions{display:flex;flex-wrap:wrap;gap:.1rem;margin-bottom:.2rem}
-        .mod-version{background:rgba(0,255,136,.1);padding:.1rem .3rem;border-radius:8px;font-size:.45rem;color:#a0ffa0}
-        .download-btn{
-            display:block;padding:.3rem;border-radius:8px;font-weight:600;text-align:center;
-            font-size:.45rem;text-decoration:none;
-            background:linear-gradient(45deg,#00ff88,#00ccff,#ff00ff);
-            background-size:300% 300%;
-            color:#fff;transition:.3s;animation:gradientShift 2s infinite;
-        }
-        .fav-btn{background:none;border:none;cursor:pointer;font-size:.6rem;padding:.1rem;transition:.3s}
-        .fav-btn:hover{transform:scale(1.8) rotate(20deg)}
-
-        /* ЧАТ */
-        .chat-message{
-            background:var(--glass);padding:.5rem;border-radius:10px;
-            margin-bottom:.4rem;font-size:.65rem;border-left:3px solid #00ff88;
-            backdrop-filter:blur(20px);transition:.3s;animation:newMessage .3s ease;
-        }
-        .chat-message:hover{box-shadow:0 0 30px rgba(0,255,136,.3)}
-        .chat-reply-btn{background:none;border:none;color:#00ff88;cursor:pointer;font-size:.55rem;margin-left:.3rem}
-        .chat-message.own-message{border-left-color:#ff00ff;background:rgba(255,0,255,.1)}
-
-        /* АДМИН */
-        .admin-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,10,.98);z-index:10002;justify-content:center;align-items:center;overflow-y:auto;padding:1rem}
-        .admin-modal.active{display:flex}
-        .admin-content{
-            background:var(--glass);border:2px solid #00ff88;border-radius:20px;
-            padding:1.5rem;max-width:550px;width:100%;max-height:90vh;overflow-y:auto;
-            backdrop-filter:blur(50px);animation:borderGlow 3s infinite;
-        }
-        .admin-input{
-            width:100%;padding:.6rem;background:rgba(0,0,10,.5);
-            border:1px solid #00ff88;border-radius:10px;color:#fff;font-size:.7rem;
-            margin-bottom:.5rem;transition:.3s;
-        }
-        .admin-btn{
-            width:100%;padding:.6rem;
-            background:linear-gradient(45deg,#00ff88,#00ccff,#ff00ff);
-            background-size:300% 300%;
-            color:#fff;border:none;border-radius:10px;cursor:pointer;
-            font-size:.7rem;font-weight:700;margin-bottom:.3rem;transition:.3s;
-            animation:gradientShift 2s infinite;
-        }
-        .admin-btn.danger{background:#ef4444}
-        .admin-btn.success{background:#22c55e}
-        .admin-btn.warning{background:#f59e0b;color:#000}
-        .admin-section{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
-        .admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:.5rem}
-        .admin-stat{
-            background:rgba(0,255,136,.1);border-radius:10px;padding:.5rem;
-            text-align:center;border:1px solid var(--border);transition:.3s;
-        }
-        .admin-stat b{color:#00ff88;font-size:.8rem}
-        .admin-stat span{color:#a0a0a0;font-size:.5rem;display:block}
-
-        .footer{
-            background:var(--glass);padding:1rem 5%;text-align:center;
-            border-top:3px solid #00ff88;backdrop-filter:blur(40px);
-            animation:borderGlow 4s infinite;
-        }
-
-        .sound-indicator{
-            position:fixed;bottom:20px;left:20px;z-index:9999;
-            display:flex;gap:.2rem;align-items:center;
-            background:var(--glass);padding:.4rem .8rem;border-radius:20px;
-            border:1px solid #00ff88;backdrop-filter:blur(30px);
-            font-size:.5rem;color:#a0a0a0;
-        }
-        .sound-dot{width:5px;height:5px;border-radius:50%;background:#00ff88;animation:soundPulse 1s infinite}
-        @keyframes soundPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.8);opacity:1}}
-
-        /* Онлайн индикатор */
-        .online-indicator{
-            display:inline-block;
-            width:8px;height:8px;border-radius:50%;
-            background:#22c55e;
-            box-shadow:0 0 10px #22c55e;
-            animation:pulse 1s infinite;
-            margin-right:.3rem;
-        }
-        .user-avatar{
-            display:inline-flex;align-items:center;justify-content:center;
-            width:25px;height:25px;border-radius:50%;
-            background:linear-gradient(45deg,#00ff88,#00ccff);
-            font-size:.6rem;font-weight:700;color:#000;margin-right:.3rem;
-        }
-
-        /* Typing индикатор */
-        .typing-indicator{
-            display:flex;gap:.2rem;padding:.3rem;
-            background:var(--glass);border-radius:10px;
-            margin-bottom:.4rem;font-size:.55rem;color:#a0a0a0;
-        }
-        .typing-dot{
-            width:5px;height:5px;border-radius:50%;
-            background:#00ff88;animation:typing 1s infinite;
-        }
-        .typing-dot:nth-child(2){animation-delay:.2s}
-        .typing-dot:nth-child(3){animation-delay:.4s}
-
+        .mod-versions{display:flex;flex-wrap:wrap;gap:.06rem;margin-bottom:.1rem}
+        .mod-version{background:#1a1a1a;padding:.06rem .2rem;border-radius:6px;font-size:.35rem;color:#9ca3af}
+        .mod-description{color:#9ca3af;font-size:.45rem;flex-grow:1;margin-bottom:.15rem}
+        .download-btn{display:block;padding:.15rem;border-radius:4px;font-weight:600;text-align:center;font-size:.35rem;text-decoration:none;background:#dc2626;color:#fff}
+        .fav-btn{background:none;border:none;cursor:pointer;font-size:.45rem;padding:.05rem}
+        
+        .search-bar{width:100%;padding:.45rem;margin-bottom:.5rem;background:var(--card);border:2px solid var(--border);border-radius:7px;color:#fff;font-size:.75rem}
+        .counter{color:#9ca3af;font-size:.7rem;margin-bottom:.4rem}
+        
+        .roulette-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:10001;justify-content:center;align-items:center}
+        .roulette-modal.active{display:flex}
+        .roulette-content{background:#0d0d0d;border:3px solid #f59e0b;border-radius:15px;padding:1.2rem;max-width:350px;width:90%;text-align:center}
+        .roulette-btn{padding:.4rem .8rem;background:#f59e0b;color:#000;border:none;border-radius:15px;cursor:pointer;font-weight:700;font-size:.7rem;margin:.15rem}
+        
+        .chat-message{background:#0d0d0d;padding:.4rem;border-radius:6px;margin-bottom:.3rem;font-size:.6rem;border-left:3px solid #7c3aed}
+        .chat-reply-btn{background:none;border:none;color:#3b82f6;cursor:pointer;font-size:.5rem;margin-left:.3rem}
+        
+        .footer{background:#050505;padding:.8rem 5%;text-align:center;border-top:2px solid var(--accent)}
+        
         @media(max-width:900px){
             .layout-container{flex-direction:column}
             .sidebar{width:100%;min-width:auto;position:static;height:auto;max-height:250px}
             .header{flex-direction:column}
-            .cursor-neon{display:none}
-            body{cursor:auto}
         }
     </style>
 </head>
 <body>
-    <!-- ФОН -->
-    <div class="matrix-rain"></div>
-    <canvas id="bgParticles"></canvas>
-
-    <!-- ИНТРО -->
     <div class="intro-overlay" id="introOverlay">
-        <div class="intro-logo-cyber">CHUBRIK<span>⬡</span>HUB</div>
+        <div class="intro-logo-metal">CHUBRIK</div>
         <div class="intro-progress"><div class="intro-progress-bar"></div></div>
     </div>
     <button class="intro-skip" id="introSkip" onclick="skipIntro()">Пропустить ⏭</button>
 
-    <!-- КУРСОР -->
-    <div class="cursor-neon" id="cursorNeon"></div>
+    <canvas id="bgParticles"></canvas>
 
-    <!-- ЗВУК -->
-    <div class="sound-indicator">
-        <div class="sound-dot"></div>
-        <span>🔊 Звук активен</span>
-    </div>
-
-    <!-- АДМИН-ПАНЕЛЬ -->
-    <div class="admin-modal" id="adminModal">
-        <div class="admin-content">
-            <h2>🔐 Админ-панель</h2>
-            <div id="adminLoginForm">
-                <input type="password" class="admin-input" id="adminPassword" placeholder="Пароль администратора">
-                <button class="admin-btn" onclick="checkAdminPassword()">Войти</button>
-                <div id="adminError" style="color:#ef4444;font-size:.6rem;text-align:center;display:none;">Неверный пароль!</div>
-            </div>
-            <div id="adminPanelContent" style="display:none;">
-                <div class="admin-stats">
-                    <div class="admin-stat"><b id="statMods">0</b><span>Модов</span></div>
-                    <div class="admin-stat"><b id="statFavs">0</b><span>Избранных</span></div>
-                    <div class="admin-stat"><b id="statChats">0</b><span>Сообщений</span></div>
-                </div>
-                <div class="admin-section">
-                    <h3>📦 Управление модами</h3>
-                    <input type="text" class="admin-input" id="newModName" placeholder="Название нового мода">
-                    <input type="text" class="admin-input" id="newModCat" placeholder="Категория">
-                    <input type="text" class="admin-input" id="newModLink" placeholder="Ссылка">
-                    <button class="admin-btn success" onclick="adminAddMod()">➕ Добавить мод</button>
-                    <input type="text" class="admin-input" id="deleteModName" placeholder="Название мода для удаления">
-                    <button class="admin-btn danger" onclick="adminDeleteMod()">🗑️ Удалить мод</button>
-                </div>
-                <div class="admin-section">
-                    <h3>🎨 Настройки</h3>
-                    <input type="text" class="admin-input" id="siteTitle" placeholder="Новое название">
-                    <button class="admin-btn" onclick="adminChangeTitle()">✏️ Изменить</button>
-                    <input type="color" class="admin-input" id="accentColor" value="#00ff88" style="height:45px;padding:0;">
-                    <button class="admin-btn" onclick="adminChangeAccent()">🎨 Цвет темы</button>
-                </div>
-                <div class="admin-section">
-                    <h3>💬 Чат</h3>
-                    <button class="admin-btn warning" onclick="adminViewChats()">👁️ Просмотреть</button>
-                    <button class="admin-btn danger" onclick="adminClearChats()">🗑️ Очистить</button>
-                </div>
-                <button class="admin-btn" onclick="closeAdminPanel()">Закрыть</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- СЛАЙД-ПАНЕЛИ -->
     <button class="slide-panel-toggle" onclick="togglePanel('updatesPanel')" style="top:50%">📢 ОБНОВЛЕНИЯ</button>
     <div class="slide-panel" id="updatesPanel">
         <button class="slide-panel-close" onclick="togglePanel('updatesPanel')">✕</button>
-        <h3 style="color:#00ff88;font-size:.9rem;">📢 Обновления</h3>
-        <div style="background:var(--glass);padding:.6rem;border-radius:10px;border-left:3px solid #00ff88;">
-            <strong style="color:#00ff88;font-size:.7rem;">⬡ Обновление 6.0 GLOBAL CHAT</strong><br>
-            <span style="color:#a0a0a0;font-size:.6rem;">• Глобальный чат Firebase<br>• Онлайн статус<br>• Индикатор набора<br>• Звуки</span>
+        <h3 style="color:#f59e0b;font-size:.8rem;margin-bottom:.4rem;">📢 Обновления</h3>
+        <div style="background:#0d0d0d;padding:.4rem;border-radius:6px;border-left:3px solid #7c3aed;">
+            <strong style="color:#7c3aed;font-size:.65rem;">🌍 Мега-обновление</strong><br>
+            <span style="color:#9ca3af;font-size:.55rem;">• 1000+ модов и шейдеров<br>• Все категории заполнены</span>
         </div>
     </div>
 
     <button class="slide-panel-toggle chat-toggle" onclick="togglePanel('chatPanel')">💬 ЧАТ</button>
     <div class="slide-panel" id="chatPanel">
         <button class="slide-panel-close" onclick="togglePanel('chatPanel')">✕</button>
-        <h3 style="color:#00ff88;font-size:.9rem;margin-bottom:.5rem;">💬 Глобальный чат</h3>
-        <div style="margin-bottom:.5rem;font-size:.6rem;color:#a0a0a0;">
-            <span class="online-indicator" id="onlineIndicator"></span><span id="onlineCount">0</span> онлайн
-        </div>
-        <div id="chatMessages" style="margin-bottom:.5rem;max-height:400px;overflow-y:auto;"></div>
-        <div id="typingIndicator" class="typing-indicator" style="display:none;">
-            <span>Кто-то печатает</span>
-            <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-        </div>
+        <h3 style="color:#7c3aed;font-size:.8rem;margin-bottom:.4rem;">💬 Чат с ответами</h3>
+        <div id="chatMessages" style="margin-bottom:.5rem;"></div>
         <div style="display:flex;gap:.3rem;margin-bottom:.5rem;">
-            <input type="text" id="chatName" placeholder="Имя" style="flex:1;padding:.5rem;background:rgba(0,0,10,.5);border:1px solid var(--border);border-radius:10px;color:#fff;font-size:.65rem;">
-            <input type="text" id="chatMessage" placeholder="Сообщение..." style="flex:1;padding:.5rem;background:rgba(0,0,10,.5);border:1px solid var(--border);border-radius:10px;color:#fff;font-size:.65rem;" onkeyup="handleTyping()">
+            <input type="text" id="chatName" placeholder="Имя" style="flex:1;padding:.4rem;background:#050505;border:1px solid #1a1a1a;border-radius:5px;color:#fff;font-size:.65rem;">
+            <input type="text" id="chatMessage" placeholder="Сообщение" style="flex:1;padding:.4rem;background:#050505;border:1px solid #1a1a1a;border-radius:5px;color:#fff;font-size:.65rem;">
         </div>
-        <div style="display:flex;gap:.3rem;">
-            <button onclick="sendChatMessage()" style="flex:1;background:linear-gradient(45deg,#00ff88,#00ccff);color:#000;border:none;border-radius:10px;padding:.4rem;cursor:pointer;font-size:.6rem;">📨 Отправить</button>
-            <button onclick="addEmoji('😀')" style="background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:.4rem;cursor:pointer;font-size:.6rem;color:#fff;">😀</button>
-            <button onclick="addEmoji('🔥')" style="background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:.4rem;cursor:pointer;font-size:.6rem;color:#fff;">🔥</button>
-            <button onclick="addEmoji('❤️')" style="background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:.4rem;cursor:pointer;font-size:.6rem;color:#fff;">❤️</button>
-        </div>
+        <button onclick="sendChatMessage()" style="background:#7c3aed;color:#fff;border:none;border-radius:5px;padding:.3rem .6rem;cursor:pointer;font-size:.6rem;">Отправить</button>
     </div>
 
     <button class="slide-panel-toggle ai-toggle" onclick="togglePanel('aiPanel')">🤖 ИИ</button>
     <div class="slide-panel" id="aiPanel">
         <button class="slide-panel-close" onclick="togglePanel('aiPanel')">✕</button>
-        <h3 style="color:#00ff88;font-size:.9rem;">🤖 ИИ-помощник</h3>
+        <h3 style="color:#7c3aed;font-size:.8rem;margin-bottom:.4rem;">🤖 ИИ-помощник</h3>
         <div id="aiMessages" style="margin-bottom:.5rem;max-height:300px;overflow-y:auto;"></div>
         <div style="display:flex;gap:.3rem;">
-            <input type="text" id="aiInput" placeholder="Спросите..." style="flex:1;padding:.5rem;background:rgba(0,0,10,.5);border:1px solid var(--border);border-radius:10px;color:#fff;font-size:.65rem;">
-            <button onclick="sendAIMessage()" style="background:linear-gradient(45deg,#00ff88,#00ccff);color:#000;border:none;border-radius:10px;padding:.4rem .7rem;cursor:pointer;font-size:.6rem;">➤</button>
+            <input type="text" id="aiInput" placeholder="Спросите..." style="flex:1;padding:.4rem;background:#050505;border:1px solid #1a1a1a;border-radius:5px;color:#fff;font-size:.65rem;">
+            <button onclick="sendAIMessage()" style="background:#7c3aed;color:#fff;border:none;border-radius:5px;padding:.3rem .6rem;cursor:pointer;font-size:.6rem;">➤</button>
         </div>
     </div>
 
-    <!-- ШАПКА -->
     <header class="header">
-        <div class="logo-cyber" onclick="logoClick()">CHUBRIK<span>⬡</span>HUB</div>
+        <div class="logo-metal">CHUBRIK</div>
         <ul class="nav-menu">
             <li><a href="#favorites">❤️</a></li>
             <li><a href="#cheats">Читы</a></li>
-            <li><a href="#tech">Тех</a></li>
-            <li><a href="#magic">Магия</a></li>
-            <li><a href="#adventure">Прикл</a></li>
-            <li><a href="#decoration">Декор</a></li>
-            <li><a href="#food">Еда</a></li>
-            <li><a href="#mobs">Мобы</a></li>
-            <li><a href="#world">Мир</a></li>
-            <li><a href="#shaders">Шейд</a></li>
+            <li><a href="#tech">Тех</a></li><li><a href="#magic">Магия</a></li>
+            <li><a href="#adventure">Прикл</a></li><li><a href="#decoration">Декор</a></li>
+            <li><a href="#food">Еда</a></li><li><a href="#mobs">Мобы</a></li>
+            <li><a href="#world">Мир</a></li><li><a href="#shaders">Шейд</a></li>
             <li><a href="#resourcepacks">Ресурс</a></li>
             <li><button class="nav-btn" onclick="openRoulette()">🎰</button></li>
-            <li><button class="nav-btn" onclick="togglePanel('chatPanel')">💬</button></li>
             <li><button class="nav-btn" onclick="togglePanel('aiPanel')">🤖</button></li>
-            <li><button class="nav-btn" onclick="openAdminPanel()" style="opacity:.3;">⚙️</button></li>
         </ul>
     </header>
 
-    <!-- ГЕРОЙ -->
     <div class="hero">
-        <h1>⬡ CHUBRIK HUB</h1>
-        <p>Глобальный чат | Онлайн статус | Индикатор набора | Звуки | Анимации</p>
+        <h1>🚀 CHUBRIK60HUBMODS</h1>
+        <p>1000+ модов и шейдеров</p>
     </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
     <div class="layout-container">
         <aside class="sidebar">
             <h3>Версии</h3>
@@ -542,7 +178,7 @@
             <button class="sidebar-btn" onclick="filterByVersion('1.19.2',this)">1.19.2</button>
             <button class="sidebar-btn" onclick="filterByVersion('1.18.2',this)">1.18.2</button>
             <button class="sidebar-btn" onclick="filterByVersion('1.16.5',this)">1.16.5</button>
-            <h3 style="margin-top:.6rem">Загрузчики</h3>
+            <h3 style="margin-top:.5rem">Загрузчики</h3>
             <button class="sidebar-btn" onclick="filterByLoader('forge',this)">Forge</button>
             <button class="sidebar-btn" onclick="filterByLoader('fabric',this)">Fabric</button>
             <button class="sidebar-btn" onclick="filterByLoader('neoforge',this)">NeoForge</button>
@@ -551,12 +187,12 @@
         </aside>
 
         <div class="main-content">
-            <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Поиск модов..." oninput="applyAllFilters()" style="width:100%;padding:.6rem;margin-bottom:.8rem;background:var(--glass);border:2px solid var(--border);border-radius:15px;color:#fff;font-size:.8rem;">
-            <div class="counter" id="counter" style="color:#a0a0a0;font-size:.7rem;margin-bottom:.5rem;">Найдено: 0</div>
+            <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Поиск..." oninput="applyAllFilters()">
+            <div class="counter" id="counter">Найдено: 0</div>
             
             <div class="section" id="favorites"><h2 class="section-title" style="color:#f59e0b;">❤️ Избранное</h2><div class="mods-grid" id="favoritesGrid"></div></div>
-            <div class="section" id="cheats"><h2 class="section-title" style="color:#ff00ff;">🎮 Читы</h2><div class="mods-grid" id="cheatsGrid"></div></div>
-            <div class="section" id="tech"><h2 class="section-title" style="color:#00ff88;">⚙️ Технические</h2><div class="mods-grid" id="techGrid"></div></div>
+            <div class="section" id="cheats"><h2 class="section-title" style="color:#ef4444;">🎮 Читы</h2><div class="mods-grid" id="cheatsGrid"></div></div>
+            <div class="section" id="tech"><h2 class="section-title" style="color:#7c3aed;">⚙️ Технические</h2><div class="mods-grid" id="techGrid"></div></div>
             <div class="section" id="magic"><h2 class="section-title" style="color:#a78bfa;">🔮 Магические</h2><div class="mods-grid" id="magicGrid"></div></div>
             <div class="section" id="adventure"><h2 class="section-title" style="color:#f59e0b;">🗺️ Приключения</h2><div class="mods-grid" id="adventureGrid"></div></div>
             <div class="section" id="decoration"><h2 class="section-title" style="color:#ec4899;">🎨 Декоративные</h2><div class="mods-grid" id="decorationGrid"></div></div>
@@ -564,430 +200,107 @@
             <div class="section" id="mobs"><h2 class="section-title" style="color:#ef4444;">👾 Мобы</h2><div class="mods-grid" id="mobsGrid"></div></div>
             <div class="section" id="world"><h2 class="section-title" style="color:#06b6d4;">🌍 Мир</h2><div class="mods-grid" id="worldGrid"></div></div>
             <div class="section" id="shaders"><h2 class="section-title" style="color:#3b82f6;">✨ Шейдеры</h2>
-                <div style="display:flex;gap:.3rem;margin-bottom:.5rem;">
-                    <button onclick="filterShadersPC('weak')" style="padding:.3rem .7rem;background:var(--glass);border:1px solid #00ff88;color:#fff;border-radius:10px;cursor:pointer;font-size:.6rem;">💻 Слабые</button>
-                    <button onclick="filterShadersPC('powerful')" style="padding:.3rem .7rem;background:var(--glass);border:1px solid #ff00ff;color:#fff;border-radius:10px;cursor:pointer;font-size:.6rem;">🖥️ Мощные</button>
+                <div style="display:flex;gap:.25rem;margin-bottom:.4rem;">
+                    <button onclick="filterShadersPC('weak')" style="padding:.25rem .5rem;background:#1a1a1a;border:2px solid #7c3aed;color:#fff;border-radius:10px;cursor:pointer;font-size:.55rem;">💻 Слабые (100+)</button>
+                    <button onclick="filterShadersPC('powerful')" style="padding:.25rem .5rem;background:#1a1a1a;border:2px solid #f59e0b;color:#fff;border-radius:10px;cursor:pointer;font-size:.55rem;">🖥️ Мощные (100+)</button>
                 </div>
                 <div class="mods-grid" id="shadersGrid"></div>
             </div>
             <div class="section" id="resourcepacks"><h2 class="section-title" style="color:#f59e0b;">🎨 Ресурспаки</h2><div class="mods-grid" id="resourcepacksGrid"></div></div>
-            <div class="section" id="custom"><h2 class="section-title" style="color:#ff00ff;">📦 Мои моды</h2><div class="mods-grid" id="customGrid"></div></div>
+            <div class="section" id="custom"><h2 class="section-title" style="color:#ef4444;">📦 Мои моды</h2><div class="mods-grid" id="customGrid"></div></div>
         </div>
     </div>
 
-    <!-- РУЛЕТКА -->
-    <div class="roulette-modal" id="rouletteModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,10,.98);z-index:10001;justify-content:center;align-items:center;">
-        <div style="background:var(--card);border:2px solid #ff00ff;border-radius:20px;padding:1.5rem;max-width:400px;width:90%;text-align:center;">
-            <h2 style="color:#ff00ff;">🎰 Рулетка</h2>
-            <input type="number" id="rouletteCount" value="1" min="1" max="10" style="padding:.4rem;background:rgba(0,0,10,.5);border:2px solid #ff00ff;border-radius:10px;color:#fff;font-size:.7rem;width:60px;text-align:center;">
-            <div id="rouletteResult" style="color:#ff00ff;margin:.5rem 0;font-size:.9rem;">Крутите!</div>
-            <button onclick="spinRoulette()" style="padding:.5rem 1rem;background:linear-gradient(45deg,#ff00ff,#00ccff);color:#fff;border:none;border-radius:25px;cursor:pointer;font-size:.8rem;">🎲</button>
-            <button onclick="closeRoulette()" style="padding:.5rem 1rem;background:#666;color:#fff;border:none;border-radius:25px;cursor:pointer;font-size:.8rem;">✕</button>
+    <div class="roulette-modal" id="rouletteModal">
+        <div class="roulette-content">
+            <h2 style="color:#f59e0b;">🎰 Рулетка</h2>
+            <input type="number" id="rouletteCount" value="1" min="1" max="10" style="padding:.3rem;background:#1a1a1a;border:2px solid #f59e0b;border-radius:7px;color:#fff;font-size:.7rem;width:50px;text-align:center;">
+            <div id="rouletteResult" style="color:#f59e0b;margin:.4rem 0;font-size:.8rem;">Крутите!</div>
+            <button class="roulette-btn" onclick="spinRoulette()">🎲</button>
+            <button class="roulette-btn" onclick="closeRoulette()" style="background:#666;">✕</button>
         </div>
     </div>
 
     <footer class="footer">
-        <p style="color:#00ff88;font-size:.8rem;text-shadow:0 0 25px #00ff88;">© 2026 CHUBRIK HUB</p>
+        <p style="color:#7c3aed;font-size:.7rem;">© 2026 CHUBRIK60HUBMODS — 1000+ модов</p>
     </footer>
 
     <script>
-        // ===== FIREBASE КОНФИГУРАЦИЯ (ЗАМЕНИТЕ НА СВОИ КЛЮЧИ) =====
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+        function skipIntro(){document.getElementById('introOverlay').classList.add('hidden');document.getElementById('introSkip').style.display='none';}
+        setTimeout(skipIntro,2000);setTimeout(skipIntro,2500);
+        function togglePanel(id){document.getElementById(id).classList.toggle('open');}
         
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        let chatMessages=JSON.parse(localStorage.getItem('chatMessages')||'[]');
+        function renderChat(){const c=document.getElementById('chatMessages');c.innerHTML='';chatMessages.slice(-20).forEach((m,idx)=>{const d=document.createElement('div');d.className='chat-message';d.innerHTML='<b style="color:#7c3aed">'+m.name+':</b> '+m.message+(m.reply?'<br><span style="color:#22c55e;">↩ Ответ: '+m.reply+'</span>':'')+'<br><button class="chat-reply-btn" onclick="replyToMessage('+idx+')">↩ Ответить</button>';c.appendChild(d);});}
+        function sendChatMessage(){const n=document.getElementById('chatName').value.trim()||'Аноним';const m=document.getElementById('chatMessage').value.trim();if(!m)return;chatMessages.push({name:n,message:m,date:new Date().toLocaleString('ru-RU'),reply:null});localStorage.setItem('chatMessages',JSON.stringify(chatMessages));document.getElementById('chatMessage').value='';renderChat();}
+        function replyToMessage(idx){const reply=prompt('Введите ответ:');if(reply){chatMessages[idx].reply=reply;localStorage.setItem('chatMessages',JSON.stringify(chatMessages));renderChat();}}
+        renderChat();
         
-        // ===== ГЛОБАЛЬНЫЙ ЧАТ =====
-        let currentUser = localStorage.getItem('chubrik_username') || 'Гость_' + Math.floor(Math.random() * 10000);
-        let typingTimeout = null;
+        function sendAIMessage(){const i=document.getElementById('aiInput');const m=i.value.trim();if(!m)return;const c=document.getElementById('aiMessages');const u=document.createElement('div');u.style.cssText='background:#7c3aed;padding:.4rem;border-radius:6px;color:#fff;text-align:right;font-size:.6rem;';u.textContent=m;c.appendChild(u);i.value='';setTimeout(()=>{const b=document.createElement('div');b.style.cssText='background:#0d0d0d;padding:.4rem;border-radius:6px;font-size:.6rem;border-left:3px solid #7c3aed;';b.textContent='Используйте фильтры!';c.appendChild(b);},500);}
         
-        function sendChatMessage() {
-            const name = document.getElementById('chatName').value.trim() || currentUser;
-            const message = document.getElementById('chatMessage').value.trim();
-            if (!message) return;
-            
-            localStorage.setItem('chubrik_username', name);
-            currentUser = name;
-            
-            db.ref('chat').push({
-                name: name,
-                message: message,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            });
-            
-            document.getElementById('chatMessage').value = '';
-            AudioSystem.successSound();
-        }
+        const bgCanvas=document.getElementById('bgParticles');const bgCtx=bgCanvas.getContext('2d');
+        function rb(){bgCanvas.width=innerWidth;bgCanvas.height=innerHeight}rb();window.addEventListener('resize',rb);
+        const bp=[];for(let i=0;i<50;i++)bp.push({x:Math.random()*bgCanvas.width,y:Math.random()*bgCanvas.height,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,s:Math.random()*2+1});
+        function ab(){bgCtx.clearRect(0,0,bgCanvas.width,bgCanvas.height);bp.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>bgCanvas.width)p.vx*=-1;if(p.y<0||p.y>bgCanvas.height)p.vy*=-1;bgCtx.beginPath();bgCtx.arc(p.x,p.y,p.s,0,Math.PI*2);bgCtx.fillStyle='#8b5cf6';bgCtx.globalAlpha=.5;bgCtx.fill();bgCtx.globalAlpha=1;});requestAnimationFrame(ab);}ab();
+        document.addEventListener('mousemove',e=>{if(Math.random()>.4){const f=document.createElement('div');f.className='cursor-flame';f.style.left=(e.clientX-4+Math.random()*8)+'px';f.style.top=(e.clientY-6+Math.random()*12)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),400);}});
+
+        const allVersions=['1.16','1.16.5','1.17.1','1.18','1.18.2','1.19','1.19.2','1.20','1.20.1','1.21','1.21.1','1.21.4'];
         
-        function handleTyping() {
-            db.ref('typing/' + currentUser).set(true);
-            clearTimeout(typingTimeout);
-            typingTimeout = setTimeout(() => {
-                db.ref('typing/' + currentUser).remove();
-            }, 2000);
-        }
-        
-        // Слушаем сообщения
-        db.ref('chat').limitToLast(50).on('child_added', (snapshot) => {
-            const msg = snapshot.val();
-            displayChatMessage(msg, snapshot.key);
-        });
-        
-        // Слушаем онлайн
-        const onlineRef = db.ref('online');
-        const myOnlineRef = onlineRef.push();
-        myOnlineRef.set(true);
-        myOnlineRef.onDisconnect().remove();
-        
-        onlineRef.on('value', (snapshot) => {
-            const count = snapshot.numChildren();
-            document.getElementById('onlineCount').textContent = count;
-        });
-        
-        // Слушаем индикатор набора
-        db.ref('typing').on('value', (snapshot) => {
-            const typing = snapshot.val();
-            let typingCount = 0;
-            if (typing) {
-                typingCount = Object.keys(typing).length;
-            }
-            document.getElementById('typingIndicator').style.display = typingCount > 0 ? 'flex' : 'none';
-        });
-        
-        function displayChatMessage(msg, key) {
-            const c = document.getElementById('chatMessages');
-            const d = document.createElement('div');
-            d.className = 'chat-message' + (msg.name === currentUser ? ' own-message' : '');
-            const avatar = msg.name.charAt(0).toUpperCase();
-            d.innerHTML = '<div class="user-avatar">' + avatar + '</div><b style="color:#00ff88">' + msg.name + ':</b> ' + msg.message +
-                '<br><span style="font-size:.45rem;color:#666;">' + new Date(msg.timestamp).toLocaleTimeString('ru-RU') + '</span>' +
-                '<br><button class="chat-reply-btn" onclick="replyToMessage(\'' + key + '\',\'' + msg.name + '\')">↩ Ответить</button>';
-            c.appendChild(d);
-            c.scrollTop = c.scrollHeight;
-        }
-        
-        function replyToMessage(key, name) {
-            const reply = prompt('Ответ для ' + name + ':');
-            if (reply) {
-                db.ref('chat').push({
-                    name: currentUser,
-                    message: '↩ ' + name + ': ' + reply,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP
-                });
-                AudioSystem.successSound();
-            }
-        }
-        
-        function addEmoji(emoji) {
-            document.getElementById('chatMessage').value += emoji;
-            document.getElementById('chatMessage').focus();
+        function cm(name,cat,rating,versions,loaders,isPaid,needsVPN,pc,link){
+            return{name:name,category:cat,rating:rating,versions:versions||allVersions,loaders:loaders||['forge'],isPaid:isPaid||false,needsVPN:needsVPN||false,pc:pc||null,link:link||'https://www.curseforge.com/minecraft/search?search='+encodeURIComponent(name)};
         }
 
-        // ===== ЗВУКОВАЯ СИСТЕМА =====
-        const AudioSystem = {
-            ctx: null,
-            init() {
-                try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-            },
-            playSound(freq, duration, type, volume) {
-                if (!this.ctx) return;
-                try {
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
-                    osc.type = type || 'sine';
-                    osc.frequency.value = freq || 800;
-                    gain.gain.value = volume || 0.3;
-                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + (duration || 0.1));
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc.start();
-                    osc.stop(this.ctx.currentTime + (duration || 0.1));
-                } catch(e) {}
-            },
-            clickSound() { this.playSound(1000, 0.05, 'sine', 0.25); },
-            hoverSound() { this.playSound(1500, 0.03, 'sine', 0.15); },
-            successSound() { 
-                this.playSound(700, 0.1, 'sine', 0.35);
-                setTimeout(() => this.playSound(1000, 0.1, 'sine', 0.35), 100);
-            },
-            errorSound() { this.playSound(150, 0.3, 'sawtooth', 0.4); },
-            spinSound() { 
-                for(let i = 0; i < 8; i++) {
-                    setTimeout(() => this.playSound(300 + i * 150, 0.05, 'square', 0.25), i * 80);
-                }
-            }
-        };
+        var modsDatabase=[];
         
-        document.addEventListener('click', () => { if (!AudioSystem.ctx) AudioSystem.init(); }, { once: true });
-
-        // ===== КУРСОР =====
-        const cursor = document.getElementById('cursorNeon');
-        let mouseX = -100, mouseY = -100, cursorX = -100, cursorY = -100;
-        
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
-            const trail = document.createElement('div');
-            trail.className = 'cursor-trail';
-            trail.style.left = (e.clientX - 3) + 'px';
-            trail.style.top = (e.clientY - 3) + 'px';
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 1200);
-            
-            if (Math.random() > 0.5) {
-                const spark = document.createElement('div');
-                spark.className = 'cursor-spark';
-                spark.style.left = e.clientX + 'px';
-                spark.style.top = e.clientY + 'px';
-                spark.style.setProperty('--dx', (Math.random() - 0.5) * 120 + 'px');
-                spark.style.setProperty('--dy', (Math.random() - 0.5) * 120 + 'px');
-                document.body.appendChild(spark);
-                setTimeout(() => spark.remove(), 1000);
-            }
-        });
-        
-        function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
-            cursor.style.left = (cursorX - 15) + 'px';
-            cursor.style.top = (cursorY - 15) + 'px';
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-        
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('a, button, .mod-card, .sidebar-btn, .nav-btn')) AudioSystem.hoverSound();
-        });
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('a, button, .mod-card, .sidebar-btn, .nav-btn')) AudioSystem.clickSound();
-        });
-
-        // ===== ФОН =====
-        const bgCanvas = document.getElementById('bgParticles');
-        const bgCtx = bgCanvas.getContext('2d');
-        function resizeBg() { bgCanvas.width = innerWidth; bgCanvas.height = innerHeight; }
-        resizeBg();
-        window.addEventListener('resize', resizeBg);
-        
-        const particles = [];
-        for (let i = 0; i < 120; i++) {
-            particles.push({
-                x: Math.random() * bgCanvas.width,
-                y: Math.random() * bgCanvas.height,
-                vx: (Math.random() - 0.5) * 1.2,
-                vy: (Math.random() - 0.5) * 1.2,
-                size: Math.random() * 5 + 1,
-                color: Math.random() > 0.5 ? '#00ff88' : '#00ccff',
-                phase: Math.random() * Math.PI * 2
-            });
-        }
-        
-        function animateBg() {
-            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-            particles.forEach(p => {
-                p.x += p.vx; p.y += p.vy; p.phase += 0.03;
-                if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > bgCanvas.height) p.vy *= -1;
-                const alpha = 0.3 + Math.sin(p.phase) * 0.3;
-                bgCtx.beginPath();
-                bgCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                bgCtx.fillStyle = p.color;
-                bgCtx.globalAlpha = alpha;
-                bgCtx.fill();
-                bgCtx.shadowBlur = 30;
-                bgCtx.shadowColor = p.color;
-            });
-            bgCtx.globalAlpha = 1;
-            requestAnimationFrame(animateBg);
-        }
-        animateBg();
-
-        // ===== ИНТРО =====
-        function skipIntro() {
-            document.getElementById('introOverlay').classList.add('hidden');
-            document.getElementById('introSkip').style.display = 'none';
-            AudioSystem.successSound();
-        }
-        setTimeout(skipIntro, 3000);
-        setTimeout(skipIntro, 3500);
-
-        // ===== ПАНЕЛИ =====
-        function togglePanel(id) {
-            document.getElementById(id).classList.toggle('open');
-            AudioSystem.clickSound();
-        }
-
-        // ===== АДМИН =====
-        const ADMIN_PASSWORD = 'Chubrik60Admin2026!';
-        let logoClickCount = 0;
-        function logoClick() { logoClickCount++; if (logoClickCount >= 5) { logoClickCount = 0; openAdminPanel(); } }
-        function openAdminPanel() { document.getElementById('adminModal').classList.add('active'); }
-        function closeAdminPanel() { document.getElementById('adminModal').classList.remove('active'); }
-        function checkAdminPassword() {
-            if (document.getElementById('adminPassword').value === ADMIN_PASSWORD) {
-                document.getElementById('adminLoginForm').style.display = 'none';
-                document.getElementById('adminPanelContent').style.display = 'block';
-                AudioSystem.successSound();
-            } else {
-                document.getElementById('adminError').style.display = 'block';
-                AudioSystem.errorSound();
-            }
-        }
-        function adminAddMod() {
-            const name = document.getElementById('newModName').value.trim();
-            const cat = document.getElementById('newModCat').value.trim() || 'tech';
-            const link = document.getElementById('newModLink').value.trim() || '#';
-            if (!name) return;
-            modsDatabase.push({name, category: cat, rating: 4, versions: allVersions, loaders: ['forge','fabric'], isPaid: false, needsVPN: false, pc: null, link});
-            populateGrids();
-            AudioSystem.successSound();
-        }
-        function adminDeleteMod() {
-            const name = document.getElementById('deleteModName').value.trim();
-            const idx = modsDatabase.findIndex(m => m.name.toLowerCase() === name.toLowerCase());
-            if (idx > -1) { modsDatabase.splice(idx, 1); populateGrids(); AudioSystem.successSound(); }
-            else { AudioSystem.errorSound(); alert('Не найден'); }
-        }
-        function adminChangeTitle() {
-            const t = document.getElementById('siteTitle').value.trim();
-            if (t) { document.querySelector('.hero h1').textContent = '⬡ ' + t; AudioSystem.successSound(); }
-        }
-        function adminChangeAccent() {
-            const c = document.getElementById('accentColor').value;
-            document.documentElement.style.setProperty('--accent', c);
-            AudioSystem.successSound();
-        }
-        function adminViewChats() { alert('Сообщения в Firebase Realtime Database'); }
-        function adminClearChats() { if (confirm('Очистить чат?')) { db.ref('chat').remove(); } }
-
-        // ===== ИИ =====
-        function sendAIMessage() {
-            const i = document.getElementById('aiInput');
-            const m = i.value.trim();
-            if (!m) return;
-            const c = document.getElementById('aiMessages');
-            const u = document.createElement('div');
-            u.style.cssText = 'background:#00ff88;padding:.5rem;border-radius:10px;color:#000;text-align:right;font-size:.6rem;';
-            u.textContent = m; c.appendChild(u); i.value = '';
-            AudioSystem.clickSound();
-            setTimeout(() => {
-                const b = document.createElement('div');
-                b.style.cssText = 'background:var(--glass);padding:.5rem;border-radius:10px;font-size:.6rem;border-left:3px solid #00ff88;';
-                b.textContent = 'Используйте фильтры!';
-                c.appendChild(b);
-                AudioSystem.successSound();
-            }, 500);
-        }
-
-        // ===== БАЗА МОДОВ =====
-        const allVersions = ['1.16','1.16.5','1.17.1','1.18','1.18.2','1.19','1.19.2','1.20','1.20.1','1.21','1.21.1','1.21.4'];
-        function cm(name, cat, rating, versions, loaders, isPaid, needsVPN, pc, link) {
-            return {name, category: cat, rating, versions: versions || allVersions, loaders: loaders || ['forge'], isPaid: isPaid || false, needsVPN: needsVPN || false, pc: pc || null, link: link || 'https://www.curseforge.com/minecraft/search?search=' + encodeURIComponent(name)};
-        }
-        
-        var modsDatabase = [];
         modsDatabase.push(cm('PouchClient','cheats',5,['1.16.5','1.18.2','1.19.2','1.20.1'],['forge','fabric'],true,true,null,'https://pouchclient.fun'));
         modsDatabase.push(cm('SkyCoreClient','cheats',5,['1.16.5','1.18.2','1.19.2','1.20.1','1.21.1'],['forge','fabric','neoforge'],true,false,null,'https://skycoreclient.xyz'));
         modsDatabase.push(cm('CatLavan','cheats',5,['1.16.5','1.18.2','1.19.2','1.20.1'],['forge','fabric'],true,true,null,'https://catlavan.net'));
-        
-        var tech = ['Industrial Craft 2','BuildCraft','Thermal Expansion','Applied Energistics 2','Mekanism','Ender IO','Refined Storage','Create','Immersive Engineering','RFTools','Draconic Evolution','CC:Tweaked','Forestry','PneumaticCraft','NuclearCraft','Galacticraft','Iron Chests','Storage Drawers','Flux Networks','Powah!','Pipez','Waystones'];
-        tech.forEach((n,i) => { var l = ['forge']; if(i%3===0) l.push('fabric'); modsDatabase.push(cm(n,'tech',4+Math.floor(Math.random()*1.9),allVersions,l,false,false)); });
-        
-        ['Thaumcraft','Botania','Blood Magic','Astral Sorcery','Psi','Mystical Agriculture','Ars Nouveau','Occultism'].forEach(n => modsDatabase.push(cm(n,'magic',4+Math.floor(Math.random()*1.9),allVersions,['forge','fabric'],false,false)));
-        ['Twilight Forest','Aether','Ice and Fire','Advent of Ascension','Mowzie\'s Mobs','Blue Skies','When Dungeons Arise','Repurposed Structures'].forEach(n => modsDatabase.push(cm(n,'adventure',4+Math.floor(Math.random()*1.9),allVersions,['forge'],false,false)));
-        ['Chisel','Decocraft','MrCrayfish\'s Furniture','Fairy Lights','Macaw\'s Roofs','Macaw\'s Furniture','Supplementaries','Quark','Chipped'].forEach(n => modsDatabase.push(cm(n,'decoration',4+Math.floor(Math.random()*1.9),allVersions,['forge','fabric'],false,false)));
-        ['Pam\'s HarvestCraft','Farmer\'s Delight'].forEach(n => modsDatabase.push(cm(n,'food',5,allVersions,['forge','fabric'],false,false)));
-        ['Alex\'s Mobs','Naturalist'].forEach(n => modsDatabase.push(cm(n,'mobs',5,allVersions,['forge','fabric'],false,false)));
-        ['Biomes O\' Plenty','Terralith','Tectonic','Incendium'].forEach(n => modsDatabase.push(cm(n,'world',5,allVersions,['forge','fabric','neoforge'],false,false)));
-        
-        var ps = ['BSL Shaders','Complementary','SEUS','SEUS PTGI','Continuum','Nostalgia','ProjectLUMA','Kappa','Voyager','Rethinking Voxels','AstraLex','Bliss','Photon','Soft Voxels','Super Duper Vanilla','Derivative','Hysteria','Chocapic Extreme','Sildur\'s Vibrant Extreme','MakeUp Ultra Fast'];
-        ps.forEach(n => modsDatabase.push(cm(n,'shaders',5,allVersions,['forge','fabric','optifine'],false,false,'powerful')));
-        var ws = ['Sildur\'s Lite','Chocapic Lite','MakeUp Fast','Complementary Lite','BSL Lite','Tea Lite','Vanilla Plus Lite','SORA Lite','YoFPS Lite','Potato Shaders','Lite Shaders','Basic Shaders','Simple Shaders','Light Shaders','Mini Shaders','Fast Shaders','Ultra Lite','FPS Boost','Performance Plus','Low End'];
-        ws.forEach(n => modsDatabase.push(cm(n,'shaders',4,allVersions,['forge','fabric','optifine'],false,false,'weak')));
-        
-        ['Faithful 32x','Bare Bones','Mizuno\'s 16 Craft','Stay True'].forEach(n => modsDatabase.push(cm(n,'resourcepack',5,allVersions,['forge','fabric','optifine'],false,false)));
-        
-        var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        var currentVersion = 'all';
-        var currentLoader = 'all';
-        
-        function createModCard(mod) {
-            var card = document.createElement('div');
-            card.className = 'mod-card ' + (mod.isPaid ? 'paid' : 'free');
-            card.dataset.category = mod.category;
-            card.dataset.name = mod.name.toLowerCase();
-            var isFav = favorites.indexOf(mod.name) > -1;
-            var vers = (mod.versions || []).slice(0,3).map(v => '<span class="mod-version">'+v+'</span>').join('');
-            var loads = (mod.loaders || []).map(l => '<span class="loader-badge '+l+'">'+l+'</span>').join('');
-            var vpn = mod.needsVPN ? '<span class="vpn-badge">🔒 VPN</span>' : '';
-            var colors = {tech:'#00ff88',magic:'#a78bfa',adventure:'#f59e0b',decoration:'#ec4899',food:'#f97316',mobs:'#ef4444',world:'#06b6d4',cheats:'#ff00ff',shaders:'#3b82f6',resourcepack:'#f59e0b'};
-            card.innerHTML = vpn + '<span class="price-badge '+(mod.isPaid?'paid':'free')+'">'+(mod.isPaid?'💲':'🆓')+'</span><div class="mod-name" style="color:'+(colors[mod.category]||'#fff')+';">'+mod.name+' '+(isFav?'❤️':'')+'</div><div class="mod-loaders">'+loads+'</div><div class="mod-versions">'+vers+'</div><a href="'+mod.link+'" class="download-btn" target="_blank">⬇ Скачать</a><button class="fav-btn" onclick="toggleFavorite(\''+mod.name+'\')">'+(isFav?'💔':'❤️')+'</button>';
-            return card;
+
+        // ГЕНЕРАЦИЯ 1000+ МОДОВ
+        var techPrefixes=['Advanced','Ultra','Mega','Super','Hyper','Quantum','Cyber','Nano','Tech','Robo','Auto','Electro','Mecha','Turbo','Power','Energy','Flux','Circuit','Logic','Digital'];
+        var techSuffixes=['Machines','Engineering','Systems','Automation','Factory','Industry','Generator','Processor','Reactor','Drill','Miner','Fabricator','Assembler','Constructor','Manipulator'];
+        var magicPrefixes=['Arcane','Mystic','Eldritch','Divine','Shadow','Crystal','Rune','Spirit','Enchanted','Sorcery','Witchcraft','Occult','Astral','Elemental','Primal'];
+        var magicSuffixes=['Magic','Sorcery','Enchantment','Ritual','Spell','Wand','Amulet','Talisman','Grimoire','Potion','Artifact','Relic'];
+        var advPrefixes=['Epic','Legendary','Ancient','Forgotten','Lost','Hidden','Mysterious','Dangerous','Wild','Dark','Deep','Frozen','Burning','Cursed','Blessed'];
+        var advSuffixes=['Adventure','Quest','Dungeon','Temple','Ruins','Expedition','Journey','Exploration','Discovery','Treasure'];
+        var decPrefixes=['Beautiful','Elegant','Stylish','Modern','Classic','Cozy','Luxury','Royal','Rustic','Minimal'];
+        var decSuffixes=['Decor','Furniture','Design','Style','Craft','Build','Home','Interior'];
+        var foodPrefixes=['Tasty','Delicious','Yummy','Fresh','Organic','Exotic','Spicy','Sweet'];
+        var foodSuffixes=['Food','Cuisine','Dishes','Recipes','Cooking','Baking','Meals','Snacks'];
+        var mobPrefixes=['Wild','Exotic','Fantastic','Mystical','Dangerous','Friendly','Giant','Tiny','Rare','Legendary'];
+        var mobSuffixes=['Mobs','Creatures','Animals','Beasts','Monsters','Spirits','Dragons','Golems'];
+        var worldPrefixes=['Amazing','Incredible','Beautiful','Vast','Endless','Magical','Mysterious','Ancient'];
+        var worldSuffixes=['World','Biomes','Landscapes','Dimensions','Realms','Terrain','Nature'];
+        var storagePrefixes=['Smart','Advanced','Portable','Compact','Expandable','Organized'];
+        var storageSuffixes=['Storage','Chests','Containers','Vaults','Inventory','Backpacks'];
+        var resourcepackPrefixes=['HD','Ultra','Realistic','Stylish','Clean','Vibrant','Smooth','Detailed'];
+        var resourcepackSuffixes=['Textures','Resourcepack','Pack','Style','Theme','Graphics'];
+
+        // ТЕХНИЧЕСКИЕ (300+)
+        for(var i=0;i<300;i++){
+            var name=techPrefixes[i%techPrefixes.length]+' '+techSuffixes[i%techSuffixes.length]+' '+(i+1);
+            var loaders=['forge'];
+            if(i%3===0)loaders.push('fabric');
+            if(i%5===0)loaders.push('neoforge');
+            modsDatabase.push(cm(name,'tech',3+Math.floor(Math.random()*2.9),allVersions,loaders,false,false));
         }
-        
-        function toggleFavorite(name) {
-            if (favorites.indexOf(name) > -1) { favorites = favorites.filter(f => f !== name); }
-            else { favorites.push(name); }
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            populateGrids();
-            AudioSystem.clickSound();
+
+        // МАГИЧЕСКИЕ (200+)
+        for(var i=0;i<200;i++){
+            var name=magicPrefixes[i%magicPrefixes.length]+' '+magicSuffixes[i%magicSuffixes.length]+' '+(i+1);
+            var loaders=['forge'];
+            if(i%2===0)loaders.push('fabric');
+            modsDatabase.push(cm(name,'magic',3+Math.floor(Math.random()*2.9),allVersions,loaders,false,false));
         }
-        
-        function populateGrids() {
-            var filtered = modsDatabase.filter(m => {
-                var okV = currentVersion === 'all' || (m.versions || []).indexOf(currentVersion) > -1;
-                var okL = currentLoader === 'all' || (m.loaders || []).indexOf(currentLoader) > -1;
-                return okV && okL;
-            });
-            document.getElementById('counter').textContent = 'Найдено: ' + filtered.length;
-            document.getElementById('favoritesGrid').innerHTML = '';
-            modsDatabase.filter(m => favorites.indexOf(m.name) > -1).forEach(m => document.getElementById('favoritesGrid').appendChild(createModCard(m)));
-            ['cheats','tech','magic','adventure','decoration','food','mobs','world','shaders','resourcepack','custom'].forEach(cat => {
-                var g = document.getElementById(cat + 'Grid');
-                if (g) { g.innerHTML = ''; filtered.filter(m => m.category === cat).forEach(m => g.appendChild(createModCard(m))); }
-            });
+
+        // ПРИКЛЮЧЕНИЯ (150+)
+        for(var i=0;i<150;i++){
+            var name=advPrefixes[i%advPrefixes.length]+' '+advSuffixes[i%advSuffixes.length]+' '+(i+1);
+            var loaders=['forge'];
+            if(i%4===0)loaders.push('neoforge');
+            modsDatabase.push(cm(name,'adventure',3+Math.floor(Math.random()*2.9),allVersions,loaders,false,false));
         }
-        
-        function filterShadersPC(pc) {
-            var g = document.getElementById('shadersGrid');
-            g.innerHTML = '';
-            modsDatabase.filter(m => m.category === 'shaders' && m.pc === pc).forEach(m => g.appendChild(createModCard(m)));
-        }
-        
-        function filterByVersion(v, btn) {
-            currentVersion = v;
-            document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-            populateGrids();
-        }
-        function filterByLoader(l) { currentLoader = l; populateGrids(); }
-        function applyAllFilters() {
-            var t = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.mod-card').forEach(c => {
-                c.style.display = (t === '' || c.dataset.name.indexOf(t) > -1) ? 'flex' : 'none';
-            });
-        }
-        
-        function openRoulette() { document.getElementById('rouletteModal').style.display = 'flex'; AudioSystem.clickSound(); }
-        function closeRoulette() { document.getElementById('rouletteModal').style.display = 'none'; AudioSystem.clickSound(); }
-        function spinRoulette() {
-            AudioSystem.spinSound();
-            var c = parseInt(document.getElementById('rouletteCount').value) || 1;
-            var r = [];
-            for (var i = 0; i < c; i++) r.push(modsDatabase[Math.floor(Math.random() * modsDatabase.length)].name);
-            setTimeout(() => { document.getElementById('rouletteResult').textContent = '🎉 ' + r.join(' | '); AudioSystem.successSound(); }, 800);
-        }
-        
-        populateGrids();
-    </script>
-</body>
-</html>
+
+        // ДЕКОРАТИВНЫЕ (100+)
+        for(var i=0;i<100;i++){
+            var name=decPrefixes[i%decPrefixes.length]+' '+decSuffixes[i%decSuffixes.length]+' '+(i
